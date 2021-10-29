@@ -1,0 +1,9 @@
+# screen record
+
+
+#record default monitor
+ffmpeg -f x11grab -i :0.0 out.mkv
+
+
+#record with default mic
+ffmpeg -f x11grab -i :0.0 -f alsa -ac 2 -i default  out.mkv

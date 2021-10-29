@@ -1,0 +1,8 @@
+#!/bin/sh
+# super + .
+
+
+#cat ~/.config/emoji | dmenu | awk '{print $1}' | xclip -selection clipboard
+selection=$(cat ~/.config/emoji-list | dmenu -b -l 30)
+echo $selection | awk '{print $1}' | tr -d '\n' | xclip -selection clipboard
+notify-send "$selection"

@@ -1,0 +1,4 @@
+#!/bin/sh
+
+#tac ~/.bash_history | uniq | dmenu | tr -d '\n' | xclip -selection c
+history | cut -d ' ' -f 4 | uniq | dmenu | tr -d '\n' | xclip -selection c

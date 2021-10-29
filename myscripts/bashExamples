@@ -1,0 +1,22 @@
+#!/bin/sh
+
+#./bashExamples $(ls)
+
+echo "starting program at $(date)"
+
+echo "Running program $0 with $# arguments and pid: $$"
+
+for arg in "$@";do
+  grep todo "$arg" > /dev/null 2> /dev/null
+  # if the file contains a todo then grep has exit status
+  # then we redirect STDOUT and STDERR to a null register
+  if [[ "$?" -ne 0 ]];then
+    echo "File $arg does not have any todo in it"
+  fi
+done
+
+
+# touch with recursive parents
+tfile="$HOME/tTempteastetDIR/some/path/that/wasnt/there/before/fffffileeee"
+mkdir -p "${file%/*}" && touch "$file"
+mkdir -p "${file%/*}" && echo "this file and its parents is new" > "$file"

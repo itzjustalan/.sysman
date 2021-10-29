@@ -1,0 +1,10 @@
+#!/bin/sh
+
+cd ~/vimwiki;
+notify-send " syncing wiki notes";
+git add -A;
+git commit -m "automated sync";
+git pull origin main;
+git push origin main;
+cd -;
+notify-send "wiki synced!";

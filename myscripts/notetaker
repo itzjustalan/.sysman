@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# super + n
+
+noteFilename="$HOME/myfiles/notes/$(date +%Y/%B)/note-$(date +%Y-%m-%d).txt"
+
+if [ ! -f $noteFilename ];then
+  mkdir -p $HOME/myfiles/notes/$(date +%Y/%B)/
+  echo "$(date +%A,\ %Y\ %b\ %d)" > $noteFilename
+fi
+
+st -c "float" $EDITOR -c "norm Go" -c "norm Go  $(date +%I:%M\ %p)" -c "norm G2o  " -c "norm zz" -c "startinsert" $noteFilename

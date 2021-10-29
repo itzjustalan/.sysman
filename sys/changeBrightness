@@ -1,0 +1,24 @@
+if [ "$1" = "+" ];then
+        currentBrightness=$(cat /sys/class/backlight/intel_backlight/brightness)
+        newBrightness=$(expr $currentBrightness + 10000)
+        sudo bash -c "$(declare -f); changeBrightness $newBrightness"
+        return 0;
+fi
+if [ "$1" = "-" ];then
+        currentBrightness=$(cat /sys/class/backlight/intel_backlight/brightness)
+        newBrightness=$(expr $currentBrightness - 10000)
+        sudo bash -c "$(declare -f); changeBrightness $newBrightness"
+        return 0;
+fi
+if [ $1 -le 100 ] && [ $1 -gt 0 ]
+then
+        #echo $(( 120000*$1/100 ))
+        echo $(( 120000*$1/100 )) > /sys/class/backlight/intel_backlight/brightness
+
+elif [ $1 -le 120000 ] && [ $1 -ge 1000 ]
+then
+        echo $1 > /sys/class/backlight/intel_backlight/brightness
+else
+        echo "1000-120000 or"
+        echo "1-100 for %"
+fi

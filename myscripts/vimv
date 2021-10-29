@@ -1,0 +1,52 @@
+#!/bin/sh
+set -eu
+
+# Lists the current directory's files in Vim, so you can edit it and save to rename them
+# USAGE: vimv [file1 file2]
+# dd to delete files
+# move/reorder filenames
+# more granular control with lines numbers
+# https://github.com/thameera/vimv
+
+declare -r FILENAMES_FILE=$(mktemp "${TMPDIR:-/tmp}/vimv.XXX")
+
+trap '{ rm -f "${FILENAMES_FILE}" ; }' EXIT
+
+if [ $# -ne 0 ]; then
+    src=( "$@" )
+else
+    IFS=$'\r\n' GLOBIGNORE='*' command eval 'src=($(ls -A))'
+fi
+
+for ((i=0;i<${#src[@]};++i)); do
+  echo -e "$((i+1))|${src[i]}" >> "${FILENAMES_FILE}"
+done
+
+${EDITOR:-vi} "${FILENAMES_FILE}"
+
+IFS=$'\r\n' GLOBIGNORE='*' command eval 'dest=($(cat "${FILENAMES_FILE}"))'
+
+declare -i count=0
+templist=()
+for ((i=0;i<${#dest[@]};++i)); do
+    num=$(echo "${dest[i]}" | cut -d '|' -f1)
+    newname=$(echo "${dest[i]}" | cut -d '|' -f2)
+    templist+=("$((--num))")
+    if [ "${src[num]}" != "$newname" ]; then
+        mkdir -p "`dirname "$newname"`"
+        if git ls-files --error-unmatch "${src[i]}" > /dev/null 2>&1; then
+            git mv "${src[num]}" "$newname"
+        else
+            mv "${src[num]}" "$newname"
+        fi
+        ((++count))
+    fi
+done
+
+for ((i=0;i<${#src[@]};++i)); do
+    if [[ ! "${templist[@]}" =~ "$i" ]];then
+        rm -Irf "${src[i]}"
+    fi
+done
+
+echo "$count" files renamed.

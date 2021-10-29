@@ -1,0 +1,24 @@
+#!/bin/sh
+
+# Import colorscheme from 'wal' asynchronously
+# &   # Run the process in the background.
+# ( ) # Hide shell job control messages.
+# Not supported in the "fish" shell.
+#(cat ~/.cache/wal/sequences &)
+
+
+# usaable DEL KEY in st
+tput smkx   # use tput rmkx to quit application mode
+            # as this might have isssues with some
+            # new cli applications
+
+fortune | lolcat
+
+
+# node weird error with libicui18n.so.69
+source /usr/share/nvm/init-nvm.sh
+
+export EDITOR=nvim
+alias vim=nvim    # I'm sorry
+
+alias bashrc="vim ~/.bash_archpc"

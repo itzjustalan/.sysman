@@ -1,0 +1,9 @@
+#!/bin/sh
+
+if [[ $1 == 'ss' ]];then
+  nmcli device wifi connect "BC:62:D2:4B:40:08" password "$KAREETHRA_WIFI_PASS"
+else
+  bssid=$(nmcli device wifi list | sed -n '1!p' | dmenu | cut -b 9- | cut -d ' ' -f 1)
+  passw=$(echo cancel | dmenu -p "pass: ")
+  nmcli device wifi connect $bssid password $passw
+fi;

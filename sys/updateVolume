@@ -1,0 +1,3 @@
+percentage=$(amixer | awk '{print $5}' | sed -n 7p)
+status=$(amixer | awk '{print $6}' | sed -n 7p)
+echo "$percentage $status" > /home/alanj/.local/bin/sys/statusblocks/volumeBlock

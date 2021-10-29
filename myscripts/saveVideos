@@ -1,0 +1,97 @@
+#!/bin/sh
+
+tuts="/media/win/f/tuts"
+tempfol="/media/win/f/tempfol"
+payloadfile=$tuts/1zPayLoad
+listfile=$tuts/list-recursive
+startingDIR=$(pwd)
+unwantedfiles=(
+  ".smi"
+  ".vm"
+  ".apk"
+)
+
+# README
+#
+# list out contents with:
+# adb shell ls -AR /sdcard/VidMate/download/ > ../pullList
+# this creates a file with the files that you want to download
+# download those files with
+# for i in $(cat ../pullList);do adb pull /sdcard/VidMate/download/$i;done
+#
+
+
+# update list
+cd $tuts
+ls -AR > $listfile
+oldlength=$(cat $listfile | wc -l)
+
+rmlist=()
+mvlist=()
+cd $tempfol
+
+# pull from phone
+#adb shell ls -AR /sdcard/VidMate/download/ > ../pullList
+pullList=$(adb shell ls -AR /sdcard/VidMate/download/)
+for i in $pullList;do adb pull /sdcard/VidMate/download/$i;done
+#rm ../pullList
+
+# remove unwanted files
+for i in "${unwantedfiles[@]}";do
+  rm *$i
+done
+
+# analyze tempfol
+for i in $(ls -AR *.mp4);do
+  if [[ "$i" == '.:' || "$i" == '..' ]];then
+    continue
+  fi
+  if grep -Fxq "$i" $listfile
+  then
+    rmlist+=("$i")
+  else
+    mvlist+=("$i")
+  fi
+done;
+
+#printf '%s' "${rmlist[0]}"
+
+# print stats
+printf '\n'
+echo rmlist: "${#rmlist[@]}"
+#printf '%s\n' "${rmlist[@]}"
+#printf '\n'
+echo mvlist: "${#mvlist[@]}"
+#printf '%s\n' "${mvlist[@]}"
+printf '\n'
+
+#echo -n "remove duplicate files? "
+#read ans
+#
+#if [[ "$ans" == 'y' ]];then
+#  echo she said yes lol
+#fi
+
+# rm first since thats just removing the starting index
+for i in "${rmlist[@]}";do
+  #echo removing $i
+  rm $i
+done
+
+# moving rest of the files
+mv * $payloadfile
+
+printf '\n'
+printf '\n'
+
+echo remaining file types are -
+ls -AR --file-type | rev | cut -d '.' -f1 | rev | uniq
+
+# sum stuff up
+cd $tuts
+ls -AR > $listfile
+newlength=$(cat $listfile | wc -l)
+echo $oldlength ' -> ' $newlength
+
+cd $startingDIR
+echo synced!

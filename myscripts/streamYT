@@ -1,0 +1,14 @@
+#!/bin/sh
+
+query=$@
+echo $query
+
+if [ -z $1 ]; then
+  echo -n 'Search query: ';
+  read -r query
+fi
+
+query="$(sed 's/ /+/g' <<<$query)"
+echo $query
+
+

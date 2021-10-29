@@ -1,0 +1,21 @@
+[user]
+	email = itzjustalan@gmail.com
+	name = designcrewz.alan
+[pull]
+	rebase = true
+[init]
+	defaultBranch = main
+
+# work specific folders -
+# designcrewz
+[includeIf "gitdir:~/work/designcrewz/"]
+  path = ~/work/designcrewz/.gitconfig
+[includeIf "gitdir:~/work/almas/"]
+  path = ~/work/almas/.gitconfig
+[includeIf "gitdir:~/work/backend/"]
+  path = ~/work/backend/.gitconfig
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true

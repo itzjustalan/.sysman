@@ -1,0 +1,14 @@
+#!/bin/sh
+
+declare -r TEMPFILE=$(mktemp "${TMPDIR:-/tmp}/tempsxfile.XXX")
+
+if [[ -d $1 ]];then
+  echo "you passed in a directory!! implement zipping to use this thread";
+  echo "buy me a coffee hehe"
+elif [[ -f $1 ]];then
+  curl -F "file=@$1" 0x0.st
+else
+  echo "$@" > TEMPFILE
+  curl -F "file=@TEMPFILE" 0x0.st
+  rm "$TEMPFILE"
+fi

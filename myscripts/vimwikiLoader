@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# super + k
+
+st $EDITOR ~/vimwiki/index.wiki &&
+  syncwiki
