@@ -12,7 +12,8 @@ tput smkx   # use tput rmkx to quit application mode
             # as this might have isssues with some
             # new cli applications
 
-fortune | lolcat
+#fortune | lolcat
+date +%A,\ %Y\ %b\ %d | lolcat
 
 
 # node weird error with libicui18n.so.69
