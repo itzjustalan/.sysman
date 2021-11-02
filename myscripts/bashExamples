@@ -3,6 +3,32 @@
 #./bashExamples $(ls)
 # also maybe like add that array thingy
 
+# flags management
+LC_SC_DRYRUN=false
+	# initialise options
+	for arg in "$@"; do
+		case "$arg" in
+			-d|--dry)
+				LC_SC_DRYRUN=true
+				;;
+		esac
+	done
+
+declare -A apps=(
+["aap"]="8001:8000"
+["aau"]="8000:80"
+["asp"]="8004:3003"
+["axp"]="8003:5000"
+["acp"]="8002:3002"
+)
+
+for app in "${!apps[@]}"; do
+	echo "=================================================================="
+	echo "	${apps[$app]}"
+	echo "=================================================================="
+	startcontainer "$app"
+done
+
 echo "starting program at $(date)"
 
 echo "Running program $0 with $# arguments and pid: $$"
