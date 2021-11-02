@@ -1,6 +1,7 @@
 #!/bin/sh
 
 #./bashExamples $(ls)
+# also maybe like add that array thingy
 
 echo "starting program at $(date)"
 
