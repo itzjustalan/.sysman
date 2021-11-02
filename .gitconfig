@@ -1,6 +1,7 @@
 [user]
 	email = itzjustalan@gmail.com
 	name = designcrewz.alan
+  signingkey = 42D62A4AFDE33837
 [pull]
 	rebase = true
 [init]
@@ -19,3 +20,5 @@
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
+[gpg]
+	program = gpg2

@@ -13,7 +13,7 @@ tput smkx   # use tput rmkx to quit application mode
             # new cli applications
 
 #fortune | lolcat
-date +%A,\ %Y\ %b\ %d | lolcat
+#date +%A,\ %Y\ %b\ %d | lolcat
 
 
 # node weird error with libicui18n.so.69
@@ -21,5 +21,6 @@ source /usr/share/nvm/init-nvm.sh
 
 export EDITOR=nvim
 alias vim=nvim    # I'm sorry
+alias pacman=paru
 
 alias bashrc="vim ~/.bash_archpc"
