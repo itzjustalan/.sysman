@@ -1,0 +1,506 @@
+"----------------------------------------------------
+"         .8.          8 8888     ,88'        8 8888 
+"        .888.         8 8888    ,88'         8 8888 
+"       :88888.        8 8888   ,88'          8 8888 
+"      . `88888.       8 8888  ,88'           8 8888 
+"     .8. `88888.      8 8888 ,88'            8 8888 
+"    .8`8. `88888.     8 8888 88'             8 8888 
+"   .8' `8. `88888.    8 888888<   88.        8 8888 
+"  .8'   `8. `88888.   8 8888 `Y8. `88.       8 888' 
+" .888888888. `88888.  8 8888   `Y8. `88o.    8 88'  
+".8'       `8. `88888. 8 8888     `Y8. `Y888888 '    
+"----------------------------------------------------
+"___________________________________________init.vim 
+"----------------------------------------------------
+"
+"
+"
+"
+"
+"
+"
+" system clipboard
+set clipboard+=unnamedplus
+"set clipboard+=xclip
+
+" fix file types
+autocmd BufRead,BufNewFile *.tex set filetype=tex
+
+" spellcheck
+autocmd FileType tex,txt,latex,markdown setlocal spell spelllang=en_us
+
+" vertically center document when entering insert mode
+autocmd InsertEnter * norm zz
+autocmd InsertLeave * :write
+
+" remove trailing white spaces on save
+"autocmd BufWritePre * %s/\s\+$//e
+
+" write without sudo
+cmap w!! w !sudo tee %
+" also quick tip: you can start vim in readonly mode by vim -M filename
+
+
+" save / load code folding
+"augroup remember_folds
+"  autocmd!
+"  autocmd BufWinLeave * mkview
+"  autocmd BufWinEnter * silent! loadview
+"augroup END
+
+
+
+
+
+syntax on
+
+set exrc  " load vimrc from the folder when running with vim ."
+set nu rnu  " nu rnu maan nu rnu"
+set incsearch
+set nohlsearch  " remove hioghlights after search"
+set hidden  "dont warn when when opening new file without
+set noerrorbells  " vibrator lol"
+set scrolloff=4
+set encoding=utf-8
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
+set expandtab
+set smartindent
+set nowrap
+set ignorecase
+set smartcase
+set noswapfile
+set nobackup
+set undodir=~/.vim/undodir
+set undofile
+set splitbelow
+set splitright
+set pastetoggle=<F3>
+set colorcolumn=80
+set signcolumn=yes
+set termguicolors
+highlight ColorColumn ctermbg=0 guibg=lightgrey
+
+" the prime
+"set path+=**
+
+" Nice menu when typing `:find *.py`
+set wildmode=longest,list,full
+set wildmenu
+" Ignore files
+set wildignore+=*.pyc
+set wildignore+=*_build/*
+set wildignore+=**/coverage/*
+set wildignore+=**/node_modules/*
+set wildignore+=**/.git/*
+" end the prime
+
+
+
+
+" this will install vim-plug if not installed
+"if empty(glob('~/.config/nvim/autoload/plug.vim'))
+"    silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
+"        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+"    autocmd VimEnter * PlugInstall
+"endif
+"let g:coc_global_extensions = [ 'coc-tslint-plugin', 'coc-tsserver', 'coc-css', 'coc-html', 'coc-json', 'coc-prettier' ]  " list of CoC extensions needed
+let g:coc_global_extensions = [
+      \'coc-tslint-plugin', 
+      \'coc-tsserver', 
+      \'coc-css', 
+      \'coc-html', 
+      \'coc-json', 
+      \'coc-prettier' 
+      \]  " list of CoC extensions needed
+let g:coc_node_path = '/home/alanj/.nvm/versions/node/v14.17.4/bin/node'
+
+call plug#begin('~/.vim/plugged')
+" :PlugInstall
+Plug 'vimwiki/vimwiki'
+Plug 'dracula/vim', { 'as': 'dracula' }
+
+" nvim lsp
+Plug 'neovim/nvim-lspconfig'
+Plug 'nvim-lua/completion-nvim'
+
+" auto completion
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-nvim-lua'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-cmdline'
+
+
+Plug 'williamboman/nvim-lsp-installer'
+"Plug 'glepnir/lspsaga.nvim'
+
+Plug 'glepnir/galaxyline.nvim', { 'branch': 'main' }
+Plug 'kyazdani42/nvim-web-devicons'  " needed for galaxyline icons
+
+" Neovim Tree shitter
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-treesitter/playground'
+Plug 'kyazdani42/nvim-tree.lua'
+
+" telescope requirements...
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-fzy-native.nvim', { 'do': 'make' }
+
+" prettier
+Plug 'sbdchd/neoformat'
+Plug 'jiangmiao/auto-pairs' "this will auto close ( [ {
+
+" these two plugins will add highlighting and indenting to JSX and TSX files.
+Plug 'yuezk/vim-js'
+Plug 'HerringtonDarkholme/yats.vim'
+Plug 'maxmellon/vim-jsx-pretty'
+Plug 'tomtom/tcomment_vim'
+
+Plug 'tpope/vim-ragtag'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-unimpaired'
+
+Plug 'tpope/vim-eunuch'
+Plug 'tpope/vim-fugitive'
+
+
+" dart flutter
+"Plug 'jremmen/vim-ripgrep'
+"Plug 'tpope/vim-fugitive'
+"Plug 'leafgarland/typescript-vim'
+"Plug 'vim-utils/vim-man'
+"Plug 'lyuts/vim-rtags'
+"Plug 'git@github.com:kien/ctrlp.vim.git'
+"Plug 'git@github.com:valloric/YouCompleteMe.git'
+"Plug 'mbbill/undotree'
+"Plug 'dart-lang/dart-vim-plugin'
+"Plug 'natebosch/vim-lsc'
+"Plug 'natebosch/vim-lsc-dart'
+
+" Debugger Plugins
+"Plug 'puremourning/vimspector'
+"Plug 'szw/vim-maximizer'
+
+"Plug 'hrsh7th/nvim-compe'
+"Plug 'glepnir/lspsaga.nvim'
+"Plug 'simrat39/symbols-outline.nvim'
+"Plug 'tjdevries/nlua.nvim'
+"Plug 'tjdevries/lsp_extensions.nvim'
+"Plug 'rust-lang/rust.vim'
+"Plug 'darrikonn/vim-gofmt'
+"Plug 'tpope/vim-fugitive'
+"Plug 'junegunn/gv.vim'
+"Plug 'vim-utils/vim-man'
+"Plug 'mbbill/undotree'
+"Plug 'tpope/vim-dispatch'
+"Plug 'theprimeagen/vim-be-good'
+"Plug 'gruvbox-community/gruvbox'
+"Plug 'tpope/vim-projectionist'
+" should I try another status bar???
+"Plug 'glepnir/galaxyline.nvim' , {'branch': 'main'}
+"Plug 'hoob3rt/lualine.nvim'
+
+"Plug 'ray-x/lsp_signature.nvim'
+"Plug 'lewis6991/gitsigns.nvim'
+
+"Plug 'flazz/vim-colorschemes'
+"Plug 'chriskempson/base16-vim'
+
+" HARPOON!!
+"Plug '/home/mpaulson/personal/rfc-reader'
+"Plug 'mhinz/vim-rfc'
+
+
+call plug#end()
+" :PlugInstall
+
+" set colorscheme before lsp
+colorscheme dracula
+
+
+let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy', 'all']
+let g:completion_chain_complete_list = {
+      \  'default': {
+      \    'default': [
+      \      {'complete_items': ['lsp','snippet']},
+      \      {'complete_items': ['path'],'trigger_only':['/']},
+      \      {'mode': '<c-p>'},
+      \      {'mode': '<c-n>'}
+      \      ]
+      \    }
+      \  }
+
+
+
+" lsp configs
+" attach completion
+lua require'lspconfig'.denols.setup{on_attach=require'completion'.on_attach}
+lua require'lspconfig'.eslint.setup{on_attach=require'completion'.on_attach}
+lua require'lspconfig'.yamlls.setup{on_attach=require'completion'.on_attach}
+lua require'lspconfig'.graphql.setup{on_attach=require'completion'.on_attach}
+lua require'lspconfig'.tsserver.setup{on_attach=require'completion'.on_attach}
+lua require'lspconfig'.vuels.setup{on_attach=require'completion'.on_attach}
+lua require'lspconfig'.pylsp.setup{on_attach=require'completion'.on_attach}
+lua require'lspconfig'.jsonls.setup{on_attach=require'completion'.on_attach}
+lua require'lspconfig'.bashls.setup{on_attach=require'completion'.on_attach}
+lua require'lspconfig'.html.setup{on_attach=require'completion'.on_attach}
+lua require'lspconfig'.dockerls.setup{on_attach=require'completion'.on_attach}
+"lua require'lspconfig'.sqlls.setup{on_attach=require'completion'.on_attach}
+lua require'lspconfig'.rust_analyzer.setup{on_attach=require'completion'.on_attach}
+lua require'lspconfig'.vimls.setup{on_attach=require'completion'.on_attach}
+"lua require'lspconfig'.sqls.setup{on_attach=require'completion'.on_attach}
+
+
+
+
+" auto complete setup
+set completeopt=menu,menuone,noselect
+lua require('nvim-cmp-completion-configs')
+
+
+
+" Dart specifics
+" :DartFmt - format dart code
+" :DartAnalyzer - analyze dart code
+"
+"
+" Enable HTML syntax highlighting inside Dart strings with
+let dart_html_in_string=v:true
+
+
+" Highlighting for specific syntax groups can be disabled by defining custom
+" highlight group links. See :help dart-syntax
+"
+" Enable Dart style guide syntax (like 2-space indentation) with
+let g:dart_style_guide = 2
+
+
+" Enable DartFmt execution on buffer save with
+let g:dart_format_on_save = 1
+
+" Enable DartFmt auto syntax fixes
+"let g:lsc_auto_map = v:true
+
+" Configure DartFmt options with let g:dartfmt_options (discover formatter
+" options with dartfmt -h)
+"
+"
+" apply all defaults keymaps of vim-lsc
+"let g:lsc_auto_map = v:true
+"
+"
+" CoC dart
+" :CocCommand flutter.emulators
+" This list the installed emulators on your devices, just select the one and
+" press Enter
+"
+" Inorder to run the current application
+" :CocCommand flutter.run
+"
+" This is similar to flutter run
+"
+" Now you can bind these two commands into a keybinding and use that
+" keybinding instead
+"
+" coc commands - ini benda
+"nnoremap leader e :CocCommand flutter.emulators CR
+"nnoremap leader r :CocCommand flutter.run CR
+"nmap <silent> gd <Plug>(coc-definition)
+"nmap <silent> gy <Plug>(coc-type-definition)
+"nmap <silent> gi <Plug>(coc-implementation)
+"nmap <silent> gr <Plug>(coc-references)
+
+
+
+
+
+" remaps
+let mapleader = " "
+"let mapleader = "z"
+"inoremap <CapsLock> <esc>
+inoremap jj <esc>
+"inoremap jk <esc>
+"inoremap kj <esc>
+
+
+
+
+
+" -------- STANDARD BINDINGS --------
+" file system
+"nnoremap <C-t> :!touch<Space>
+"nnoremap <C-e> :!crf<Space>
+"nnoremap <C-d> :!mkdir<Space>
+"nnoremap <C-t> :!mv<Space>%<Space>
+" navigation
+"nnoremap gl $
+"nnoremap gh 0
+"nnoremap gk H
+"nnoremap gj L
+"nnoremap gt gg
+"nnoremap gb G
+
+
+" auto commenting
+"map <leader>c :setlocal formatoptions-=cro<CR>
+"map <leader>c :setlocal formatoptions=cro<CR>
+
+" spell check
+"map <leader>s :setlocal sell! spelllang=en_us<CR>
+
+" enable and disable auto indent %$$%&^*^%@#$%$#
+"map <leader>i :setlocal autoindent<CR>
+"map <leader>I :setlocal noautoindent<CR>
+
+" shell check (check for bashisms)
+"map <leader>p :!clear && shellcheck %<CR>
+" goyo?
+"map <leader>g :Goyo<CR>
+
+" Autocompletion
+set wildmode=longest,list,full
+" fix splitting
+set splitbelow splitright
+" better split navigation?
+map <C-h> <C-w>h
+map <C-j> <C-w>j
+map <C-k> <C-w>k
+map <C-l> <C-w>l
+
+" open splits
+nnoremap <leader>h :split<Space>
+nnoremap <leader>v :vsplit<Space>
+
+" tabs
+nnoremap <leader><Tab> :tabn<cr>
+nnoremap <leader><Shift><Tab> :tabp<cr>
+
+
+
+
+if executable('rg')
+    let g:rg_drive_root='true'
+endif
+
+let g:ctrlp_usr_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
+let g:netrw_browse_split = 2
+"let g:netrw_banner = 0
+let g:netrw_winsize = 25
+
+let g:ctrlp_use_caching = 0
+
+nnoremap <leader>h :wincmd h<CR>
+nnoremap <leader>j :wincmd j<CR>
+nnoremap <leader>k :wincmd k<CR>
+nnoremap <leader>l :wincmd l<CR>
+nnoremap <leader>u :UndotreeShow<CR>
+nnoremap <leader>pv :wincmd v<bar> :Ex <bar> :vertical resize 30<CR>
+nnoremap <leader>ps :Rg<SPACE>
+nnoremap <silent> <leader>+ :vertical resize +5<CR>
+nnoremap <silent> <leader>- :vertical resize -5<CR>
+
+
+" YCM
+nnoremap <silent> <leader>gd :YcmCompleter GoTo<CR>
+nnoremap <silent> <leader>gf :YcmCompleter FixIt<CR>
+
+" >> Telescope bindings
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+nnoremap <leader>ps :lua require('telescope.builtin').grep_string({ search = vim.fn.input("Grep For > ")})<CR>
+nnoremap <C-p> :lua require('telescope.builtin').git_files()<CR>
+nnoremap <Leader>pf :lua require('telescope.builtin').find_files()<CR>
+
+nnoremap <leader>pw :lua require('telescope.builtin').grep_string { search = vim.fn.expand("<cword>") }<CR>
+nnoremap <leader>pb :lua require('telescope.builtin').buffers()<CR>
+nnoremap <leader>vh :lua require('telescope.builtin').help_tags()<CR>
+
+" nvim-tree
+nnoremap <leader>vp :NvimTreeToggle<CR>
+nnoremap <leader>ntr :NvimTreeRefresh<CR>
+nnoremap <leader>fntf :NvimTreeFindFile<CR>
+
+
+"nnoremap <Leader>pp <cmd>lua require'telescope.builtin'.builtin{}<CR>
+"" most recently used files
+"nnoremap <Leader>m <cmd>lua require'telescope.builtin'.oldfiles{}<CR>
+"" find buffer
+"nnoremap ; <cmd>lua require'telescope.builtin'.buffers{}<CR>
+"" find in current buffer
+"nnoremap <Leader>/ <cmd>lua require'telescope.builtin'.current_buffer_fuzzy_find{}<CR>
+"" bookmarks
+"nnoremap <Leader>' <cmd>lua require'telescope.builtin'.marks{}<CR>
+"" git files
+"nnoremap <Leader>f <cmd>lua require'telescope.builtin'.git_files{}<CR>
+"" all files
+"nnoremap <Leader>bfs <cmd>lua require'telescope.builtin'.find_files{}<CR>
+"" ripgrep like grep through dir
+"nnoremap <Leader>rg <cmd>lua require'telescope.builtin'.live_grep{}<CR>
+"" pick color scheme
+"nnoremap <Leader>cs <cmd>lua require'telescope.builtin'.colorscheme{}<CR>
+
+
+
+" lsp nindings
+nnoremap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> gD <cmd>lua vim.lsp.buf.declaration()<CR>
+nnoremap <silent> gr <cmd>lua vim.lsp.buf.references()<CR>
+nnoremap <silent> gi <cmd>lua vim.lsp.buf.implementation()<CR>
+nnoremap <silent> K <cmd>lua vim.lsp.buf.hover()<CR>
+nnoremap <silent> <C-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
+"nnoremap <silent> <C-n> <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
+"nnoremap <silent> <C-p> <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
+
+autocmd BufWritePre *.js lua vim.lsp.buf.formatting_sync(nil, 100)
+autocmd BufWritePre *.jsx lua vim.lsp.buf.formatting_sync(nil, 100)
+autocmd BufWritePre *.py lua vim.lsp.buf.formatting_sync(nil, 100)
+
+
+
+
+" for WSL
+"to start vim in insert mode
+"by bypassing the ambiguous
+"utf-8 characters and by not
+"requesting cursor position
+set t_u7=
+
+" powerline
+"python3 from powerline.vim import setup as powerline_setup
+"python3 powerline_setup()
+"python3 del powerline_setup
+"
+"set laststatus=2
+
+
+" vimwiki
+set nocompatible
+filetype plugin on
+syntax on
+
+
+
+" File Find {{{
+set path+=**
+set wildmenu
+set wildignore+=**/node_modules/**
+"saving the previous one
+
+" }}}
+
+
+" telescope setup
+lua require('telescope-configs')
+
+
+" other lua imports
+
+lua require('nvim-tree-configs')
+lua require('minethconfigs')

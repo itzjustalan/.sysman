@@ -69,6 +69,7 @@ alias df='df -h'                          # human-readable sizes
 alias free='free -m'                      # show sizes in MB
 alias more=less
 alias sv="sudo vim"
+alias nv=nvim
 #alias v=nvim
 alias m=mpv
 alias z="zathura"
@@ -341,7 +342,7 @@ mkcdir(){
 }
 
 umm() {
-  LC_TEXT="\n$(date +%Y-%B-%d\ [%H:%M]..)\n$@"
+  LC_TEXT="\n\n$(date +%Y-%B-%d\ [%H:%M]..)\n$@"
   echo -en "$LC_TEXT" >> ~/static/umms
 }
 
