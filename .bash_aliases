@@ -117,7 +117,7 @@ alias rqr="qrencode -o ~/outputqrcode.png \" \";clear"
 alias rescan="sudo /sys/class/net/wlo1/device/rescan"
 alias pmi="patch --merge -i"
 alias ws="wiki-search"
-alias vvk="$EDITOR ~/vimwiki/index.wiki;cd ~/vimwiki;git add -A;git commit -S -m 'automated sync from termux n9p';git pull origin main;git push origin main;echo 'wiki synced!':"
+alias vvk="$EDITOR ~/vimwiki/index.wiki;cd ~/vimwiki;git add -A;git commit -m 'automated sync from termux n9p';git pull origin main;git push origin main;echo 'wiki synced!':"
 alias ttl="cat ~/vimwiki/personal/timeslots\ .wiki;date"
 alias xc="xclip -selection clipboard"
 alias ss="mkdir -p ~/myfiles/screenshots/$(date +%Y)/$(date +%B-%Y)/$(date +%F)/;maim ~/myfiles/screenshots/$(date +%Y)/$(date +%B-%Y)/$(date +%F)/hp15-screenshot-$(date +%Y-%m-%d_%H-%M-%S).png"
@@ -219,8 +219,8 @@ alias pp="cd ~/myfiles/pgms/shell-color-scripts/ && ./colorscript.sh -e 31"
 # git commands
 alias gs="git status"
 alias ga="git add -A"
-alias gm="git commit -S"
-alias cm="git commit -S -m "
+alias gm="git commit"
+alias cm="git commit -m "
 alias gl="git log --all --graph --decorate"
 alias gb="git branch"
 alias gc="git checkout"
@@ -230,9 +230,9 @@ alias grv="git remote -v"
 alias grso="git remote show origin"
 alias gpush="git push origin main"
 alias gpull="git pull origin main"
-alias gss="git add -A;git commit -S -m \"automated commit\";git pull origin;git push origin;git status"
-alias gsn="git add -A;git commit -S -m \"automated commit\";"
-alias gsm="git add -A;git commit -S -m ;"
+alias gss="git add -A;git commit -m \"automated commit\";git pull origin;git push origin;git status"
+alias gsn="git add -A;git commit -m \"automated commit\";"
+alias gsm="git add -A;git commit -m ;"
 
 # docker commands
 alias docker="sudo docker"
@@ -282,21 +282,21 @@ gdp(){
   gdd;
   pwd;
   git add -A;
-  git commit -S -m "automated commit";
+  git commit -m "automated commit";
   git push origin main;
   if [ "$1" == "-b" ]; then fbaspa fi;
 
   gds;
   pwd;
   git add -A;
-  git commit -S -m "automated commit";
+  git commit -m "automated commit";
   git push origin main;
   if [ "$1" == "-b" ]; then fbaspa fi;
 
   gdc;
   pwd;
   git add -A;
-  git commit -S -m "automated commit";
+  git commit -m "automated commit";
   git push origin main;
   if [ "$1" == "-b" ]; then fbaspa fi;
 
@@ -434,7 +434,7 @@ deployMyBlog(){
     # will be taken care of by the github workflow
     #firebase deploy;
     git add -A;
-    git commit -S -m "$(date +%F) automated commit";
+    git commit -m "$(date +%F) automated commit";
     git push origin main;
     cd -;
     #firefox https://itzjustalan-blog.web.app

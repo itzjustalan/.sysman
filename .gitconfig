@@ -1,7 +1,7 @@
 [user]
 	email = itzjustalan@gmail.com
 	name = Alan K John
-  signingkey = 92C2C2B2C7836801
+  #signingkey = 92C2C2B2C7836801
 [pull]
 	rebase = true
 [init]

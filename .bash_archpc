@@ -19,8 +19,7 @@ tput smkx   # use tput rmkx to quit application mode
 # node weird error with libicui18n.so.69
 source /usr/share/nvm/init-nvm.sh
 
-export EDITOR=vim
-#alias vim=nvim    # I'm sorry
+export EDITOR=nvim
 alias pacman=paru
 
-alias bashrc="vim ~/.bash_archpc"
+alias bashrc="$EDITOR ~/.bash_archpc"

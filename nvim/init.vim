@@ -32,7 +32,8 @@ autocmd FileType tex,txt,latex,markdown setlocal spell spelllang=en_us
 " vertically center document when entering insert mode
 autocmd InsertEnter * norm zz
 " save file on leaving insert mode
-autocmd InsertLeave * :write
+"autocmd InsertLeave * silent! :wall
+"autocmd CursorHold * :write
 
 " remove trailing white spaces on save
 "autocmd BufWritePre * %s/\s\+$//e
@@ -78,10 +79,12 @@ set undodir=~/.vim/undodir
 set undofile
 set splitbelow
 set splitright
+set autowriteall
 set pastetoggle=<F3>
 set colorcolumn=80
 set signcolumn=yes
 set termguicolors
+set cursorline
 highlight ColorColumn ctermbg=0 guibg=lightgrey
 
 "set statusline+=%F%m%r%h%w\ 
@@ -251,6 +254,11 @@ call plug#end()
 let g:dracula_colorterm = 0
 colorscheme dracula
 hi Normal guibg=NONE ctermbg=NONE
+"highlight CursorLine ctermfg=White ctermbg=Red cterm=bold guifg=white guibg=red gui=bold
+"highlight CursorLine ctermfg=White ctermbg=Red cterm=bold guifg=white guibg=red gui=bold
+"highlight CursorLine guifg=white guibg=red gui=bold
+
+
 
 
 let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy', 'all']
@@ -356,6 +364,9 @@ let mapleader = " "
 inoremap jj <esc>
 "inoremap jk <esc>
 "inoremap kj <esc>
+" to save on ESC
+nnoremap <Esc> <Esc>:write<CR>
+"inoremap jj <Esc>:write<CR>
 
 
 
@@ -742,3 +753,4 @@ lua require('telescope-configs')
 
 lua require('nvim-tree-configs')
 lua require('minethconfigs')
+highlight CursorLine gui=BOLD guifg=none guibg=black
