@@ -31,6 +31,7 @@ autocmd FileType tex,txt,latex,markdown setlocal spell spelllang=en_us
 
 " vertically center document when entering insert mode
 autocmd InsertEnter * norm zz
+" save file on leaving insert mode
 autocmd InsertLeave * :write
 
 " remove trailing white spaces on save
@@ -61,6 +62,7 @@ set nohlsearch  " remove hioghlights after search"
 set hidden  "dont warn when when opening new file without
 set noerrorbells  " vibrator lol"
 set scrolloff=4
+set showtabline=1  " 0, 1 or 2; when to use a tab pages line
 set encoding=utf-8
 set tabstop=2
 set softtabstop=2
@@ -81,6 +83,29 @@ set colorcolumn=80
 set signcolumn=yes
 set termguicolors
 highlight ColorColumn ctermbg=0 guibg=lightgrey
+
+"set statusline+=%F%m%r%h%w\ 
+"set statusline+=%{fugitive#statusline()}\    
+"set statusline+=[%{strlen(&fenc)?&fenc:&enc}]
+"set statusline+=\ [line\ %l\/%L]
+set statusline=%#DraculaOrangeBoldItalic#>\ 
+set statusline+=%m%F%=
+set statusline+=%#DraculaOrangeBoldItalic#\ %Y\ 
+"set statusline+=%#DraculaSearch#\ %Y\ 
+set statusline+=%#DraculaGreenBold#
+set statusline+=\|\ %l/%L\ \|\ 
+set statusline+=%#DraculaTodo#
+set statusline+=\ [%{strlen(&fenc)?&fenc:&enc}]\ 
+set statusline+=%{fugitive#statusline()}\ 
+
+
+
+
+
+
+
+
+
 
 " the prime
 "set path+=**
@@ -124,6 +149,7 @@ Plug 'dracula/vim', { 'as': 'dracula' }
 " nvim lsp
 Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/completion-nvim'
+Plug 'glepnir/lspsaga.nvim'
 
 " auto completion
 Plug 'hrsh7th/nvim-cmp'
@@ -137,7 +163,7 @@ Plug 'hrsh7th/cmp-cmdline'
 Plug 'williamboman/nvim-lsp-installer'
 "Plug 'glepnir/lspsaga.nvim'
 
-Plug 'glepnir/galaxyline.nvim', { 'branch': 'main' }
+"Plug 'glepnir/galaxyline.nvim', { 'branch': 'main' }
 Plug 'kyazdani42/nvim-web-devicons'  " needed for galaxyline icons
 
 " Neovim Tree shitter
@@ -220,7 +246,9 @@ call plug#end()
 " :PlugInstall
 
 " set colorscheme before lsp
+let g:dracula_colorterm = 0
 colorscheme dracula
+hi Normal guibg=NONE ctermbg=NONE
 
 
 let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy', 'all']
@@ -373,12 +401,141 @@ map <C-k> <C-w>k
 map <C-l> <C-w>l
 
 " open splits
-nnoremap <leader>h :split<Space>
-nnoremap <leader>v :vsplit<Space>
+nnoremap <leader>h :split<cr>
+nnoremap <leader>v :vsplit<cr>
 
 " tabs
-nnoremap <leader><Tab> :tabn<cr>
-nnoremap <leader><Shift><Tab> :tabp<cr>
+nnoremap <leader>c :tabclose<cr>
+nnoremap <leader>tfs :tab split<cr>
+
+
+
+
+
+
+
+
+
+
+if has('gui')
+  set guioptions-=e
+endif
+if exists("+showtabline")
+  function MyTabLine()
+    let s = ''
+    let t = tabpagenr()
+    let i = 1
+    while i <= tabpagenr('$')
+      let buflist = tabpagebuflist(i)
+      let winnr = tabpagewinnr(i)
+      let s .= '%' . i . 'T'
+      let s .= (i == t ? '%1*' : '%2*')
+      let s .= ' '
+      let s .= i . ':'
+      let s .= '[' . winnr . '/' . tabpagewinnr(i,'$') . ']'
+      let s .= ' %*'
+      let s .= (i == t ? '%#TabLineSel#' : '%#TabLine#')
+      let bufnr = buflist[winnr - 1]
+      let file = bufname(bufnr)
+      let buftype = getbufvar(bufnr, 'buftype')
+      if buftype == 'nofile'
+        if file =~ '\/.'
+          let file = substitute(file, '.*\/\ze.', '', '')
+        endif
+      else
+        let file = fnamemodify(file, ':p:t')
+      endif
+      if file == ''
+        let file = '[No Name]'
+      endif
+      let s .= file
+      let i = i + 1
+    endwhile
+    let s .= '%T%#TabLineFill#%='
+    let s .= (tabpagenr('$') > 1 ? '%999XX' : 'X')
+   return s
+  endfunction
+  set tabline=%!MyTabLine()
+endif
+
+"set showtabline=1  " 0, 1 or 2; when to use a tab pages line
+"set tabline=%!MyTabLine()  " custom tab pages line
+"function MyTabLine()
+"  let s = '' " complete tabline goes here
+"  " loop through each tab page
+"  for t in range(tabpagenr('$'))
+"    " set highlight for tab number and &modified
+"    let s .= '%#TabLineSel#'
+"    " set the tab page number (for mouse clicks)
+"    let s .= '%' . (t + 1) . 'T'
+"    " set page number string
+"    let s .= t + 1 . ':'
+"    " get buffer names and statuses
+"    let n = ''  "temp string for buffer names while we loop and check buftype
+"    let m = 0  " &modified counter
+"    let bc = len(tabpagebuflist(t + 1))  "counter to avoid last ' '
+"    " loop through each buffer in a tab
+"    for b in tabpagebuflist(t + 1)
+"      " buffer types: quickfix gets a [Q], help gets [H]{base fname}
+"      " others get 1dir/2dir/3dir/fname shortened to 1/2/3/fname
+"      if getbufvar( b, "&buftype" ) == 'help'
+"        let n .= '[H]' . fnamemodify( bufname(b), ':t:s/.txt$//' )
+"      elseif getbufvar( b, "&buftype" ) == 'quickfix'
+"        let n .= '[Q]'
+"      else
+"        let n .= pathshorten(bufname(b))
+"      endif
+"      " check and ++ tab's &modified count
+"      if getbufvar( b, "&modified" )
+"        let m += 1
+"      endif
+"      " no final ' ' added...formatting looks better done later
+"      if bc > 1
+"        let n .= ' '
+"      endif
+"      let bc -= 1
+"    endfor
+"    " add modified label [n+] where n pages in tab are modified
+"    if m > 0
+"      let s .= '[' . m . '+]'
+"    endif
+"    " select the highlighting for the buffer names
+"    " my default highlighting only underlines the active tab
+"    " buffer names.
+"    if t + 1 == tabpagenr()
+"      let s .= '%#TabLine#'
+"    else
+"      let s .= '%#TabLineSel#'
+"    endif
+"    " add buffer names
+"    let s .= n
+"    " switch to no underlining and add final space to buffer list
+"    let s .= '%#TabLineSel#' . ' '
+"  endfor
+"  " after the last tab fill with TabLineFill and reset tab page nr
+"  let s .= '%#TabLineFill#%T'
+"  " right-align the label to close the current tab page
+"  if tabpagenr('$') > 1
+"    let s .= '%=%#TabLineFill#%999Xclose'
+"  endif
+"  return s
+"endfunction
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -423,7 +580,7 @@ nnoremap <leader>pb :lua require('telescope.builtin').buffers()<CR>
 nnoremap <leader>vh :lua require('telescope.builtin').help_tags()<CR>
 
 " nvim-tree
-nnoremap <leader>vp :NvimTreeToggle<CR>
+nnoremap <leader>ft :NvimTreeToggle<CR>
 nnoremap <leader>ntr :NvimTreeRefresh<CR>
 nnoremap <leader>fntf :NvimTreeFindFile<CR>
 
@@ -461,6 +618,85 @@ nnoremap <silent> <C-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
 autocmd BufWritePre *.js lua vim.lsp.buf.formatting_sync(nil, 100)
 autocmd BufWritePre *.jsx lua vim.lsp.buf.formatting_sync(nil, 100)
 autocmd BufWritePre *.py lua vim.lsp.buf.formatting_sync(nil, 100)
+
+
+"-- lsp provider to find the cursor word definition and reference
+nnoremap <silent> gh <cmd>lua require'lspsaga.provider'.lsp_finder()<CR>
+"-- or use command LspSagaFinder
+nnoremap <silent> gh :Lspsaga lsp_finder<CR>
+
+"-- code action
+nnoremap <silent><leader>ca <cmd>lua require('lspsaga.codeaction').code_action()<CR>
+vnoremap <silent><leader>ca :<C-U>lua require('lspsaga.codeaction').range_code_action()<CR>
+"-- or use command
+nnoremap <silent><leader>ca :Lspsaga code_action<CR>
+vnoremap <silent><leader>ca :<C-U>Lspsaga range_code_action<CR>
+
+"-- show hover doc
+nnoremap <silent> K <cmd>lua require('lspsaga.hover').render_hover_doc()<CR>
+"-- or use command
+nnoremap <silent>K :Lspsaga hover_doc<CR>
+
+"-- scroll down hover doc or scroll in definition preview
+nnoremap <silent> <C-f> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(1)<CR>
+"-- scroll up hover doc
+nnoremap <silent> <C-b> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1)<CR>
+
+
+"-- show signature help
+nnoremap <silent> gs <cmd>lua require('lspsaga.signaturehelp').signature_help()<CR>
+"-- or command
+nnoremap <silent> gs :Lspsaga signature_help<CR>
+
+"and you also can use smart_scroll_with_saga to scroll in signature help win
+
+"-- rename
+nnoremap <silent>gr <cmd>lua require('lspsaga.rename').rename()<CR>
+"-- or command
+nnoremap <silent>gr :Lspsaga rename<CR>
+"-- close rename win use <C-c> in insert mode or `q` in noremal mode or `:q`
+
+
+"-- preview definition
+nnoremap <silent> gd <cmd>lua require'lspsaga.provider'.preview_definition()<CR>
+"-- or use command
+nnoremap <silent> gd :Lspsaga preview_definition<CR>
+
+"can use smart_scroll_with_saga to scroll
+
+
+"-- show
+nnoremap <silent><leader>cd <cmd>lua
+"require'lspsaga.diagnostic'.show_line_diagnostics()<CR>
+
+nnoremap <silent> <leader>cd :Lspsaga show_line_diagnostics<CR>
+"-- only show diagnostic if cursor is over the area
+nnoremap <silent><leader>cc <cmd>lua
+"require'lspsaga.diagnostic'.show_cursor_diagnostics()<CR>
+
+"-- jump diagnostic
+nnoremap <silent> [e <cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_prev()<CR>
+nnoremap <silent> ]e <cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_next()<CR>
+"-- or use command
+nnoremap <silent> [e :Lspsaga diagnostic_jump_next<CR>
+nnoremap <silent> ]e :Lspsaga diagnostic_jump_prev<CR>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
