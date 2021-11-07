@@ -88,15 +88,17 @@ highlight ColorColumn ctermbg=0 guibg=lightgrey
 "set statusline+=%{fugitive#statusline()}\    
 "set statusline+=[%{strlen(&fenc)?&fenc:&enc}]
 "set statusline+=\ [line\ %l\/%L]
+
+" my conf ..
 set statusline=%#DraculaOrangeBoldItalic#>\ 
 set statusline+=%m%F%=
-set statusline+=%#DraculaOrangeBoldItalic#\ %Y\ 
-"set statusline+=%#DraculaSearch#\ %Y\ 
+set statusline+=%#DraculaOrangeBoldItalic#\ \\%Y\ 
 set statusline+=%#DraculaGreenBold#
 set statusline+=\|\ %l/%L\ \|\ 
 set statusline+=%#DraculaTodo#
 set statusline+=\ [%{strlen(&fenc)?&fenc:&enc}]\ 
 set statusline+=%{fugitive#statusline()}\ 
+" get colors from -> :so $VIMRUNTIME/syntax/hitest.vim
 
 
 
