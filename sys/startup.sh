@@ -12,6 +12,9 @@ feh --no-fehbg --bg-fill ~/downloads/959294.jpg ~/downloads/4k-nature-wallpapers
 #img=$(ls $imgpath | shuf -n 1)
 ##wal -ni $imgpath/$img
 #wal -i $imgpath/$img
+#chwall next &
+
+while true;do chwall next;sleep 5m;done &
 
 # compositor
 picom

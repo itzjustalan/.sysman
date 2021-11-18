@@ -100,10 +100,8 @@ set statusline+=%#DraculaGreenBold#
 set statusline+=\|\ %l/%L\ \|\ 
 set statusline+=%#DraculaTodo#
 set statusline+=\ [%{strlen(&fenc)?&fenc:&enc}]\ 
-set statusline+=%{fugitive#statusline()}\ 
+set statusline+=%{fugitive#statusline()}\ =)
 " get colors from -> :so $VIMRUNTIME/syntax/hitest.vim
-
-
 
 
 
@@ -181,6 +179,7 @@ Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzy-native.nvim', { 'do': 'make' }
+Plug 'lewis6991/gitsigns.nvim'
 
 " prettier
 Plug 'sbdchd/neoformat'
@@ -301,6 +300,9 @@ set completeopt=menu,menuone,noselect
 lua require('nvim-cmp-completion-configs')
 
 
+" git signs
+lua require('gitsigns').setup()
+
 
 " Dart specifics
 " :DartFmt - format dart code
@@ -365,7 +367,8 @@ inoremap jj <esc>
 "inoremap jk <esc>
 "inoremap kj <esc>
 " to save on ESC
-nnoremap <Esc> <Esc>:write<CR>
+inoremap <C-s> <Esc>:write<CR>
+nnoremap <C-s> <Esc>:write<CR>
 "inoremap jj <Esc>:write<CR>
 
 
@@ -414,13 +417,16 @@ map <C-k> <C-w>k
 map <C-l> <C-w>l
 
 " open splits
-nnoremap <leader>h :split<cr>
-nnoremap <leader>v :vsplit<cr>
+nnoremap <leader>sh :split<cr>
+nnoremap <leader>sv :vsplit<cr>
 
 " tabs
 nnoremap <leader>c :tabclose<cr>
 nnoremap <leader>tfs :tab split<cr>
 
+" buffers
+nnoremap <leader>bn :bn<cr>
+nnoremap <leader>bm :bm<cr>
 
 
 
@@ -576,8 +582,8 @@ nnoremap <silent> <leader>- :vertical resize -5<CR>
 
 
 " YCM
-nnoremap <silent> <leader>gd :YcmCompleter GoTo<CR>
-nnoremap <silent> <leader>gf :YcmCompleter FixIt<CR>
+"nnoremap <silent> <leader>gd :YcmCompleter GoTo<CR>
+"nnoremap <silent> <leader>gf :YcmCompleter FixIt<CR>
 
 " >> Telescope bindings
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
@@ -628,9 +634,9 @@ nnoremap <silent> <C-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
 "nnoremap <silent> <C-n> <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
 "nnoremap <silent> <C-p> <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
 
-autocmd BufWritePre *.js lua vim.lsp.buf.formatting_sync(nil, 100)
-autocmd BufWritePre *.jsx lua vim.lsp.buf.formatting_sync(nil, 100)
-autocmd BufWritePre *.py lua vim.lsp.buf.formatting_sync(nil, 100)
+"autocmd BufWritePre *.js lua vim.lsp.buf.formatting_sync(nil, 100)
+"autocmd BufWritePre *.jsx lua vim.lsp.buf.formatting_sync(nil, 100)
+"autocmd BufWritePre *.py lua vim.lsp.buf.formatting_sync(nil, 100)
 
 
 "-- lsp provider to find the cursor word definition and reference
@@ -671,9 +677,9 @@ nnoremap <silent>gr :Lspsaga rename<CR>
 
 
 "-- preview definition
-nnoremap <silent> gd <cmd>lua require'lspsaga.provider'.preview_definition()<CR>
+nnoremap <silent> pd <cmd>lua require'lspsaga.provider'.preview_definition()<CR>
 "-- or use command
-nnoremap <silent> gd :Lspsaga preview_definition<CR>
+nnoremap <silent> pd :Lspsaga preview_definition<CR>
 
 "can use smart_scroll_with_saga to scroll
 
@@ -733,6 +739,9 @@ set t_u7=
 set nocompatible
 filetype plugin on
 syntax on
+let g:vimwiki_list = [{'path': '~/vimwiki/',
+                      \ 'syntax': 'markdown', 'ext': '.md'}]
+
 
 
 
@@ -754,3 +763,18 @@ lua require('telescope-configs')
 lua require('nvim-tree-configs')
 lua require('minethconfigs')
 highlight CursorLine gui=BOLD guifg=none guibg=black
+
+
+
+" neovide stuff
+let g:neovide_cursor_vfx_mode = "railgun"
+
+
+
+
+
+
+
+
+
+

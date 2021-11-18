@@ -75,6 +75,8 @@ alias m=mpv
 alias z="zathura"
 #alias rm="rm -rfi"
 alias ll='lsd -lah --group-dirs first --color=auto'
+alias jj="ll"
+alias kk="ll"
 alias cdd="cd .."
 alias cdc="cd -"
 alias diff="diff --color=auto"
@@ -90,14 +92,15 @@ alias car="cd ~/static/vt100 ; ./slowcat.pl"
 alias cartoons="cartoon $(/bin/ls | grep .vt | shuf -n 1)"
 alias basha="$EDITOR ~/.bash_aliases"
 alias c.="code ."
-alias pS="sudo paru -S"
-alias pSi="sudo paru -Si"
-alias pSyy="sudo paru -Syy"
+alias pS="paru -S"
+alias pSi="paru -Si"
+alias pSyy="paru -Syy"
 alias mci="make clean install"
 alias smci="sudo make clean install"
 alias wcl="wc -l"
 alias lff="lfcd"
 alias calender="calcurse"
+alias ccal='python3 /usr/bin/calcurse-caldav; calcurse; python3 /usr/bin/calcurse-caldav'
 
 # pgms
 alias quick="cat ~/myfiles/quick"
@@ -111,14 +114,14 @@ alias shtn="uptime -p;sleep 1s;shutdown now"
 alias start-rdp="sudo /etc/init.d/xrdp start"
 alias stop-rdp="sudo /etc/init.d/xrdp stop"
 alias setx="xrandr --output HDMI-1-1 --auto --rotate right --left-of eDP-1"
-alias gqr="qrencode -o ~/outputqrcode.png"
+alias gqr="qrencode -s10 -o ~/outputqrcode.png"
 alias vqr="sxiv ~/outputqrcode.png;rqr"
 alias rqr="qrencode -o ~/outputqrcode.png \" \";clear"
 alias rescan="sudo /sys/class/net/wlo1/device/rescan"
 alias pmi="patch --merge -i"
 alias ws="wiki-search"
-alias vvk="$EDITOR ~/vimwiki/index.wiki;cd ~/vimwiki;git add -A;git commit -m 'automated sync from termux n9p';git pull origin main;git push origin main;echo 'wiki synced!':"
-alias ttl="cat ~/vimwiki/personal/timeslots\ .wiki;date"
+alias vvk="$EDITOR ~/vimwiki/index.md;cd ~/vimwiki;git add -A;git commit -m 'automated sync from termux n9p';git pull origin main;git push origin main;echo 'wiki synced!':"
+alias ttl="cat ~/vimwiki/personal/timeslots\ .;date"
 alias xc="xclip -selection clipboard"
 alias ss="mkdir -p ~/myfiles/screenshots/$(date +%Y)/$(date +%B-%Y)/$(date +%F)/;maim ~/myfiles/screenshots/$(date +%Y)/$(date +%B-%Y)/$(date +%F)/hp15-screenshot-$(date +%Y-%m-%d_%H-%M-%S).png"
 alias ssc="mkdir -p ~/myfiles/screenshots/$(date +%Y)/$(date +%B-%Y)/$(date +%F)/;maim -s ~/myfiles/screenshots/$(date +%Y)/$(date +%B-%Y)/$(date +%F)/hp15-screenshot-$(date +%Y-%m-%d_%H-%M-%S).png"
@@ -175,7 +178,7 @@ psx(){
 
 
 # get ip addr
-alias getip="ip addr | grep 'scope global dynamic noprefixroute' | cut -d ' ' -f6 | gqr;vqr"
+alias getip="ip addr | grep 'scope global dynamic noprefixroute' | cut -d' ' -f6 | gqr;vqr"
 
 
 cliplink="http://localhost:4321"
@@ -234,6 +237,16 @@ alias gss="git add -A;git commit -m \"automated commit\";git pull origin;git pus
 alias gsn="git add -A;git commit -m \"automated commit\";"
 alias gsm="git add -A;git commit -m ;"
 
+# git completions fix
+__git_complete gs _git_status
+__git_complete ga _git_add
+__git_complete gm _git_commit
+__git_complete gb _git_branch
+__git_complete gc _git_checkout
+__git_complete gd _git_diff
+__git_complete gr _git_remote
+
+
 # docker commands
 alias docker="sudo docker"
 
@@ -256,7 +269,8 @@ alias wp="cd ~/wp/"
 alias wd="cd /mnt/c/Users/alanj/Desktop/"
 alias my="cd ~/myfiles/"
 alias myg="cd ~/myfiles/pgms/"
-alias msc="cd ~/.local/bin/myscripts/"
+#alias msc="cd ~/.local/bin/myscripts/"
+alias msc="cd ~/.sysman"
 alias gdb="cd ~/work/backend"
 alias gdc="cd ~/work/almas/customer_app2/"
 alias gdd="cd ~/work/almas/delivery_app2/"
@@ -339,6 +353,10 @@ tm() {
 mkcdir(){
 		mkdir -p -- "$1" &&
 		cd -P -- "$1"
+}
+mkcdird(){
+  mkdir "$(date +%F)" &&
+		cd "$(date +%F)"
 }
 
 umm() {
@@ -548,5 +566,18 @@ export LESSHISTORYFILE=-
 eval "$(starship init bash)"
 
 #source ~/.config/bash/.bash-powerline.sh
+
+
+# TO RUN A FILE IF IT EXISTS LIKE THIS
+# -
+#if [ -f /path/to/file ]; then
+#  . /path/to/file
+#fi
+# -
+# JUST DO -
+# -
+#test -f /path/to/file && . $_
+# -
+# THANKYOU
 
 #the end tadaaa

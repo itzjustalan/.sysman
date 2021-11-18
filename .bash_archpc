@@ -23,3 +23,13 @@ export EDITOR=nvim
 alias pacman=paru
 
 alias bashrc="$EDITOR ~/.bash_archpc"
+
+
+
+
+
+
+
+# sources
+# completions
+source /usr/share/bash-completion/completions/git
