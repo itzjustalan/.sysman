@@ -19,6 +19,9 @@ while true;do chwall next;sleep 5m;done &
 # compositor
 picom
 
+# blue light filter
+blugon -wf &
+
 # dictionary
 artha &
 

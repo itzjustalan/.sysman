@@ -363,7 +363,7 @@ let g:dart_format_on_save = 1
 let mapleader = " "
 "let mapleader = "z"
 "inoremap <CapsLock> <esc>
-inoremap jj <esc>
+inoremap jj <esc><esc>
 "inoremap jk <esc>
 "inoremap kj <esc>
 " to save on ESC
