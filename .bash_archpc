@@ -20,7 +20,7 @@ tput smkx   # use tput rmkx to quit application mode
 source /usr/share/nvm/init-nvm.sh
 
 export EDITOR=nvim
-alias pacman=paru
+#alias pacman=paru
 
 alias bashrc="$EDITOR ~/.bash_archpc"
 
