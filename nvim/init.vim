@@ -370,7 +370,8 @@ inoremap jj <esc><esc>
 inoremap <C-s> <Esc>:write<CR>
 nnoremap <C-s> <Esc>:write<CR>
 "inoremap jj <Esc>:write<CR>
-
+nnoremap leader n :tabnext
+nnoremap leader m :tablast
 
 
 

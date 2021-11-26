@@ -2,5 +2,5 @@
 
 # super + k
 
-st $EDITOR ~/vimwiki/index.wiki &&
+st $EDITOR ~/vimwiki/index.md &&
   syncwiki

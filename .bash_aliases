@@ -99,7 +99,6 @@ alias mci="make clean install"
 alias smci="sudo make clean install"
 alias wcl="wc -l"
 alias lff="lfcd"
-alias calender="calcurse"
 alias ccal='python3 /usr/bin/calcurse-caldav; calcurse; python3 /usr/bin/calcurse-caldav'
 
 # pgms
