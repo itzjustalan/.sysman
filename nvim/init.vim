@@ -61,7 +61,8 @@ set nu rnu  " nu rnu maan nu rnu"
 set incsearch
 set nohlsearch  " remove hioghlights after search"
 set hidden  "dont warn when when opening new file without
-set noerrorbells  " vibrator lol"
+set belloff=all  " vibrator lol"
+set noerrorbells
 set scrolloff=4
 set showtabline=1  " 0, 1 or 2; when to use a tab pages line
 set encoding=utf-8
@@ -370,8 +371,8 @@ inoremap jj <esc><esc>
 inoremap <C-s> <Esc>:write<CR>
 nnoremap <C-s> <Esc>:write<CR>
 "inoremap jj <Esc>:write<CR>
-nnoremap leader n :tabnext
-nnoremap leader m :tablast
+nnoremap <leader>n :tabnext<CR>
+nnoremap <leader>m :tablast<CR>
 
 
 

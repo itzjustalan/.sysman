@@ -20,7 +20,7 @@ while true;do chwall next;sleep 5m;done &
 picom
 
 # blue light filter
-blugon -wf &
+(blugon&)
 
 # dictionary
 artha &
