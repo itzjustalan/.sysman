@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# super + n
+
+scratchpad_location="$HOME/static/scratchpad"
+
+$TERMINAL_EMULATOR -e $EDITOR -c "norm G" $scratchpad_location

@@ -96,6 +96,7 @@ alias pS="paru -S"
 alias pR="paru -R"
 alias pSi="paru -Si"
 alias pSyy="paru -Syy"
+alias pSyyu="paru -Syyu"
 alias mci="make clean install"
 alias smci="sudo make clean install"
 alias wcl="wc -l"
@@ -214,7 +215,7 @@ alias flutter="fvm flutter"
 alias fbaspa='name=$(pwd | rev | cut -d '/' -f 1 | rev);echo grr \"${name}\";flutter build apk --split-per-abi;mv ./build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk ./build/app/outputs/flutter-apk/${name}.apk;echo ${name}.apk built;'
 #alias fbaspa="name=${PWD##*/};echo grr ${name};flutter build apk --split-per-abi;mv ./build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk ./build/app/outputs/flutter-apk/${name}.apk;echo ${name}.apk built;"
 alias fbundle="flutter build appbundle"
-alias fpg="flutter clean;flutter pub get"
+alias fpg="fvm flutter clean;fvm flutter pub get"
 
 #alias cc="cmus ~/Music/rplay.m3u"
 alias pp="cd ~/myfiles/pgms/shell-color-scripts/ && ./colorscript.sh -e 31"
@@ -566,6 +567,10 @@ export LESSHISTORYFILE=-
 eval "$(starship init bash)"
 
 #source ~/.config/bash/.bash-powerline.sh
+
+# dracula FZF
+export FZF_DEFAULT_OPTS='--color=fg:#f8f8f2,bg:#282a36,hl:#bd93f9 --color=fg+:#f8f8f2,bg+:#44475a,hl+:#bd93f9 --color=info:#ffb86c,prompt:#50fa7b,pointer:#ff79c6 --color=marker:#ff79c6,spinner:#ffb86c,header:#6272a4'
+
 
 
 # TO RUN A FILE IF IT EXISTS LIKE THIS

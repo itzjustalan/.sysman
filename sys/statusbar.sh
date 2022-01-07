@@ -46,7 +46,7 @@ while true;do
             #notificationBlock="$TRACK"
             notificationBlock="$notificationBlock 📻"
         fi
-        xsetroot -name "$notificationBlock $volumeBlock | $memoryBlock | $dateBlock | $networkBlock $batteryBlock"
+        xsetroot -name "$notificationBlock $volumeBlock | $memoryBlock | $dateBlock | $networkBlock $(uptime -p) $batteryBlock"
         sleep 1s
 done &
 

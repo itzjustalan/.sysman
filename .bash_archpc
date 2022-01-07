@@ -20,6 +20,7 @@ tput smkx   # use tput rmkx to quit application mode
 source /usr/share/nvm/init-nvm.sh
 
 export EDITOR=nvim
+export TERMINAL_EMULATOR=alacritty
 #alias pacman=paru
 
 alias bashrc="$EDITOR ~/.bash_archpc"
@@ -28,6 +29,9 @@ alias bashrc="$EDITOR ~/.bash_archpc"
 
 
 
+# PATH
+export PATH="$PATH":"$HOME/.pub-cache/bin"
+export PATH="$PATH":"$HOME/fvm/default/bin"
 
 
 # sources
