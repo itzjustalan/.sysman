@@ -374,6 +374,7 @@ inoremap jj <esc><esc>
 "inoremap jk <esc>
 "inoremap kj <esc>
 " to save on ESC
+inoremap jj <esc><esc>
 inoremap <C-s> <Esc>:write<CR>
 nnoremap <C-s> <Esc>:write<CR>
 "inoremap jj <Esc>:write<CR>
