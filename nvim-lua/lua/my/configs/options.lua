@@ -1,6 +1,7 @@
 local options = {
   backup = false,                           -- creates a backup file
-  undodir = '~/.vim/undodir',               -- undo directory
+  -- undodir = '~/.vim/undodir',            -- undo directory
+  undofile = false,                         -- no undo files?
   termguicolors = true,                     -- set term gui colors (most terminals support this)
   clipboard = 'unnamedplus',                -- allows vim to access the system clipboard
   -- syntax = 'on',                            -- vim native syntax highlighting
