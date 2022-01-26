@@ -215,7 +215,7 @@ alias flutter="fvm flutter"
 alias fbaspa='name=$(pwd | rev | cut -d '/' -f 1 | rev);echo grr \"${name}\";flutter build apk --split-per-abi;mv ./build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk ./build/app/outputs/flutter-apk/${name}.apk;echo ${name}.apk built;'
 #alias fbaspa="name=${PWD##*/};echo grr ${name};flutter build apk --split-per-abi;mv ./build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk ./build/app/outputs/flutter-apk/${name}.apk;echo ${name}.apk built;"
 alias fbundle="flutter build appbundle"
-alias fpg="fvm flutter clean;fvm flutter pub get"
+alias fpg="flutter clean;flutter pub get"
 
 #alias cc="cmus ~/Music/rplay.m3u"
 alias pp="cd ~/myfiles/pgms/shell-color-scripts/ && ./colorscript.sh -e 31"

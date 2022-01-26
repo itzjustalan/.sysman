@@ -24,6 +24,7 @@ export TERMINAL_EMULATOR=alacritty
 #alias pacman=paru
 
 alias bashrc="$EDITOR ~/.bash_archpc"
+#alias npm="pnpm"
 
 
 

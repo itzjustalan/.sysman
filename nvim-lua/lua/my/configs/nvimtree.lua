@@ -34,6 +34,9 @@ end
 
 local tree_cb = nvim_tree_config.nvim_tree_callback
 
+-- tree bg line color fix
+vim.cmd("autocmd Colorscheme * highlight NvimTreeNormal guibg=#21252B guifg=#9da5b3")
+
 nvim_tree.setup {
   disable_netrw = true,
   hijack_netrw = true,
