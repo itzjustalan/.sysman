@@ -8,6 +8,7 @@ G_WPF_DIR=~/work/almas
 
 # options
 G_SC_BARE=false                  # run only the tmux conf
+# G_RUN_DEV=false                  # run dev pgms
 
 declare -A apps
 apps["aap","dir"]="app-admin-api"
@@ -90,7 +91,7 @@ setupTMUX() {
   cd "$G_WPB_DIR"
 
   # Select window #1 and attach to the session
-  tmux select-window -t "$G_WP_NAME:1"
+  tmux select-window -t "$G_WP_NAME:2"
 
   # -2 Force tmux to assume the terminal supports 256 colours.
   # This is equivalent to -T 256.
@@ -102,6 +103,8 @@ setupTMUX() {
 
 
 if [ "$#" = 0 ]; then
+      insomnia-designer &> /dev/null &
+      google-chrome-stable &> /dev/null &
   echo no args
 	G_SC_BARE=false
   setupTMUX
@@ -110,7 +113,7 @@ if [ "$#" = 0 ]; then
   #insomnia-designer &> /dev/null &
   # customise this section for the season
 else
-	# initialise options
+	# only initialise options
 	for arg in "$@"; do
 		case "$arg" in
 			-b|--bare)
@@ -131,6 +134,7 @@ else
     elif [ "$flag" = "-d" ] || [ "$flag" = "--dev" ]; then
       mongodb-compass &> /dev/null &
       insomnia-designer &> /dev/null &
+      google-chrome-stable &> /dev/null &
     fi
   done
 

@@ -9,6 +9,13 @@ vim.cmd [[
     au BufReadPre * setlocal foldmethod=indent
     au BufWinEnter * if &fdm == 'indent' | setlocal foldmethod=manual | endif
   augroup END
+
+  " persistent code folding
+  augroup persistent_folds
+    autocmd!
+    autocmd BufWinLeave * mkview
+    autocmd BufWinEnter * silent! loadview
+  augroup END
 ]]
 
 
