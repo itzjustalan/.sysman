@@ -14,19 +14,18 @@ LC_SC_DRYRUN=false
 		esac
 	done
 
+# init like this
 declare -A apps=(
 ["aap"]="8001:8000"
 ["aau"]="8000:80"
 ["asp"]="8004:3003"
-["axp"]="8003:5000"
-["acp"]="8002:3002"
 )
+# or like this
+apps["axp"]="8003:5000"
+apps["acp"]="8002:3002"
 
 for app in "${!apps[@]}"; do
-	echo "=================================================================="
-	echo "	${apps[$app]}"
-	echo "=================================================================="
-	startcontainer "$app"
+	echo "${apps[$app]}"
 done
 
 echo "starting program at $(date)"
@@ -44,6 +43,31 @@ done
 
 
 # touch with recursive parents
-tfile="$HOME/tTempteastetDIR/some/path/that/wasnt/there/before/fffffileeee"
-mkdir -p "${file%/*}" && touch "$file"
-mkdir -p "${file%/*}" && echo "this file and its parents is new" > "$file"
+tfile="/tmp/tTempteastetDIR/some/path/that/wasnt/there/before/fffffileeee"
+mkdir -p "${tfile%/*}" && touch "$tfile"
+mkdir -p "${tfile%/*}" && echo "this file and its parents is new" > "$tfile"
+
+# named parameters?
+setupWindow() {
+  local dir name start=false
+  local "${@}"
+  echo "$dir $name $start"
+  $start && echo "started!!"
+}
+setupWindow name=aap start=true dir=~/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+echo "The End"

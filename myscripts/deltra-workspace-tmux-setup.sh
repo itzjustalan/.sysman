@@ -48,8 +48,8 @@ apps["asf","start"]="false"
 setupWindow() {
   local dir name start=false
   local "${@}"
-  echo "$name" "${apps[$name]}" "$start" "${apps[$name,start]}"
-  # $start && echo "started!!"
+  # echo "$name" "${apps[$name]}" "$start" "${apps[$name,start]}"
+  # $start && # echo "started!!"
 
   pwd
   cd "${apps[$name,dir]}"
@@ -65,7 +65,7 @@ setupWindow() {
     ${apps[$name,start]} && tmux send-keys 'nv .' 'Enter'
   fi
   cd "-"
-  pwd
+  # pwd
 }
 
 setupTMUX() {
@@ -96,16 +96,16 @@ setupTMUX() {
   # -2 Force tmux to assume the terminal supports 256 colours.
   # This is equivalent to -T 256.
   #tmux -2 attach-session -t "$G_WP_NAME"
-  tmux -2 attach-session
+  # tmux -2 attach-session
   # tmux attach-session
 }
 
 
 
 if [ "$#" = 0 ]; then
-      insomnia-designer &> /dev/null &
-      google-chrome-stable &> /dev/null &
-  echo no args
+  insomnia-designer &> /dev/null &
+  google-chrome-stable &> /dev/null &
+  # echo no args
 	G_SC_BARE=false
   setupTMUX
   # setupWindow name=aap start=true
@@ -125,11 +125,11 @@ else
   # handel flags
   for flag in "$@"; do
     if [ "$flag" = "-a" ] || [ "$flag" = "--all" ]; then
-      echo all
+      # echo all
       mongodb-compass &> /dev/null &
       insomnia-designer &> /dev/null &
     elif [ -n "${apps[$flag,dir]}" ]; then
-      echo "${apps[$flag,dir]}"
+      # echo "${apps[$flag,dir]}"
       apps[$flag,start]=true
     elif [ "$flag" = "-d" ] || [ "$flag" = "--dev" ]; then
       mongodb-compass &> /dev/null &
@@ -141,3 +141,4 @@ else
   setupTMUX
 
 fi
+  tmux attach-session

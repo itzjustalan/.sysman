@@ -37,10 +37,11 @@
 
 
 export PATH=$PATH:~/.local/bin/
+export PATH=$PATH:~/.local/bin/perc/
 export PATH=$PATH:~/.local/bin/sys/
 export PATH=$PATH:~/.local/bin/sys/buttons/
-export PATH=$PATH:~/.local/bin/perc/
 export PATH=$PATH:~/.local/bin/myscripts/
+export PATH=$PATH:~/.local/bin/scripts/
 export PATH=$PATH:
 export PATH=$PATH:
 export PATH=$PATH:~/.cargo/bin/
@@ -102,6 +103,7 @@ alias smci="sudo make clean install"
 alias wcl="wc -l"
 alias lff="lfcd"
 alias ccal='python3 /usr/bin/calcurse-caldav; calcurse; python3 /usr/bin/calcurse-caldav'
+alias cppa="echo cd $(pwd) |xsc"
 
 # pgms
 alias quick="cat ~/myfiles/quick"

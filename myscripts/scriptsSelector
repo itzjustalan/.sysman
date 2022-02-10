@@ -3,4 +3,4 @@
 # super + l
 
 # dmenu script to select and run any of my script
-$(cat ~/.local/bin/myscripts/scripts2select | dmenu -p 'run: ' -i)
+$(cat ~/.local/bin/myscripts/scripts2select | dmenu -p 'run: ' -i -fn 'Ariel-22')

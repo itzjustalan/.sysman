@@ -32,6 +32,10 @@ artha &
 #sudo ntfs-3g -o permissions /dev/nvme0n1p4 /media/win/d
 #sudo ntfs-3g -o permissions /dev/nvme0n1p3 /media/win/c
 
+# clipboard manager
+#systemctl --user import-environment DISPLAY
+clipmenud &
+
 
 # WELCOME
 #if [ "$(date +%F)" != "$(cat ~/dateFile)" ];then
