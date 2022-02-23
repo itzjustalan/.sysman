@@ -126,12 +126,13 @@ alias ws="wiki-search"
 alias vvk="$EDITOR ~/vimwiki/index.md;cd ~/vimwiki;git add -A;git commit -m 'automated sync from termux n9p';git pull origin main;git push origin main;echo 'wiki synced!':"
 alias ttl="cat ~/vimwiki/personal/timeslots\ .;date"
 alias xc="xclip -selection clipboard"
-alias ss="mkdir -p ~/myfiles/screenshots/$(date +%Y)/$(date +%B-%Y)/$(date +%F)/;maim ~/myfiles/screenshots/$(date +%Y)/$(date +%B-%Y)/$(date +%F)/hp15-screenshot-$(date +%Y-%m-%d_%H-%M-%S).png"
-alias ssc="mkdir -p ~/myfiles/screenshots/$(date +%Y)/$(date +%B-%Y)/$(date +%F)/;maim -s ~/myfiles/screenshots/$(date +%Y)/$(date +%B-%Y)/$(date +%F)/hp15-screenshot-$(date +%Y-%m-%d_%H-%M-%S).png"
-#alias ss=takeScreenshot
-#alias ssc=takeCustomScreenshot
-alias sr="ffmpeg -f x11grab -i :0.0"
-alias sra="ffmpeg -f x11grab -i :0.0 -f alsa -ac 2 -i default"
+# alias ss="mkdir -p ~/myfiles/screenshots/$(date +%Y)/$(date +%B-%Y)/$(date +%F)/;maim ~/myfiles/screenshots/$(date +%Y)/$(date +%B-%Y)/$(date +%F)/hp15-screenshot-$(date +%Y-%m-%d_%H-%M-%S-%s).png"
+# alias ssc="mkdir -p ~/myfiles/screenshots/$(date +%Y)/$(date +%B-%Y)/$(date +%F)/;maim -s ~/myfiles/screenshots/$(date +%Y)/$(date +%B-%Y)/$(date +%F)/hp15-screenshot-$(date +%Y-%m-%d_%H-%M-%S-%s).png"
+alias ss="takeScreenshot"
+alias ssc="takeCustomScreenshot"
+
+alias sr="ffmpeg -f x11grab -i :0.0"    # screen record without audio
+alias sra="ffmpeg -f x11grab -i :0.0 -f alsa -ac 2 -i default"  # screen record with audio
 
 imgpath="/media/win/f/linux/root/myfiles/repos/wallpapers"
 alias chwal="img=$(ls $imgpath | shuf -n 1);wal -i $imgpath/$img"
@@ -486,10 +487,16 @@ deployITZblog(){
 
 
 # screenshots with scrot
-takeScreenshot(){
-    screenshotDIR="~/myfiles/screenshots/$(date +%Y)/$(date +%B-%Y)/$(date +%F)";
-    mkdir -p $screenshotDIR;
-    scrot -e 'mv $f ~/myfiles/screenshots/scrotTEMP;echo $f';
+takeScreenshot() {
+    screenshotDIR="$HOME/myfiles/screenshots/$(date +%Y)/$(date +%B-%Y)/$(date +%F)";
+    mkdir -p "$screenshotDIR";
+    maim "$screenshotDIR/hp15-screenshot-$(date +%Y-%m-%d_%H-%M-%S-%s).png";
+
+
+    # screenshotDIR="~/myfiles/screenshots/$(date +%Y)/$(date +%B-%Y)/$(date +%F)";
+    # mkdir -p $screenshotDIR;
+    # scrot -e 'mv $f ~/myfiles/screenshots/scrotTEMP;echo $f';
+
     #/bin/ls ~/myfiles/screenshots/scrotTEMP/
     #screenshotFILE=$(/bin/ls ~/myfiles/screenshots/scrotTEMP/)
     #mv ~/myfiles/screenshots/scrotTEMP/$screenshotFILE $screenshotDIR/$(date +%Y-%m-%d-%T).png
@@ -497,10 +504,17 @@ takeScreenshot(){
     #st scrot -sf ~/myfiles/screenshots/$(date +%Y)/$(date +%B-%Y)/$(date +%F)/$(date +%Y-%m-%d-%T).png"
 }
 
-takeCustomScreenshot(){
-    screenshotDIR="~/myfiles/screenshots/$(date +%Y)/$(date +%B-%Y)/$(date +%F)";
-    mkdir -p $screenshotDIR;
-    scrot -sfe 'mv $f ~/myfiles/screenshots/scrotTEMP;echo $f';
+takeCustomScreenshot() {
+    screenshotDIR="$HOME/myfiles/screenshots/$(date +%Y)/$(date +%B-%Y)/$(date +%F)";
+    mkdir -p "$screenshotDIR";
+    maim -s "$screenshotDIR/hp15-screenshot-$(date +%Y-%m-%d_%H-%M-%S-%s).png";
+
+
+
+    # screenshotDIR="~/myfiles/screenshots/$(date +%Y)/$(date +%B-%Y)/$(date +%F)";
+    # mkdir -p $screenshotDIR;
+    # scrot -sfe 'mv $f ~/myfiles/screenshots/scrotTEMP;echo $f';
+
     #/bin/ls ~/myfiles/screenshots/scrotTEMP/
     #screenshotFILE=$(/bin/ls ~/myfiles/screenshots/scrotTEMP/)
     #mv ~/myfiles/screenshots/scrotTEMP/$screenshotFILE $screenshotDIR/$(date +%Y-%m-%d-%T).png

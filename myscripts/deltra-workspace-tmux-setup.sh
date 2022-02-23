@@ -51,21 +51,20 @@ setupWindow() {
   # echo "$name" "${apps[$name]}" "$start" "${apps[$name,start]}"
   # $start && # echo "started!!"
 
-  pwd
   cd "${apps[$name,dir]}"
-  pwd
   tmux new-window -n "$name"
   if $start; then
+    tmux split-window -hZ
     tmux send-keys 'nrd' 'Enter'
     tmux split-window -hZ
     tmux send-keys 'nv .' 'Enter'
   else
+    ${apps[$name,start]} && tmux split-window -hZ
     ${apps[$name,start]} && tmux send-keys 'nrd' 'Enter'
     ${apps[$name,start]} && tmux split-window -hZ
     ${apps[$name,start]} && tmux send-keys 'nv .' 'Enter'
   fi
-  cd "-"
-  # pwd
+  cd "-" 1> /dev/null
 }
 
 setupTMUX() {
@@ -103,9 +102,9 @@ setupTMUX() {
 
 
 if [ "$#" = 0 ]; then
+  # echo no args
   insomnia-designer &> /dev/null &
   google-chrome-stable &> /dev/null &
-  # echo no args
 	G_SC_BARE=false
   setupTMUX
   # setupWindow name=aap start=true

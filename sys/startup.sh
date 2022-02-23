@@ -35,6 +35,7 @@ artha &
 # clipboard manager
 #systemctl --user import-environment DISPLAY
 clipmenud &
+feh --no-fehbg --bg-max ~/wow_vavs.jpg
 
 
 # WELCOME
