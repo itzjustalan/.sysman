@@ -7,14 +7,14 @@ xrandr --output HDMI-1-1 --auto --rotate right --left-of eDP-1
 #date +%F > ~/dateFile
 
 # set wallpaper
-feh --no-fehbg --bg-fill ~/downloads/959294.jpg ~/downloads/4k-nature-wallpapers-ultra-hd-71-1920x1080.jpg
+feh --no-fehbg --bg-fill ~/wallpaper ~/downloads/959294.jpg ~/downloads/4k-nature-wallpapers-ultra-hd-71-1920x1080.jpg
 #imgpath="/media/win/f/linux/root/myfiles/repos/wallpapers"
 #img=$(ls $imgpath | shuf -n 1)
 ##wal -ni $imgpath/$img
 #wal -i $imgpath/$img
 #chwall next &
 
-while true;do chwall next;sleep 5m;done &
+(while true;do chwall next;sleep 5m;done &)
 
 # compositor
 picom
@@ -34,7 +34,7 @@ artha &
 
 # clipboard manager
 #systemctl --user import-environment DISPLAY
-clipmenud &
+(clipmenud &)
 feh --no-fehbg --bg-max ~/wow_vavs.jpg
 
 

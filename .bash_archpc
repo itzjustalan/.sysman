@@ -29,6 +29,8 @@ alias runemulator="emulator -avd Pixel_4_API_30"
 alias flrun="flutter run -d emulator-5554"
 
 
+# starship
+eval "$(starship init bash)"
 
 
 # nvm setup

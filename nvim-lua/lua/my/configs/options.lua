@@ -1,8 +1,8 @@
 local options = {
   backup = false,                           -- creates a backup file
   -- undodir = '~/.vim/undodir',            -- undo directory
-  undofile = false,                          -- enable persistent undo
-  termguicolors = true,                     -- set term gui colors (most terminals support this)
+  undofile = false,                         -- enable persistent undo
+  termguicolors = false,                    -- set term gui colors (most terminals support this)
   clipboard = 'unnamedplus',                -- allows vim to access the system clipboard
   -- syntax = 'on',                            -- vim native syntax highlighting
   exrc = true,                              -- load local config file
@@ -57,9 +57,12 @@ end
 vim.cmd 'set whichwrap+=<,>,[,],h,l'
 --vim.cmd [[set iskeyword+=-]]
 vim.cmd [[set formatoptions-=cro]] -- FIX: this doesn't seem to work
-vim.cmd 'highlight ColorColumn ctermbg=0 guibg=lightgrey'
-vim.cmd 'hi Normal guibg=NONE ctermbg=NONE' -- transparant background
+-- vim.cmd 'highlight ColorColumn ctermbg=0 guibg=lightgrey'
+-- vim.cmd 'hi Normal guibg=NONE ctermbg=NONE' -- transparant background
 
 vim.cmd "let g:vimwiki_list = [{'path': '~/vimwiki/', 'syntax': 'markdown', 'ext': '.md'}]"
+
+
+
 
 -- The End

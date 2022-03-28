@@ -1,5 +1,7 @@
 -- following options are the default
 -- each of these are documented in `:help nvim-tree.OPTION_NAME`
+
+-- try g? for help
 local treesize = 50;
 vim.g.nvim_tree_icons = {
   default = "",
@@ -46,7 +48,7 @@ nvim_tree.setup {
     "dashboard",
     "alpha",
   },
-  auto_close = true,
+  -- auto_close = true,
   open_on_tab = false,
   hijack_cursor = false,
   update_cwd = true,
@@ -73,7 +75,7 @@ nvim_tree.setup {
     args = {},
   },
   filters = {
-    dotfiles = false,
+    dotfiles = true,
     custom = {},
   },
   git = {
@@ -93,6 +95,7 @@ nvim_tree.setup {
         { key = { "l", "<CR>", "o" }, cb = tree_cb "edit" },
         { key = "h", cb = tree_cb "close_node" },
         { key = "v", cb = tree_cb "vsplit" },
+        { key = "s", cb = tree_cb "split" },
       },
     },
     number = true,
@@ -111,6 +114,6 @@ nvim_tree.setup {
     folders = 1,
     files = 1,
     folder_arrows = 1,
-    tree_width = 30,
+    tree_width = treesize,
   },
 }

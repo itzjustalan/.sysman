@@ -103,7 +103,10 @@ alias smci="sudo make clean install"
 alias wcl="wc -l"
 alias lff="lfcd"
 alias ccal='python3 /usr/bin/calcurse-caldav; calcurse; python3 /usr/bin/calcurse-caldav'
-alias cppa="echo cd $(pwd) |xsc"
+# alias cppa="echo cd $(pwd) |xsc"
+cppa() {
+  echo cd $(pwd) | xclip -selection clipboard
+}
 
 # pgms
 alias quick="cat ~/myfiles/quick"
@@ -234,12 +237,13 @@ alias gc="git checkout"
 alias gd="git diff"
 alias gr="git remote"
 alias grv="git remote -v"
+alias gpusha="git push --all"
 alias grso="git remote show origin"
 alias gpush="git push origin main"
 alias gpull="git pull origin main"
 alias gss="git add -A;git commit -m \"automated commit\";git pull origin;git push origin;git status"
-alias gsn="git add -A;git commit -m \"automated commit\";"
-alias gsm="git add -A;git commit -m ;"
+alias gsl="git add -A;git commit -m \"automated commit\";"
+alias gsm="git add -A;git commit -m "
 
 # git completions fix
 __git_complete gs _git_status
@@ -278,8 +282,8 @@ alias msc="cd ~/.sysman"
 alias gdb="cd ~/work/backend"
 alias gdc="cd ~/work/almas/customer_app2/"
 alias gdd="cd ~/work/almas/delivery_app2/"
-alias gdi="cd ~/work/indic_law/"
-alias gdm="cd ~/work/milibus/"
+#alias gdi="cd ~/work/indic_law/"
+#alias gdm="cd ~/work/milibus/"
 alias gds="cd ~/work/almas/sales_app2/"
 alias gdt="cd ~/myfiles/repos/.dotfiles/"
 alias gdwsalba="cd ~/work/backend/;tmux new-session \; split-window -h \;"
@@ -580,7 +584,7 @@ export LESSHISTORYFILE=-
 #. /usr/share/powerline/bindings/bash/powerline.sh
 
 # starship
-eval "$(starship init bash)"
+#eval "$(starship init bash)"
 
 #source ~/.config/bash/.bash-powerline.sh
 

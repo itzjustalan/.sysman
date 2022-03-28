@@ -50,6 +50,7 @@ keymap("n", "<A-k>", "<Esc>:m .-2<CR>==gi", opts)
 -- Insert --
 -- escape
 keymap("i", "jj", "<esc><esc>", opts)
+keymap("i", "ji", "<esc><esc>:join<cr>i", opts)
 
 -- Save file with Control s sorry
 keymap("i", "<C-s>", "<Esc>:write<CR>", opts)
@@ -84,16 +85,16 @@ keymap("x", "<A-k>", ":move '<-2<CR>gv-gv", opts)
 -- Telescope --
 -- find files
 --keymap('n', '<leader>f', '<cmd>lua require "telescope.builtin".find_files(require("telescope.themes").get_dropdown({ previewer=10 }))<cr>', opts)
-keymap("n", "<leader>ff", "<cmd>Telescope find_files<cr>", opts)
-keymap("n", "<leader>fg", "<cmd>Telescope live_grep<cr>", opts)
-keymap("n", "<leader>fb", "<cmd>Telescope buffers<cr>", opts)
-keymap("n", "<leader>fh", "<cmd>Telescope help_tags<cr>", opts)
-keymap("n", "<leader>ps", ":lua require('telescope.builtin').grep_string({ search = vim.fn.input(\"Grep For > \")})<CR>", opts)
-keymap("n", "<C-p>", ":lua require('telescope.builtin').git_files()<CR>", opts)
-keymap("n", "<Leader>pf", ":lua require('telescope.builtin').find_files()<CR>", opts)
---keymap("n", "<leader>pw", ":lua require('telescope.builtin').grep_string { search = vim.fn.expand("<cword>") }<CR>", opts)
-keymap("n", "<leader>pb", ":lua require('telescope.builtin').buffers()<CR>", opts)
-keymap("n", "<leader>vh", ":lua require('telescope.builtin').help_tags()<CR>", opts)
+-- keymap("n", "<leader>ff", "<cmd>Telescope find_files<cr>", opts)
+-- keymap("n", "<leader>fg", "<cmd>Telescope live_grep<cr>", opts)
+-- keymap("n", "<leader>fb", "<cmd>Telescope buffers<cr>", opts)
+-- keymap("n", "<leader>fh", "<cmd>Telescope help_tags<cr>", opts)
+-- keymap("n", "<leader>ps", ":lua require('telescope.builtin').grep_string({ search = vim.fn.input(\"Grep For > \")})<CR>", opts)
+-- keymap("n", "<C-p>", ":lua require('telescope.builtin').git_files()<CR>", opts)
+-- keymap("n", "<Leader>pf", ":lua require('telescope.builtin').find_files()<CR>", opts)
+-- --keymap("n", "<leader>pw", ":lua require('telescope.builtin').grep_string { search = vim.fn.expand("<cword>") }<CR>", opts)
+-- keymap("n", "<leader>pb", ":lua require('telescope.builtin').buffers()<CR>", opts)
+-- keymap("n", "<leader>vh", ":lua require('telescope.builtin').help_tags()<CR>", opts)
 
 -- Nvim Tree
 keymap("n", "<leader>b", ":NvimTreeToggle<cr>", opts)

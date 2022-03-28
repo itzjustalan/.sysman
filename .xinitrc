@@ -17,6 +17,12 @@ eval $(gpg-agent --daemon)
 #eval $(gnome-keyring-daemon --start)
 #export SSH_AUTH_SOCK
 
+# nvidia stuff
+xrandr --setprovideroutputsource modesetting NVIDIA-0
+xrandr --auto
+# /nvidia stuff
+
+
 dwmspinup &
 statusbar.sh &
 exec sxhkd &

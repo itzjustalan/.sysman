@@ -45,7 +45,7 @@ return packer.startup(function(use)
   use 'wbthomason/packer.nvim' -- Have packer manage itself
 
   use 'nvim-lua/popup.nvim' -- An implementation of the Popup API from vim in Neovim
-  use 'nvim-lua/plenary.nvim' -- Useful lua functions used ny lots of plugins
+  use 'nvim-lua/plenary.nvim' -- Useful lua functions used by lots of plugins
 
   use 'windwp/nvim-autopairs' -- Autopairs, integrates with both cmp and treesitter
   use 'numToStr/Comment.nvim' -- Easily comment stuff
@@ -93,6 +93,7 @@ return packer.startup(function(use)
 
   -- Telescope
   use 'nvim-telescope/telescope.nvim'
+  use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
 
   -- Treesitter
   use {
@@ -104,6 +105,9 @@ return packer.startup(function(use)
 
   ---- Git
   use 'lewis6991/gitsigns.nvim'
+
+  ---- vimwiki
+  use 'vimwiki/vimwiki'
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
