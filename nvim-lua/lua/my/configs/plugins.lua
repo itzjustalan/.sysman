@@ -53,6 +53,7 @@ return packer.startup(function(use)
   use 'kyazdani42/nvim-tree.lua'
   use 'akinsho/bufferline.nvim'
   use 'moll/vim-bbye'
+  use 'norcalli/nvim-colorizer.lua' -- highlight hex color codes
 
   --use 'nvim-lualine/lualine.nvim'
   --use 'akinsho/toggleterm.nvim'

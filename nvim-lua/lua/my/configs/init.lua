@@ -3,6 +3,7 @@ require 'my.configs.plugins'
 require 'my.configs.completion'
 require 'my.configs.lsp'
 
+require 'my.configs.nvim_web_devicons'
 require 'my.configs.autocommands'
 require 'my.configs.telescope'
 require 'my.configs.treesitter'
@@ -17,3 +18,5 @@ require 'my.configs.keymaps'
 require 'my.configs.options'
 require 'my.configs.colorscheme'
 require 'my.configs.customfns'
+
+require'colorizer'.setup()
