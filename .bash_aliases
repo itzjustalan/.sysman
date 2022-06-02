@@ -52,7 +52,7 @@ export PATH=$PATH:
 export PATH=$PATH:
 
 # shell completions
-source <(vr completions bash)   # velociraptor (deno)
+#source <(vr completions bash)   # velociraptor (deno)
 source /usr/share/bash-completion/completions/git   # git
 
 
@@ -358,7 +358,7 @@ tm() {
   fi
 }
 
-mkcdir(){
+mkcd(){
 		mkdir -p -- "$1" &&
 		cd -P -- "$1"
 }

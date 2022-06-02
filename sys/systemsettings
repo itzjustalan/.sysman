@@ -1,7 +1,7 @@
 # system settings
 
 # volume control
-changeVolume(){
+changeVolume() {
 # also look into alsamixer
         if [ "$1" = "t" ];then
                 amixer set Master unmute;
@@ -41,7 +41,7 @@ changeVolume(){
         fi
 }
 
-changeBrightness(){
+changeBrightnessFn() {
         if [ "$1" = "+" ];then
                 currentBrightness=$(cat /sys/class/backlight/intel_backlight/brightness)
                 newBrightness=$(expr $currentBrightness + 10000)
@@ -70,10 +70,10 @@ changeBrightness(){
 
 
 # export to sudo
-chbr() {
-    sudo bash -c "$(declare -f); changeBrightness $1"
-}
+# chbr(){
+#     sudo bash -c "$(declare -f); changeBrightness $1"
+# }
 
-chvl() {
-    sudo bash -c "$(declare -f); changeVolume $1"
-}
+# chvl() {
+#     sudo bash -c "$(declare -f); changeVolume $1"
+# }

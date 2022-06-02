@@ -27,6 +27,7 @@ alias bashrc="$EDITOR ~/.bash_archpc"
 #alias npm="pnpm"
 alias runemulator="emulator -avd Pixel_4_API_30"
 alias flrun="flutter run -d emulator-5554"
+# alias chbr="sudo changeBrightness"
 
 
 # starship
