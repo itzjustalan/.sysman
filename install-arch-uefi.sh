@@ -6,6 +6,7 @@ echo "*  !! alan's arch linux installation script !!  *"
 echo "*                                               *"
 echo "*************************************************"
 echo ""
+countto 3
 
 
 # local variables
@@ -15,6 +16,12 @@ LC_TIMEZONE='Asia/Kolkata'
 LC_WIFI_DEVICE='wlan0'
 LC_WIFI_SSID='KAREETHRA'
 LC_WIFI_PASS='poipoi'
+LC_INST_PART='/dev/sdX'
+LC_SWAP_PART='/dev/sdX'
+LC_EFI_PART='/dev/sdX'
+LC_HOST_NAME='alan'
+LC_CPU_CODE='intel-ucode' # intel-ucode or amd-ucode
+
 
 
 # local functions
@@ -22,7 +29,7 @@ setupkeyboard() {
 	#`1234567890-=qwertyuiop[]\asdfghjkl;'zxcvbnm,./~!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:\"ZXCVBNM<>?
   LC_KEYBOARD_LAYOUT_TEST_STR="poi"
   if "$LC_CONFIRM_ALL"; then
-    #loadkeys "$LC_KEYBOARD_LAYOUT" &&
+    loadkeys "$LC_KEYBOARD_LAYOUT" &&
     echo "keyboard layout set to $LC_KEYBOARD_LAYOUT"
   else
 	  read -p "verify keyboard layout? (Y/n): " confirm
@@ -44,6 +51,28 @@ setupkeyboard() {
 
 init() {
 	echo 8000 > /sys/class/backlight/intel_backlight/brightness
+}
+
+countto() {
+  LC_COUNT="$1"
+  LC_COUNT=${LC_COUNT:=5}
+  # LC_COUNT=$(expr ${LC_COUNT:=5})
+  for (( i=1; i<=$LC_COUNT; i++ )); do
+    echo -n "$i..";
+    sleep 1s;
+  done
+  echo ""
+}
+
+countfrom() {
+  LC_COUNT="$1"
+  LC_COUNT=${LC_COUNT:=5}
+  # LC_COUNT=$(expr ${LC_COUNT:=5})
+  for (( i=$LC_COUNT; i>0; i-- )); do
+    echo -n "$i..";
+    sleep 1s;
+  done
+  echo ""
 }
 
 bashblings() {
@@ -133,7 +162,7 @@ setupwifi() {
 		LC_DEVICE_LIST=$(iwctl device list | tail -n +5)
 		LC_CHOICE='1'
 		echo "$LC_DEVICE_LIST" | nl;
-		read -p "select device (default=1): " LC_CHOICE
+		read -p "select device (default=$LC_CHOICE): " LC_CHOICE
 		LC_DEVICE=$(echo "$LC_DEVICE_LIST" | sed -n "$LC_CHOICE"p | cut -d' ' -f3)
 		echo "$LC_DEVICE"
 		iwctl station "$LC_DEVICE" disconnect
@@ -141,7 +170,7 @@ setupwifi() {
 		LC_NWK_LIST=$(iwctl station "$LC_DEVICE" get-networks | tail -n +5)
 		LC_CHOICE='1'
 		echo "$LC_NWK_LIST" | nl;
-		read -p "select network (default=1): " LC_CHOICE
+		read -p "select network (default=$LC_CHOICE): " LC_CHOICE
 		LC_NWK=$(echo "$LC_NWK_LIST" | cut -c 5- | sed -n "$LC_CHOICE"p | cut -d' ' -f1)
 		echo $LC_NWK
 		read -p "enter password: " LC_PHRASE
@@ -149,6 +178,118 @@ setupwifi() {
 		ping -c 3 archlinux.org
 		fi
   fi
+}
+
+setparts() {
+	echo "setparts"
+  if "$LC_CONFIRM_ALL"; then
+    echo "efi: $LC_EFI_PART, swap: $LC_SWAP_PART, ext4: $LC_INST_PART"
+  else
+		LC_CHOICE='3'
+		blkid | nl;
+		read -p "select the partition to install (default=$LC_CHOICE): " LC_CHOICE
+    LC_INST_PART=$(blkid | sed "${LC_CHOICE}q;d" | cut -d':' -f1)
+    echo $LC_CHOICE $LC_INST_PART
+    echo "efi: $LC_EFI_PART, swap: $LC_SWAP_PART, ext4: $LC_INST_PART"
+    read -p "format $LC_INST_PART? (y/N): " confirm
+	  if [[ "$confirm" != [yY] ]]; then
+      return
+    fi
+  fi
+
+  LC_EFI_PART=$(fdisk -l | grep "EFI System" | cut -d' ' -f1)
+    echo "!! FORMATTING $LC_INST_PART to  ext4..  ctrl+C to quit"
+  countfrom 5
+  mkfs.ext4 "$LC_INST_PART"
+  mkswap "$LC_SWAP_PART"
+  swapon "$LC_SWAP_PART"
+  echo "mounting $LC_INST_PART to /mnt"
+  mount "$LC_INST_PART" "/mnt"
+  echo "mounting $LC_EFI_PART to /mnt/efi"
+}
+
+installexternalpackages() {
+  echo "installexternalpackages"
+  pacstram /mnt base base-devel linux linux-firmware efibootmgr vim git grub os-prober
+}
+
+setupfstab() {
+  # generate fstab
+  # genfstab -U /mnt >> /mnt/etc/fstab
+  echo "fstab generated check the guide for configuration"
+}
+
+chrootmoiboi() {
+  echo "chrooting into /mnt.."
+  # change root dir to the newly mounted partition
+  arch-chroot /mnt
+
+  # set system time zone
+  ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
+
+  # sync hardware clock
+  hwclock --synctohc
+
+  # install required packages
+  pacman -Sy vim git
+  
+  # generate locales
+  # edit /etc/locale.gen and uncomment en_US.UTF-8 UTF-8
+  sed -i '/#en_US.UTF-8 UTF-8/c\en_US.UTF-8 UTF-8' /etc/locale.gen
+  sed -i '/#en_IN.UTF-8/c\en_IN.UTF-8' /etc/locale.gen
+  locale-gen
+
+  # edit /etc/locale.conf and 
+  # set locale as LANG=en_US.UTF-8
+  echo "LANG=en_US.UTF-8" > /etc/locale.conf
+
+
+  # edit /etc/vconsole.conf and 
+  # set keyboard layout as KEYMAP=us
+  echo "KEYMAP=us" > /etc/vconsole.conf
+
+  # set your hostname in /etc/hostname
+  echo "$LC_HOST_NAME" > /etc/hostname
+
+  # configure /etc/hosts file
+  echo "127.0.0.1     localhost" >> /etc/hosts
+  echo "::1           localhost" >> /etc/hosts
+  echo "127.0.1.1     $LC_HOST_NAME.localdomain    $LC_HOST_NAME" >> /etc/hosts
+
+  # set up network manager
+
+  # if you want to create initrd
+  # pacstrap does this bt default
+  mkinitcpio -P
+
+  # set root password
+  passwd
+
+  # enable bootloader
+  echo -e "\t1 pacman -S intel-ucode # for intel CPUs"
+  echo -e "\t2 pacman -S amd-ucode # for amd CPUs"
+  read -p "select cpu microcode to install (default=1): " confirm
+	if [[ "$confirm" == "1" || "$confirm" == "" ]]; then
+    echo -e "\t1 pacman -S intel-ucode # for intel CPUs"
+  elif [[ "$confirm" == "2" ]]; then
+    echo -e "\t2 pacman -S amd-ucode # for amd CPUs"
+  else
+    echo "invalid option ya moron! exiting.."
+  fi
+
+  grub-mkconfig -o /boot/grub/grub.cfg
+  echo "# now edit /boot/grub/grub.cfg for each entry
+...
+echo 'Loading initial ramdisk'
+initrd	/boot/cpu_manufacturer-ucode.img /boot/initramfs-linux.img
+...
+
+# then for systemd-boot edit /boot/loader/entries/entry.conf
+title   Arch Linux
+linux   /vmlinuz-linux
+initrd  /cpu_manufacturer-ucode.img
+initrd  /initramfs-linux.img
+..."
 }
 
 
@@ -204,14 +345,26 @@ main() {
 		done
 	fi
 
+if "$LC_CONFIRM_ALL"; then
+	echo speed-throo
+else
+	echo "oronu oronu"
+fi
+
   # run modules
-  #setupkeyboard
-  #init
-  #bashblings
-  #vimblings
-  #setuptimezone
-  #setupwifi
+  setupkeyboard
+  init # yeesh!!
+  bashblings
+  vimblings
+  setuptimezone
+  setupwifi
+  setparts;
+  installexternalpackages;
+  setupfstab;
+  chrootmoiboi;
   printguide;
+
+  echo "ran all modules :main"
 
 #	if "$LC_CONFIRM_ALL"; then
 #		echo speed-throo
@@ -224,188 +377,6 @@ main() {
 # start script
 main "$@";
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-exit
-
-
-# setup bash
-
-# load the us keyboard layout
-loadkeys us
-
-# check keyboard layout
-echo "type the following to test your keyboard layout"
-echo "$LC_KEYBOARD_LAYOUT_TEST_STR"
-read KEYBOARD_TEST_INPUT
-
-
-# set sane defaults
-
-#syntax on
-#set nu rnu
-#inoremap jj <esc><esc>
-#oewlkdco8&3nadofi8w340**^^3 ldsf'p0es9Ae*yoGhLy98R^naK!%p9i()8&Yoq3i
-
-
-# read input output
-#
-#read -p "load handy aliases? [Y/n]: " confirm
-#
-#echo "*-$confirm-*"
-#
-#if [[ "$confirm" == [yY] || "$confirm" == "" ]]; then
-# echo confirmedd
-#else
-# echo "not confirmed"
-#fi
-
-
-
-
-exit
-
-
-## load keyboard layout
-#loadkeys us
-#
-## set monitor backlight (general path)
-#echo 8000 > /sys/class/backlight/intel_backlight/brightness
-#
-## useful bash aliases
-#set -o vi
-#alias ll="ls -lah"
-#
-## vim must haves
-#syntax on # enable syntax
-#set nu rnu # line numbers
-#set tabstop=2 # tab is 2 spaces
-#set belloff=all # kill annoying beeps
-#set noerrorbells # vibrator lol
-#inoremap jj <esc><esc> # my leader key
-#
-## setup date and time
-#timedatectl set-timezone "$LC_TIMEZONE"
-#timedatectl set-ntp true
-#hwclock --systohc
-#timedatectl status
-#
-#
-## connect wifi
-#iwctl device list
-#iwctl station devicename scan
-#iwctl station devicename get-networks
-#iwctl --passphrase wifipassword station devicename connect wifiname
-#
-## partition disks
-#cfdisk # way better
-#[Delete] to clear partition (format)
-#[New] to create new partition
-#[Type] to chage filesystem
-#Linux filesystem
-#Linux Swap
-#[Quit] close cfdisk
-#
-## ext4 and swap partitions
-#mkfs.ext4 /dev/sdX
-#mkswap /dev/sdX
-#swapon /dev/sdX
-#
-## mount new filesystems
-#mount /dev/sdX /mnt
-#
-## mount efi partition for dual boot
-## find efi partition with fdisk -l
-#mount /dev/sdX /mnt/efi
-#
-## install required packages for installation
-#pacstram /mnt base linux linux-firmware
-#
-## generate fstab
-#genfstab -U /mnt >> /mnt/etc/fstab
-#
-## get UUIDS
-#blkid
-#lsblk -f
-#fdisk -l
-#
-## change root dir to the newly mounted partition
-#arch-chroot /mnt
-#
-## set system time zone
-#ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
-#
-## sync hardware clock
-#hwclock --synctohc
-#
-## install required packages
-#pacman -Sy vim git
-#
-## generate locales
-## edit /etc/locale.gen and
-## uncomment en_US.UTF-8 UTF-8
-## then -
-#locale-gen
-#
-## edit /etc/locale.conf and 
-## set locale as LANG=en_US.UTF-8
-#
-#
-## edit /etc/vconsole.conf and 
-## set keyboard layout
-## as KEYMAP=us
-#
-## edit /etc/hostname and
-## set your hostname
-#
-## edit /etc/hosts file and
-## set the following
-#127.0.0.1     localhost
-#::1           localhost
-#127.0.1.1     hostname.localdomain    hostname
-#
-#
-## set up network manager
-#
-## if you want to create initrd
-## pacstrap does this bt default
-#mkinitcpio -P
-#
-## set root password
-#passwd
-#
-## enable bootloader
-#pacman -S grub efibootmgr os-prober
-#pacman -S amd-ucode # for amd CPUs
-#pacman -S intel-ucode # for intel CPUs
-#
-#grub-mkconfig -o /boot/grub/grub.cfg
-#
-## then edit that file with this for each entry
-#...
-#echo 'Loading initial ramdisk'
-#initrd	/boot/cpu_manufacturer-ucode.img /boot/initramfs-linux.img
-#...
-#
-## then for systemd-boot edit /boot/loader/entries/entry.conf
-#title   Arch Linux
-#linux   /vmlinuz-linux
-#initrd  /cpu_manufacturer-ucode.img
-#initrd  /initramfs-linux.img
-#...
-#
-#
 ## reboot and login to you new Arch linux installation
 #reboot
 ## or just shutdown lol
