@@ -137,7 +137,8 @@ alias ssc="takeCustomScreenshot"
 alias sr="ffmpeg -f x11grab -i :0.0"    # screen record without audio
 alias sra="ffmpeg -f x11grab -i :0.0 -f alsa -ac 2 -i default"  # screen record with audio
 
-imgpath="/media/win/f/linux/root/myfiles/repos/wallpapers"
+#imgpath="/media/win/f/linux/root/myfiles/repos/wallpapers"
+imgpath="/media/win/g/walls"
 alias chwal="img=$(ls $imgpath | shuf -n 1);wal -i $imgpath/$img"
 alias chwaln="img=$(ls $imgpath | shuf -n 1);wal -ni $imgpath/$img"
 alias eemb="$EDITOR ~/blog/itzjustalan.wiki"
@@ -299,7 +300,8 @@ gdbd(){
   cd $initialDir;
 }
 
-gdp(){
+gdp() {
+
   initialDir=$(pwd);
   gdd;
   pwd;
@@ -322,7 +324,7 @@ gdp(){
   git push origin main;
   if [ "$1" == "-b" ]; then fbaspa fi;
 
-  cd $initialDir;
+  cd "$initialDir";
 }
 
 #alias gss="cd ~/pgms/side/"
@@ -361,6 +363,10 @@ tm() {
 mkcd(){
 		mkdir -p -- "$1" &&
 		cd -P -- "$1"
+}
+mkcp() {
+	mkdir -p -- "$2" &&
+	cp "$1" "$2"
 }
 mkcdird(){
   mkdir "$(date +%F)" &&
@@ -526,6 +532,35 @@ takeCustomScreenshot() {
     #st scrot -sf ~/myfiles/screenshots/$(date +%Y)/$(date +%B-%Y)/$(date +%F)/$(date +%Y-%m-%d-%T).png"
 }
 
+addMochaColorsToTTY() {
+				printf %b '\e]P01E1E2E' # set background color to "Base"
+				printf %b '\e]P8585B70' # set bright black to "Surface2"
+
+				printf %b '\e]P7BAC2DE' # set text color to "Text"
+				printf %b '\e]PFA6ADC8' # set bright white to "Subtext0"
+
+				printf %b '\e]P1F38BA8' # set red to "Red"
+				printf %b '\e]P9F38BA8' # set bright red to "Red"
+
+				printf %b '\e]P2A6E3A1' # set green to "Green"
+				printf %b '\e]PAA6E3A1' # set bright green to "Green"
+
+				printf %b '\e]P3F9E2AF' # set yellow to "Yellow"
+				printf %b '\e]PBF9E2AF' # set bright yellow to "Yellow"
+
+				printf %b '\e]P489B4FA' # set blue to "Blue"
+				printf %b '\e]PC89B4FA' # set bright blue to "Blue"
+
+				printf %b '\e]P5F5C2E7' # set magenta to "Pink"
+				printf %b '\e]PDF5C2E7' # set bright magenta to "Pink"
+
+				printf %b '\e]P694E2D5' # set cyan to "Teal"
+				printf %b '\e]PE94E2D5' # set bright cyan to "Teal"
+				#clear
+}
+
+addMochaColorsToTTY
+
 
 # export $PATH(s)
 #export PATH=$PATH:~/development/flutter/bin/
@@ -590,7 +625,6 @@ export LESSHISTORYFILE=-
 
 # dracula FZF
 export FZF_DEFAULT_OPTS='--color=fg:#f8f8f2,bg:#282a36,hl:#bd93f9 --color=fg+:#f8f8f2,bg+:#44475a,hl+:#bd93f9 --color=info:#ffb86c,prompt:#50fa7b,pointer:#ff79c6 --color=marker:#ff79c6,spinner:#ffb86c,header:#6272a4'
-
 
 
 # TO RUN A FILE IF IT EXISTS LIKE THIS

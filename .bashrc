@@ -102,8 +102,8 @@ if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
-if [ -f ~/.bash_archpc ]; then
-    . ~/.bash_archpc
+if [ -f ~/.bash_thispc ]; then
+    . ~/.bash_thispc
 fi
 
 # enable programmable completion features (you don't need to enable
@@ -125,3 +125,5 @@ fi
 if [ -f ~/.local/bin/sys/systtemsetings ]; then
     . ~/.local/bin/sys/systemsettings
 fi
+export VOLTA_HOME="$HOME/.volta"
+export PATH="$VOLTA_HOME/bin:$PATH"

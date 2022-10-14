@@ -14,16 +14,18 @@ tput smkx   # use tput rmkx to quit application mode
 
 #fortune | lolcat
 #date +%A,\ %Y\ %b\ %d | lolcat
+PS1="${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ "
+export LS_COLORS="$LS_COLORS:ow=1;34:tw=1;34:" # remove sticky colors 
 
 
 # node weird error with libicui18n.so.69
-source /usr/share/nvm/init-nvm.sh
+#source /usr/share/nvm/init-nvm.sh
 
-export EDITOR=nvim
+export EDITOR=vim
 export TERMINAL_EMULATOR=alacritty
 #alias pacman=paru
 
-alias bashrc="$EDITOR ~/.bash_archpc"
+alias bashrc="$EDITOR ~/.bash_thispc"
 #alias npm="pnpm"
 alias runemulator="emulator -avd Pixel_4_API_30"
 alias flrun="flutter run -d emulator-5554"
@@ -35,9 +37,9 @@ eval "$(starship init bash)"
 
 
 # nvm setup
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+#export NVM_DIR="$HOME/.nvm"
+#[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+#[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # PATH
 export PATH="$PATH":"$HOME/.pub-cache/bin"
