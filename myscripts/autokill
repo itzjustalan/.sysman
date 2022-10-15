@@ -1,0 +1,8 @@
+#!/bin/bash
+
+"$1" &
+pid="$!"
+echo "$pid"
+
+sleep "$2"
+kill "$pid"

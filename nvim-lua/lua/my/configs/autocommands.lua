@@ -13,11 +13,11 @@ vim.cmd [[
   augroup END
 
   " persistent code folding
-  augroup persistent_folds
-    autocmd!
-    autocmd BufWinLeave * mkview
-    autocmd BufWinEnter * silent! loadview
-  augroup END
+  "augroup persistent_folds
+  "  autocmd!
+  "  autocmd BufWinLeave * mkview
+  "  autocmd BufWinEnter * silent! loadview
+  "augroup END
 ]]
 
 

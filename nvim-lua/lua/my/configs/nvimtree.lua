@@ -19,20 +19,38 @@ vim.g.loaded_netrwPlugin = 1
 --vim.cmd("autocmd Colorscheme * highlight NvimTreeNormal guibg=#21252B guifg=#9da5b3")
 
 nvim_tree.setup({
-  sort_by = "case_sensitive",
+  sort_by = "name",
+  disable_netrw = true,
+  open_on_setup = true,
+  hijack_cursor = true,
+  --sort_by = "case_sensitive",
   view = {
+    number = true,
+    relativenumber = true,
     adaptive_size = true,
+    hide_root_folder = true,
+    centralize_selection = true,
+    signcolumn = "auto",
     mappings = {
       list = {
         { key = "u", action = "dir_up" },
-        { key = { "l", "<CR>", "o" }, action = "edit" },
+        { key = { "l", "<CR>", "o" }, action = "tabnew" },
       },
     },
   },
   renderer = {
+    add_trailing = true,
     group_empty = true,
+    highlight_git = true,
+    highlight_opened_files = "all", -- Value can be `"none"`, `"icon"`, `"name"` or `"all"`.
     indent_markers = {
       enable = true,
+      --[[ inline_arrows = false, ]]
+    },
+    icons = {
+      show = {
+        folder_arrow = false,
+      },
     },
   },
   filters = {
@@ -40,6 +58,10 @@ nvim_tree.setup({
     custom = {
       ".git",
     },
+  },
+  live_filter = {
+    prefix = "q?:",
+    always_show_folders = false,
   },
 
   -- figureout performance issues

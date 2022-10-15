@@ -93,8 +93,13 @@ return packer.startup(function(use)
   use 'jose-elias-alvarez/null-ls.nvim' -- for formatters and linters
 
   -- Telescope
-  use 'nvim-telescope/telescope.nvim'
-  use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
+  use {
+    'nvim-telescope/telescope.nvim',
+    requires = {
+      'nvim-lua/plenary.nvim',
+      {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
+    }
+  }
 
   -- Treesitter
   use {

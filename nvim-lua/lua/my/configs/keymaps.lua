@@ -20,8 +20,12 @@ vim.g.maplocalleader = " "
 --   command_mode = "c",
 
 -- Normal --
+
+-- try quit all - errors when unsaved files are in buffer
+keymap("n", "ZZ", "<Esc><Esc>:qa<CR>", opts)
+keymap("n", "ZQ", "<Esc><Esc>:qa<CR>", opts)
 -- Save file with Control s sorry
-keymap("n", "<C-s>", "<Esc>:write<CR>", opts)
+keymap("n", "<C-s>", "<Esc><Esc>:write<CR>", opts)
 
 -- Better window navigation
 --keymap("n", "<leader>h", "<C-w>h", opts)
@@ -83,18 +87,24 @@ keymap("x", "<A-k>", ":move '<-2<CR>gv-gv", opts)
 -- keymap("t", "<C-l>", "<C-\\><C-N><C-w>l", term_opts)
 
 -- Telescope --
+local telescope_builtin = require('telescope.builtin')
+vim.keymap.set('n', '<leader>ff', telescope_builtin.find_files, {})
+vim.keymap.set('n', '<leader>fg', telescope_builtin.live_grep, {})
+vim.keymap.set('n', '<leader>fs', telescope_builtin.grep_string, {})
+--[[ vim.keymap.set('n', '<leader>fb', telescope_builtin.buffers, {}) ]]
+vim.keymap.set('n', '<leader>fh', telescope_builtin.help_tags, {})
 -- find files
---keymap('n', '<leader>f', '<cmd>lua require "telescope.builtin".find_files(require("telescope.themes").get_dropdown({ previewer=10 }))<cr>', opts)
--- keymap("n", "<leader>ff", "<cmd>Telescope find_files<cr>", opts)
--- keymap("n", "<leader>fg", "<cmd>Telescope live_grep<cr>", opts)
--- keymap("n", "<leader>fb", "<cmd>Telescope buffers<cr>", opts)
--- keymap("n", "<leader>fh", "<cmd>Telescope help_tags<cr>", opts)
--- keymap("n", "<leader>ps", ":lua require('telescope.builtin').grep_string({ search = vim.fn.input(\"Grep For > \")})<CR>", opts)
--- keymap("n", "<C-p>", ":lua require('telescope.builtin').git_files()<CR>", opts)
--- keymap("n", "<Leader>pf", ":lua require('telescope.builtin').find_files()<CR>", opts)
--- --keymap("n", "<leader>pw", ":lua require('telescope.builtin').grep_string { search = vim.fn.expand("<cword>") }<CR>", opts)
--- keymap("n", "<leader>pb", ":lua require('telescope.builtin').buffers()<CR>", opts)
--- keymap("n", "<leader>vh", ":lua require('telescope.builtin').help_tags()<CR>", opts)
+--[[ keymap('n', '<leader>f', '<cmd>lua require "telescope.builtin".find_files(require("telescope.themes").get_dropdown({ previewer=10 }))<cr>', opts) ]]
+--[[ keymap("n", "<leader>ff", "<cmd>Telescope find_files<cr>", opts) ]]
+--[[ keymap("n", "<leader>fg", "<cmd>Telescope live_grep<cr>", opts) ]]
+--[[ keymap("n", "<leader>fb", "<cmd>Telescope buffers<cr>", opts) ]]
+--[[ keymap("n", "<leader>fh", "<cmd>Telescope help_tags<cr>", opts) ]]
+--[[ keymap("n", "<leader>ps", ":lua require('telescope.builtin').grep_string({ search = vim.fn.input(\"Grep For > \")})<CR>", opts) ]]
+--[[ keymap("n", "<C-p>", ":lua require('telescope.builtin').git_files()<CR>", opts) ]]
+--[[ keymap("n", "<Leader>pf", ":lua require('telescope.builtin').find_files()<CR>", opts) ]]
+--[[ --keymap("n", "<leader>pw", ":lua require('telescope.builtin').grep_string { search = vim.fn.expand("<cword>") }<CR>", opts) ]]
+--[[ keymap("n", "<leader>pb", ":lua require('telescope.builtin').buffers()<CR>", opts) ]]
+--[[ keymap("n", "<leader>vh", ":lua require('telescope.builtin').help_tags()<CR>", opts) ]]
 
 -- Nvim Tree
 keymap("n", "<leader>b", ":NvimTreeToggle<cr>", opts)
