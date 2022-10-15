@@ -8,7 +8,7 @@ vim.g.tokyonight_terminal_colors = true
 vim.g.tokyonight_sidebars = { 'nvimtree' }
 -- vim.g.tokyonight_transparent_sidebar = true
 
-local colorscheme = 'tokyonight'
+local colorscheme = 'tokyonight-night'
 --local colorscheme = 'codemonkey'
 --local colorscheme = 'darkplus'
 -- local colorscheme = 'onedarker'

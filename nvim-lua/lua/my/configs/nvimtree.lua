@@ -1,30 +1,6 @@
 -- following options are the default
 -- each of these are documented in `:help nvim-tree.OPTION_NAME`
 
--- try g? for help
-local treesize = 50;
---vim.g.nvim_tree_icons = {
-local nvim_tree_icons = {
-  default = "",
-  symlink = "",
-  git = {
-    unstaged = "",
-    staged = "S",
-    unmerged = "",
-    renamed = "➜",
-    deleted = "",
-    untracked = "U",
-    ignored = "◌",
-  },
-  folder = {
-    default = "",
-    open = "",
-    empty = "",
-    empty_open = "",
-    symlink = "",
-  },
-}
-
 local status_ok, nvim_tree = pcall(require, "nvim-tree")
 if not status_ok then
   return
@@ -36,11 +12,70 @@ if not config_status_ok then
 end
 
 local tree_cb = nvim_tree_config.nvim_tree_callback
+vim.g.loaded = 1
+vim.g.loaded_netrwPlugin = 1
 
 -- tree bg line color fix
-vim.cmd("autocmd Colorscheme * highlight NvimTreeNormal guibg=#21252B guifg=#9da5b3")
+--vim.cmd("autocmd Colorscheme * highlight NvimTreeNormal guibg=#21252B guifg=#9da5b3")
 
-nvim_tree.setup()
+nvim_tree.setup({
+  sort_by = "case_sensitive",
+  view = {
+    adaptive_size = true,
+    mappings = {
+      list = {
+        { key = "u", action = "dir_up" },
+        { key = { "l", "<CR>", "o" }, action = "edit" },
+      },
+    },
+  },
+  renderer = {
+    group_empty = true,
+    indent_markers = {
+      enable = true,
+    },
+  },
+  filters = {
+    --dotfiles = true,
+    custom = {
+      ".git",
+    },
+  },
+
+  -- figureout performance issues
+  log = {
+    enable = true,
+    truncate = true,
+    types = {
+      git = true,
+      profile = true,
+    },
+  },
+})
+
+---- try g? for help
+--local treesize = 50;
+----vim.g.nvim_tree_icons = {
+--local nvim_tree_icons = {
+--  default = "",
+--  symlink = "",
+--  git = {
+--    unstaged = "",
+--    staged = "S",
+--    unmerged = "",
+--    renamed = "➜",
+--    deleted = "",
+--    untracked = "U",
+--    ignored = "◌",
+--  },
+--  folder = {
+--    default = "",
+--    open = "",
+--    empty = "",
+--    empty_open = "",
+--    symlink = "",
+--  },
+--}
 
 --nvim_tree.setup {
 --  disable_netrw = true,

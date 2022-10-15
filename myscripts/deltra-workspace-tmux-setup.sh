@@ -3,8 +3,8 @@
 # run ```tmux kill-server``` if things get weird
 
 G_WP_NAME=almas-backend
-G_WPB_DIR=~/work/backend
-G_WPF_DIR=~/work/almas
+G_WPB_DIR=~/work/almas/backend
+G_WPF_DIR=~/work/almas/flutter
 
 # options
 G_SC_BARE=false                  # run only the tmux conf
@@ -111,7 +111,7 @@ if [ "$#" = 0 ]; then
   (insomnia-designer --in-process-gpu &> /dev/null &)
   (google-chrome-stable &> /dev/null &)
 	G_SC_BARE=false
-  apps["abp","start"]="true"
+  #apps["abp","start"]="true"
   apps["aap","start"]="true"
   apps["aau","start"]="true"
   setupTMUX
