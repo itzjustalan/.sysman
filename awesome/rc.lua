@@ -1,3 +1,8 @@
+-- local options
+local opts = {
+  titlebars_enabled = false,
+  statusbar_enabled = false,
+}
 -- If LuaRocks is installed, make sure that packages installed through it are
 -- found (e.g. lgi). If LuaRocks is not installed, do nothing.
 pcall(require, "luarocks.loader")
@@ -71,22 +76,22 @@ modkey = "Mod1"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
-	awful.layout.suit.tile,
+	awful.layout.suit.spiral.dwindle,
 	awful.layout.suit.floating,
-	--awful.layout.suit.tile.left,
-	--awful.layout.suit.tile.bottom,
-	--awful.layout.suit.tile.top,
-	--awful.layout.suit.fair,
-	--awful.layout.suit.fair.horizontal,
-	--awful.layout.suit.spiral,
-	--awful.layout.suit.spiral.dwindle,
-	--awful.layout.suit.max,
-	--awful.layout.suit.max.fullscreen,
-	--awful.layout.suit.magnifier,
-	--awful.layout.suit.corner.nw,
-	-- awful.layout.suit.corner.ne,
-	-- awful.layout.suit.corner.sw,
-	-- awful.layout.suit.corner.se,
+	awful.layout.suit.tile,
+	--[[ awful.layout.suit.tile.left, ]]
+	--[[ awful.layout.suit.tile.bottom, ]]
+	--[[ awful.layout.suit.tile.top, ]]
+	--[[ awful.layout.suit.fair, ]]
+	--[[ awful.layout.suit.fair.horizontal, ]]
+	--[[ awful.layout.suit.spiral, ]]
+	--[[ awful.layout.suit.max, ]]
+	--[[ awful.layout.suit.max.fullscreen, ]]
+	--[[ awful.layout.suit.magnifier, ]]
+	--[[ awful.layout.suit.corner.nw, ]]
+ --[[  awful.layout.suit.corner.ne, ]]
+ --[[  awful.layout.suit.corner.sw, ]]
+ --[[  awful.layout.suit.corner.se, ]]
 }
 -- }}}
 
@@ -230,6 +235,7 @@ awful.screen.connect_for_each_screen(function(s)
 
 	-- Create the wibox
 	s.mywibox = awful.wibar({ position = "top", screen = s })
+  s.mywibox.visible = opts.statusbar_enabled
 
 	-- Add widgets to the wibox
 	s.mywibox:setup({
@@ -278,6 +284,10 @@ globalkeys = gears.table.join(
 	awful.key({ modkey }, "w", function()
 		mymainmenu:show()
 	end, { description = "show main menu", group = "awesome" }),
+	awful.key({ modkey }, "b", function()
+    current_screen = awful.screen.focused()
+    current_screen.mywibox.visible = not current_screen.mywibox.visible
+  end, { description = "toggle status bar", group = "awesome" }),
 
 	-- Layout manipulation
 	awful.key({ modkey, "Shift" }, "j", function()
@@ -402,7 +412,11 @@ clientkeys = gears.table.join(
 	awful.key({ modkey, "Shift" }, "m", function(c)
 		c.maximized_horizontal = not c.maximized_horizontal
 		c:raise()
-	end, { description = "(un)maximize horizontally", group = "client" })
+	end, { description = "(un)maximize horizontally", group = "client" }),
+
+  -- custom
+	awful.key({ modkey, "Shift" }, "b", function(c) awful.titlebar.toggle(c)
+  end, { description = "toggle window title bar", group = "client" })
 )
 
 -- Bind all key numbers to tags.
@@ -542,6 +556,10 @@ client.connect_signal("manage", function(c)
 
   -- attempt to round the corners
   --[[ c.shape = gears.shape.rounded_rect ]]
+
+  -- hide window title bar on new window spawn
+  if not opts.titlebars_enabled then awful.titlebar.hide(c) end
+
 end)
 
 -- Add a titlebar if titlebars_enabled is set to true in the rules.
@@ -598,7 +616,7 @@ end)
 -- }}}
 
 -- Autostart Applications
---awful.spawn.with_shell("picom")
+awful.spawn.with_shell("picom")
 --awful.spawn.with_shell('nitrogen --restore')
 
 -- END
