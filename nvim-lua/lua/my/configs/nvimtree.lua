@@ -65,14 +65,14 @@ nvim_tree.setup({
   },
 
   -- figureout performance issues
-  log = {
-    enable = true,
-    truncate = true,
-    types = {
-      git = true,
-      profile = true,
-    },
-  },
+  --[[ log = { ]]
+  --[[   enable = true, ]]
+  --[[   truncate = true, ]]
+  --[[   types = { ]]
+  --[[     git = true, ]]
+  --[[     profile = true, ]]
+  --[[   }, ]]
+  --[[ }, ]]
 })
 
 ---- try g? for help
