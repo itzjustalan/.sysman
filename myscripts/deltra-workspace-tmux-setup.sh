@@ -36,14 +36,14 @@ setupWindow() {
   tmux new-window -n "$name"
   if $start; then
     tmux split-window -hZ
-    # tmux send-keys 'nrd' 'Enter'
+    tmux send-keys 'nrd' 'Enter'
     tmux split-window -hZ
-    # tmux send-keys 'nv .' 'Enter'
+    tmux send-keys 'nv .' 'Enter'
   else
     tmux split-window -hZ
-    # ${apps[$name,start]} && tmux send-keys 'nrd' 'Enter'
+    ${apps[$name,start]} && tmux send-keys 'nrd' 'Enter'
     tmux split-window -hZ
-    # ${apps[$name,start]} && tmux send-keys 'nv .' 'Enter'
+    ${apps[$name,start]} && tmux send-keys 'nv .' 'Enter'
   fi
   cd "-" 1> /dev/null
 }

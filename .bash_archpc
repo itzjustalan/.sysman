@@ -33,6 +33,7 @@ alias flrun="flutter run -d emulator-5554"
 
 
 # starship
+export STARSHIP_LOG=error
 eval "$(starship init bash)"
 
 

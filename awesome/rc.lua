@@ -34,6 +34,14 @@ if awesome.startup_errors then
 	})
 end
 
+local function array_s(m)
+  local s = ''
+  for k, v in pairs(m) do
+    s = s .. k .. ':' .. v .. '\n'
+  end
+  return s
+end
+
 -- Handle runtime errors after startup
 do
 	local in_error = false
@@ -234,7 +242,10 @@ awful.screen.connect_for_each_screen(function(s)
 	})
 
 	-- Create the wibox
-	s.mywibox = awful.wibar({ position = "top", screen = s })
+	--[[ s.mywibox = awful.wibar({ position = "top", screen = s }) ]]
+	--[[ s.mywibox = awful.wibar({ position = "bottom", screen = s }) ]]
+	--[[ s.mywibox = awful.wibar({ position = "top", screen = s, border_width = 8 }) ]]
+	s.mywibox = awful.wibar({ position = "top", screen = s, height = 40, width = 1600, border_width = 8 })
   s.mywibox.visible = opts.statusbar_enabled
 
 	-- Add widgets to the wibox
@@ -387,9 +398,6 @@ clientkeys = gears.table.join(
 		awful.client.floating.toggle,
 		{ description = "toggle floating", group = "client" }
 	),
-	awful.key({ modkey, "Control" }, "Return", function(c)
-		c:swap(awful.client.getmaster())
-	end, { description = "move to master", group = "client" }),
 	awful.key({ modkey }, "o", function(c)
 		c:move_to_screen()
 	end, { description = "move to screen", group = "client" }),
@@ -409,6 +417,14 @@ clientkeys = gears.table.join(
 		c.maximized_vertical = not c.maximized_vertical
 		c:raise()
 	end, { description = "(un)maximize vertically", group = "client" }),
+	awful.key({ modkey, "Shift" }, "Return", function(c)
+    local m = awful.client.getmaster()
+    if c.window == m.window then
+      c:swap(awful.client.focus.history.list[2])
+    else
+		  c:swap(m)
+    end
+	end, { description = "move to master", group = "client" }),
 	awful.key({ modkey, "Shift" }, "m", function(c)
 		c.maximized_horizontal = not c.maximized_horizontal
 		c:raise()

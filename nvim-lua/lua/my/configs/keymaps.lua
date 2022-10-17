@@ -23,7 +23,7 @@ vim.g.maplocalleader = " "
 
 -- try quit all - errors when unsaved files are in buffer
 keymap("n", "ZZ", "<Esc><Esc>:qa<CR>", opts)
-keymap("n", "ZQ", "<Esc><Esc>:qa<CR>", opts)
+keymap("n", "ZQ", "<Esc><Esc>:q!<CR>", opts)
 -- Save file with Control s sorry
 keymap("n", "<C-s>", "<Esc><Esc>:write<CR>", opts)
 

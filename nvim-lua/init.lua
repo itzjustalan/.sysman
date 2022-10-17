@@ -20,3 +20,5 @@
 --
 --
 require 'my.configs'
+
+-- TODO: gotta migrate shit to mason.nvim
