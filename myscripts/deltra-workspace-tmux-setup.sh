@@ -3,8 +3,8 @@
 # run ```tmux kill-server``` if things get weird
 
 G_WP_NAME=almas
-G_WPB_DIR=~/work/almas/backend
-G_WPF_DIR=~/work/almas/flutter
+G_WPB_DIR=~/work/deltra/backend
+G_WPF_DIR=~/work/deltra/flutter
 
 # options
 G_SC_BARE=false                  # run only the tmux conf
@@ -28,7 +28,7 @@ done
 
 setupWindow() {
   local dir name start=false
-  local "${@}"
+  local "${@}" # set local variables from args
   # echo "$name" "${apps[$name]}" "$start" "${apps[$name,start]}"
   # $start && # echo "started!!"
 

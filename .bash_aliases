@@ -32,25 +32,6 @@
 
 #cmus ~/Music/rplay.m3u
 
-#export PATH=$PATH:/path/to/dir1		  #or
-#export PATH=$PATH:/path/to/dir1:/path/to/dir2
-
-
-export PATH=$PATH:~/.local/bin/
-export PATH=$PATH:~/.local/bin/perc/
-export PATH=$PATH:~/.local/bin/sys/
-export PATH=$PATH:~/.local/bin/sys/buttons/
-export PATH=$PATH:~/.local/bin/myscripts/
-export PATH=$PATH:~/.local/bin/scripts/
-export PATH=$PATH:
-export PATH=$PATH:
-export PATH=$PATH:~/.cargo/bin/
-export PATH=$PATH:~/.deno/bin/
-export PATH=$PATH:
-export PATH=$PATH:
-export PATH=$PATH:
-export PATH=$PATH:
-
 # shell completions
 #source <(vr completions bash)   # velociraptor (deno)
 source /usr/share/bash-completion/completions/git   # git
@@ -69,7 +50,7 @@ alias cpy="cp -r"
 alias df='df -h'                          # human-readable sizes
 alias free='free -m'                      # show sizes in MB
 alias more=less
-alias sv="sudo vim"
+alias sv="sudoedit"
 alias nv=nvim
 #alias v=nvim
 alias m=mpv
@@ -138,9 +119,9 @@ alias sr="ffmpeg -f x11grab -i :0.0"    # screen record without audio
 alias sra="ffmpeg -f x11grab -i :0.0 -f alsa -ac 2 -i default"  # screen record with audio
 
 #imgpath="/media/win/f/linux/root/myfiles/repos/wallpapers"
-imgpath="/media/win/g/walls"
-alias chwal="img=$(ls $imgpath | shuf -n 1);wal -i $imgpath/$img"
-alias chwaln="img=$(ls $imgpath | shuf -n 1);wal -ni $imgpath/$img"
+# imgpath="/media/win/g/walls"
+# alias chwal="img=$(ls $imgpath | shuf -n 1);wal -i $imgpath/$img"
+# alias chwaln="img=$(ls $imgpath | shuf -n 1);wal -ni $imgpath/$img"
 alias eemb="$EDITOR ~/blog/itzjustalan.wiki"
 alias ddmb="deployMyBlog"
 alias ydl="youtube-dl"
@@ -280,12 +261,12 @@ alias my="cd ~/myfiles/"
 alias myg="cd ~/myfiles/pgms/"
 #alias msc="cd ~/.local/bin/myscripts/"
 alias msc="cd ~/.sysman"
-alias gdb="cd ~/work/almas/backend"
-alias gdc="cd ~/work/almas/flutter/customer_app2/"
-alias gdd="cd ~/work/almas/flutter/delivery_app2/"
+alias gdb="cd ~/work/deltra/backend"
+alias gdc="cd ~/work/deltra/flutter/customer_app2/"
+alias gdd="cd ~/work/deltra/flutter/delivery_app2/"
 #alias gdi="cd ~/work/indic_law/"
 #alias gdm="cd ~/work/milibus/"
-alias gds="cd ~/work/almas/sales_app2/"
+alias gds="cd ~/work/deltra/sales_app2/"
 alias gdt="cd ~/myfiles/repos/.dotfiles/"
 alias gdwsalba="cd ~/work/backend/;tmux new-session \; split-window -h \;"
 
@@ -300,32 +281,32 @@ gdbd(){
   cd $initialDir;
 }
 
-gdp() {
-
-  initialDir=$(pwd);
-  gdd;
-  pwd;
-  git add -A;
-  git commit -m "automated commit";
-  git push origin main;
-  if [ "$1" == "-b" ]; then fbaspa fi;
-
-  gds;
-  pwd;
-  git add -A;
-  git commit -m "automated commit";
-  git push origin main;
-  if [ "$1" == "-b" ]; then fbaspa fi;
-
-  gdc;
-  pwd;
-  git add -A;
-  git commit -m "automated commit";
-  git push origin main;
-  if [ "$1" == "-b" ]; then fbaspa fi;
-
-  cd "$initialDir";
-}
+# gdp() {
+#
+#   initialDir=$(pwd);
+#   gdd;
+#   pwd;
+#   git add -A;
+#   git commit -m "automated commit";
+#   git push origin main;
+#   if [ "$1" == "-b" ]; then fbaspa fi;
+#
+#   gds;
+#   pwd;
+#   git add -A;
+#   git commit -m "automated commit";
+#   git push origin main;
+#   if [ "$1" == "-b" ]; then fbaspa fi;
+#
+#   gdc;
+#   pwd;
+#   git add -A;
+#   git commit -m "automated commit";
+#   git push origin main;
+#   if [ "$1" == "-b" ]; then fbaspa fi;
+#
+#   cd "$initialDir";
+# }
 
 #alias gss="cd ~/pgms/side/"
 
@@ -532,70 +513,8 @@ takeCustomScreenshot() {
     #st scrot -sf ~/myfiles/screenshots/$(date +%Y)/$(date +%B-%Y)/$(date +%F)/$(date +%Y-%m-%d-%T).png"
 }
 
-addMochaColorsToTTY() {
-				printf %b '\e]P0 #1E1E2E' # set background color to "Base" #1E1E2E
-				printf %b '\e]P8 #585B70' # set bright black to "Surface2" #585B70
-				printf %b '\e]P7 #BAC2DE' # set text color to "Text" #BAC2DE
-				printf %b '\e]PF #A6ADC8' # set bright white to "Subtext0" #A6ADC8
-				printf %b '\e]P1 #F38BA8' # set red to "Red" #F38BA8
-				printf %b '\e]P9 #F38BA8' # set bright red to "Red" #F38BA8
-				printf %b '\e]P2 #A6E3A1' # set green to "Green" #A6E3A1
-				printf %b '\e]PA #A6E3A1' # set bright green to "Green" #A6E3A1
-				printf %b '\e]P3 #F9E2AF' # set yellow to "Yellow" #F9E2AF
-				printf %b '\e]PB #F9E2AF' # set bright yellow to "Yellow" #F9E2AF
-				printf %b '\e]P4 #89B4FA' # set blue to "Blue" #89B4FA
-				printf %b '\e]PC #89B4FA' # set bright blue to "Blue" #89B4FA
-				printf %b '\e]P5 #F5C2E7' # set magenta to "Pink" #F5C2E7
-				printf %b '\e]PD #F5C2E7' # set bright magenta to "Pink" #F5C2E7
-				printf %b '\e]P6 #94E2D5' # set cyan to "Teal" #94E2D5
-				printf %b '\e]PE #94E2D5' # set bright cyan to "Teal" #94E2D5
-				#clear
-}
-
-addMochaColorsToTTY
 
 
-# export $PATH(s)
-#export PATH=$PATH:~/development/flutter/bin/
-#export PATH=$PATH:~/development/gradle/gradle-6.7.1/bin/
-#export ANDROID_SDK_ROOT=~/development/android-sdk
-#export ANDROID_HOME=$ANDROID_SDK_ROOT
-#export PATH=$PATH:$ANDROID_HOME/cmdline-tools/tools
-
-# export $PATH(s)
-export PATH=$PATH:~/development/flutter/bin/
-export PATH=$PATH:~/development/gradle/gradle-6.7.1/bin/
-export ANDROID_SDK_ROOT=~/development/gui-studio
-export ANDROID_HOME=$ANDROID_SDK_ROOT
-export PATH=$PATH:$ANDROID_HOME
-export CHROME_EXECUTABLE="/usr/bin/google-chrome-stable"
-
-export PATH="$PATH":"~/development/flutter/.pub-cache/bin"
-
-
-export PATH=$PATH:~/myfiles/pgms/android-studio/bin
-
-
-
-
-
-# springboot
-export PATH=$PATH:~/development/springboot/bin/
-
-
-
-# other work specific envs
-[[ -f ~/.bashenvs ]] && . ~/.bashenvs
-
-
-
-
-
-
-# Other XDG paths
-export XDG_DATA_HOME=${XDG_DATA_HOME:="$HOME/.local/share"}
-export XDG_CACHE_HOME=${XDG_CACHE_HOME:="$HOME/.cache"}
-export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:="$HOME/.config"}
 
 # Didable less histry file
 export LESSHISTORYFILE=-
