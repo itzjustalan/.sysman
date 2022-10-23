@@ -25,6 +25,10 @@ export PATH=$PATH:
 export PATH=$PATH:
 export PATH=$PATH:
 
+# other tools
+export PNPM_HOME="/home/alan/.local/share/pnpm"
+export PATH="$PNPM_HOME:$PATH"
+
 # Other XDG paths
 export XDG_DATA_HOME=${XDG_DATA_HOME:="$HOME/.local/share"}
 export XDG_CACHE_HOME=${XDG_CACHE_HOME:="$HOME/.cache"}
@@ -35,6 +39,9 @@ export ANDROID_SDK_ROOT=~/development/gui-studio
 export ANDROID_HOME=$ANDROID_SDK_ROOT
 export PATH=$PATH:$ANDROID_HOME
 export CHROME_EXECUTABLE="/usr/bin/google-chrome-stable"
+
+# cargo
+. "$HOME/.cargo/env"
 
 
 # usaable DEL KEY in st

@@ -1,0 +1,15 @@
+# fstab example
+# add these to the bottom with the correct UUIDs
+
+# nvme0n1p3            C: Windows
+UUID=1AF01D35F01D1899   /media/win/c  ntfs    defaults,windows_names,locale=en_US.utf8    0   0
+
+# nvme0n1p4            D: ssdy
+UUID=28D0FE9DD0FE7104   /media/win/d  ntfs    defaults,windows_names,locale=en_US.utf8    0   0
+
+# sda1                 E: media
+UUID=EA2429D92429AA11   /media/win/e  ntfs    defaults,windows_names,locale=en_US.utf8    0   0
+
+#END
+# UUID can be found with with blkid or lsblk -f
+# "\040" inserts a space

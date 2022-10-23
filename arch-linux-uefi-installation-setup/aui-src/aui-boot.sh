@@ -17,12 +17,12 @@ LC_CONFIRM_ALL=false
 LC_KEYBOARD_LAYOUT='us'
 LC_TIMEZONE='Asia/Kolkata'
 LC_WIFI_DEVICE='wlan0'
-LC_WIFI_SSID='wifi-name'
-LC_WIFI_PASS='wifi-password'
-LC_INST_PART='/dev/sda3'
-LC_SWAP_PART='/dev/sda4'
+LC_WIFI_SSID='name'
+LC_WIFI_PASS='pass'
+LC_INST_PART='/dev/sdaX'
+LC_SWAP_PART='/dev/sdaX'
 LC_EFI_PART='/dev/nvme0n1p1'
-LC_HOST_NAME='host-name'
+LC_HOST_NAME='hp52tx'
 LC_CPU_CODE='intel-ucode' # intel-ucode or amd-ucode
 
 
@@ -205,6 +205,10 @@ setparts() {
   fi
 
   LC_EFI_PART=$(fdisk -l | grep "EFI System" | cut -d' ' -f1)
+  echo ""
+  echo "$(lsblk -l)"
+  echo ""
+  echo ""
   echo "efi: $LC_EFI_PART, swap: $LC_SWAP_PART, ext4: $LC_INST_PART"
   echo "!! FORMATTING $LC_INST_PART to  ext4..  ctrl+C to quit"
   countfrom 5
@@ -246,7 +250,7 @@ chrootmoiboi() {
   arch-chroot /mnt reflector --latest 10 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
   arch-chroot /mnt sed -i '/#[multilib]/c\[multilib]' /etc/pacman.conf
   arch-chroot /mnt sed -i '/#Include = /etc/pacman.d/mirrorlist/c\Include = /etc/pacman.d/mirrorlist' /etc/pacman.conf
-  arch-chroot /mnt pacman -Syyu
+  arch-chroot /mnt pacman -Syyu --noconfirm
 
   # test swappiness ?? to like 10?
   
@@ -297,11 +301,12 @@ chrootmoiboi() {
 
   arch-chroot /mnt sed -i '/#GRUB_DISABLE_OS_PROBER=false/c\GRUB_DISABLE_OS_PROBER=false' /etc/default/grub
   arch-chroot /mnt tail -3 /etc/default/grub #todo: remove this line lol!
-  arch-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/efi/ --bootloader-id=GRUB
+  arch-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/efi/ --bootloader-id=GRUB02
   arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
   
 
   # set root password
+  echo ""
   echo "set password for the root user"
   arch-chroot /mnt passwd
   # arch-chroot /mnt useradd -m -G wheel "alan"
@@ -327,32 +332,33 @@ chrootmoiboi() {
 
 
 printguide() {
-  LC_RCFILE="README.md"
-  declare -a LC_RCLINES=(
-    "#Welcome to Arch Linux!"
-    "set root user password by running: passwd root"
-    "install cpu microcode via pacman -S intel-ucode/amd-ucode"
-    "create new user by: useradd -G wheel -m username && visudo"
-    ""
-    "#install awesome ? xorg? etc?......???"
-    "#sudo pacman -S xorg xorg-xinit awesome firefox"
-    "#sudo pacman -S picom nitrogen lxappearance"
-    "#echo \"exec awesome\" > ~/.xinitrc"
-  );
+  # LC_RCFILE="README.md"
+  # declare -a LC_RCLINES=(
+  #   "#Welcome to Arch Linux!"
+  #   "set root user password by running: passwd root"
+  #   "install cpu microcode via pacman -S intel-ucode/amd-ucode"
+  #   "create new user by: useradd -G wheel -m username && visudo"
+  #   ""
+  #   "#install awesome ? xorg? etc?......???"
+  #   "#sudo pacman -S xorg xorg-xinit awesome firefox"
+  #   "#sudo pacman -S picom nitrogen lxappearance"
+  #   "#echo \"exec awesome\" > ~/.xinitrc"
+  # );
   LC_FSTAB_EXAMPLE_URL='https://gist.githubusercontent.com/itzjustalan/9f03b09f28c448bceba73de05510818c/raw/7024428383fcbd65c4226e0160bdd699e54dde25/fstab'
   # LC_INSTALLATION_GUIDE_URL='https://gist.githubusercontent.com/itzjustalan/19836dfec8bb5b6bd2d8f2b7b3898c6e/raw/fb50f4755f7bef208d937132b77e8daed496b5b7/installationGuide-arch-efi'
-  echo ""
-  echo "setup complete!"
-  echo "downloading additional resources (2files lol)"
-  curl -s "$LC_FSTAB_EXAMPLE_URL" > fstabExample
-  # curl -s "$LC_INSTALLATION_GUIDE_URL" > installationGuide.txt
-  for (( i=0; i<"${#LC_RCLINES[@]}"; i++ )); do
-    echo "${LC_RCLINES[$i]}" >> "$LC_RCFILE"
-  done;
-  cp fstabExample /mnt/root/
-  cp "$LC_RCFILE" /mnt/root/
-  cp ".bashrc" /mnt/root/
-  cp ".vimrc" /mnt/root/
+  # echo ""
+  # echo "setup complete!"
+  # echo "downloading additional resources (2files lol)"
+  curl -s "$LC_FSTAB_EXAMPLE_URL" > "fstabExample"
+  # # curl -s "$LC_INSTALLATION_GUIDE_URL" > installationGuide.txt
+  # for (( i=0; i<"${#LC_RCLINES[@]}"; i++ )); do
+  #   echo "${LC_RCLINES[$i]}" >> "$LC_RCFILE"
+  # done;
+  cp "fstabExample" "/mnt/root/"
+  # cp "$LC_RCFILE" "/mnt/root/"
+  cp ".bashrc" "/mnt/root/"
+  cp ".vimrc" "/mnt/root/"
+  cp -r "/root/aui-src" "/mnt/root/"
   #todo: copy the post installation guide and gui installation guide
   echo "reboot and login in as root (no password) and checkout /root/README.md"
   # echo "follow the following instructions to complete the installation"
@@ -361,23 +367,23 @@ printguide() {
   echo "todo: ask to reboot"
 }
 
-postinstallationguide() {
-  LC_RCFILE="install-awesome-wm.sh"
-  declare -a LC_RCLINES=(
-    "#!/bin/bash"
-    ""
-    "passwd root"
-    "pacman -S intel-ucode"
-    "useradd -G wheel -m alan && visudo"
-    "pacman -S --noconfirm xorg xorg-xinit awesome firefox"
-    "pacman -S --noconfirm picom nitrogen lxappearance"
-    "#echo \"exec awesome\" > ~/.xinitrc"
-  );
-  for (( i=0; i<"${#LC_RCLINES[@]}"; i++ )); do
-    echo "${LC_RCLINES[$i]}" >> "$LC_RCFILE"
-  done;
-  cp "$LC_RCFILE" /mnt/root/
-}
+# postinstallationguide() {
+#   LC_RCFILE="install-awesome-wm.sh"
+#   declare -a LC_RCLINES=(
+#     "#!/bin/bash"
+#     ""
+#     "passwd root"
+#     "pacman -S intel-ucode"
+#     "useradd -G wheel -m alan && visudo"
+#     "pacman -S --noconfirm xorg xorg-xinit awesome firefox"
+#     "pacman -S --noconfirm picom nitrogen lxappearance"
+#     "#echo \"exec awesome\" > ~/.xinitrc"
+#   );
+#   for (( i=0; i<"${#LC_RCLINES[@]}"; i++ )); do
+#     echo "${LC_RCLINES[$i]}" >> "$LC_RCFILE"
+#   done;
+#   cp "$LC_RCFILE" /mnt/root/
+# }
 
 
 
@@ -393,7 +399,7 @@ postinstallationguide() {
 main() {
 	#read -p "confirm all questions? (y/N): " confirm
 	#if [[ "$confirm" == [yY] ]]; then
-	# LC_CONFIRM_ALL=true
+	LC_CONFIRM_ALL=true
 	#else
 	# LC_CONFIRM_ALL=false
 	#fi
@@ -437,7 +443,6 @@ fi
   setupfstab
   chrootmoiboi
   printguide
-  postinstallationguide
 
   echo "ran all modules :main"
 

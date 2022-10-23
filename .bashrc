@@ -142,4 +142,3 @@ fi
 #for auto cd'ing without typing 'cd'
 #shopt -s autocd
 
-. "$HOME/.cargo/env"

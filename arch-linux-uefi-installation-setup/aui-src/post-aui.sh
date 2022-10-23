@@ -1,27 +1,9 @@
 #!/bin/bash
 
 # dependencies - git, curl, pacman,
-
-
 AppVersion="0.0.1"
 AppName="$(basename -- "$0")"
-AppName="${AppName:-awesome-wm-setup}"
-
-	# for arg in "$@"; do
-	# 	case "$arg" in
-	# 		-b|--bare)
-	# 			G_SC_BARE=true
-	# 			;;
-	# 	esac
-	# done
-	#
- #  # handel flags
- #  for flag in "$@"; do
- #    if [ "$flag" = "-a" ] || [ "$flag" = "--all" ]; then
- #      echo "--allizgoood"
- #    fi
- #  done
- #  echo "ran main fn"
+AppName="${AppName:-post-aui.sh}"
 
 npm_apps=(
 "prettier"
@@ -82,9 +64,9 @@ _check() { # check if a program is installed
 
 sub_check() {
   echo "running checks.."
-  echo "$EUID - 0 is root"
+  # echo "$EUID - 0 is root"
   if [ "$EUID" = "0" ]; then
-   echo "ERROR: sudo"
+   echo "ERROR: please do not run this script as root"
    exit 1
   fi
 
@@ -93,7 +75,7 @@ sub_check() {
   # _check pacman
 }
 
-sub_set_paru() { # install paru
+sub_paru() { # install paru
   # sudo pacman -S --needed base-devel
   git clone "https://aur.archlinux.org/paru.git"
   cd paru
@@ -108,7 +90,7 @@ sub_deps() {
   echo "pacman -S ${pacman_apps[*]// /|}"
 }
 
-sub_paru() {
+sub_apps() {
   echo "paru -S ${paru_apps[*]// /|}"
 }
 
@@ -122,15 +104,15 @@ sub_npm() {
 
 main() {
   sub_check
-  sub_set_paru
+  sub_paru
+  sub_apps
 
   echo "ran main fn"
 }
 
 run() {
   if [ "$#" = 0 ]; then # when ran with no arguments
-    # echo "no args provided.. exec default install.."
-    main
+    echo "no args provided.. running default install.." && main
   else
     local subcommand="$1"
     case "$subcommand" in

@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# run as sudo to install the
 # dependencies - git, curl, pacman,
 
 
@@ -71,12 +70,6 @@ paru_apps=(
 )
 
 
-####    58  git clone https://aur.archlinux.org/paru.git
-####    61  paru -Syyu
-####    62  paru --gendb
-####   644  nv .sysman/paru/paru.conf 
-
-
 _check() { # check if a program is installed
   if ! command -v "$1" &> /dev/null; then
       echo "ERROR: $1 not found!"
@@ -89,15 +82,25 @@ _check() { # check if a program is installed
 
 sub_check() {
   echo "running checks.."
-  echo "$EUID - 0 is root"
+  # echo "$EUID - 0 is root"
   if [ "$EUID" = "0" ]; then
-   echo "ERROR: sudo"
+   echo "ERROR: please do not run this script as root"
    exit 1
   fi
 
   # check if these progerams are installed
-  _check git
-  _check pacman
+  # _check git
+  # _check pacman
+}
+
+sub_set_paru() { # install paru
+  # sudo pacman -S --needed base-devel
+  git clone "https://aur.archlinux.org/paru.git"
+  cd paru
+  makepkg -si
+  paru --gendb
+  # edit config
+  #  .sysman/paru/paru.conf 
 }
 
 sub_deps() {
@@ -119,6 +122,7 @@ sub_npm() {
 
 main() {
   sub_check
+  sub_set_paru
 
   echo "ran main fn"
 }
@@ -151,3 +155,13 @@ run() {
 
 run "$@"
 
+exit 0
+
+
+# night light
+# paru -S blugon
+# (blugon&)
+# systemctl --user enable blugon.service
+#
+#
+# - end
