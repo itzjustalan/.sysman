@@ -24,6 +24,7 @@ LC_PACMAN_APPS=( # apps to be installed with pacman
   "base"
   "sudo"
   "curl"
+  "man"
   "git"
   "vim"
   "vi"

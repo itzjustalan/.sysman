@@ -85,10 +85,10 @@ local function lsp_keymaps(client, bufnr)
 
   -- Set some keybinds conditional on server capabilities
   if client.server_capabilities.document_formatting then
-    buf_set_keymap("n", "ff", "<cmd>lua vim.lsp.buf.format { async = true } <CR>", opts)
+    buf_set_keymap("n", "gf", "lua vim.lsp.buf.format { async = true } <CR>", opts)
     --[[ buf_set_keymap("n", "ff", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts) ]]
   elseif client.server_capabilities.document_range_formatting then
-    buf_set_keymap("n", "ff", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
+    buf_set_keymap("n", "gf", "lua vim.lsp.buf.range_formatting()<CR>", opts)
   end
 
 end
