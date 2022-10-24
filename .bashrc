@@ -142,3 +142,4 @@ fi
 #for auto cd'ing without typing 'cd'
 #shopt -s autocd
 
+# pnpm end

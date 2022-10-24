@@ -15,7 +15,7 @@
 import:
   #- ~/.config/alacritty/dracula.yml
   # uncomment the flavour you want below:
-  - ~/.config/alacritty/catppuccin/catppuccin-mocha.yml
+  - ~/.config/alacritty/themes/catppuccin/catppuccin-mocha.yml
 
 # Any items in the `env` entry below will be added as
 # environment variables. Some entries may override variables

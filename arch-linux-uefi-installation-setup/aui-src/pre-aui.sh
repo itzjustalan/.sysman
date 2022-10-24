@@ -13,7 +13,7 @@ LC_EFI_PART='/dev/nvme0n1p1'
 LC_HOST_NAME='hp52tx'
 LC_CPU_MICRO_CODE='intel-ucode' # intel-ucode or amd-ucode
 LC_ADMIN_USER_NAME='alan'
-LC_ADMIN_USER_PASS='password'
+# LC_ADMIN_USER_PASS='password'
 # LC_BOOT_LOADER_ID='GRUB02' # souldn't be an option always user default (GRUB)
 
 LC_PACMAN_APPS=( # apps to be installed with pacman
@@ -38,7 +38,7 @@ LC_APP_NAME="${LC_APP_NAME:-pre-aui.sh}"
 countto() {
   LC_COUNT="$1"
   LC_COUNT=${LC_COUNT:=5}
-  for (( i=1; i<=$LC_COUNT; i++ )); do
+  for (( i=1; i<=LC_COUNT; i++ )); do
     echo -n "$i..";
     sleep 1s;
   done
@@ -48,7 +48,7 @@ countto() {
 countfrom() {
   LC_COUNT="$1"
   LC_COUNT=${LC_COUNT:=5}
-  for (( i=$LC_COUNT; i>0; i-- )); do
+  for (( i=LC_COUNT; i>0; i-- )); do
     echo -n "$i..";
     sleep 1s;
   done
@@ -78,9 +78,9 @@ sub_banner() { # print a banner and configurations
   echo "you can use cfdisk to partition your drives"
   echo "additional tips: lsblk, blkid"
   echo ""
-  echo "$(lsblk -l)"
+  lsblk
   echo ""
-  countfrom 30 # give them time to quit
+  countfrom 10 # give them time to quit
   echo ""
   echo "*************************************************"
   echo "*                                               *"
@@ -172,7 +172,7 @@ sub_wifi() { # connect to wifi
 
 sub_part() { # format partition
   echo ""
-  echo "$(lsblk -l)"
+  lsblk
   echo ""
   echo "efi: $LC_EFI_PART, swap: $LC_SWAP_PART, ext4: $LC_INST_PART"
   echo "!! FORMATTING $LC_INST_PART to  ext4..  ctrl+C to quit"
@@ -205,6 +205,7 @@ sub_root() {
 
   # install required packages using pacman
   # pacman -Sy --noconfirm sudo vi vim git curl networkmanager reflector
+  # shellcheck disable=SC2048,SC2086
   arch-chroot /mnt pacman -Sy --noconfirm ${LC_PACMAN_APPS[*]// /|}
 
   # optimising mirrorlist and enable multilib repository and run an update
@@ -240,6 +241,12 @@ sub_root() {
   arch-chroot /mnt echo "::1           localhost" >> /etc/hosts
   arch-chroot /mnt echo "127.0.1.1     $LC_HOST_NAME.localdomain    $LC_HOST_NAME" >> /etc/hosts
 
+  # arch-chroot /mnt {
+  #   echo "127.0.0.1     localhost"
+  #   echo "::1           localhost"
+  #   echo "127.0.1.1     $LC_HOST_NAME.localdomain    $LC_HOST_NAME"
+  # } >> /etc/hosts
+
   # if you want to create initrd
   # pacstrap does this bt default
   arch-chroot /mnt mkinitcpio -P
@@ -248,7 +255,7 @@ sub_root() {
   arch-chroot /mnt systemctl enable NetworkManager
 
   # set up network manager
-  nmcli d wifi connect "$LC_WIFI_SSID" password "$LC_WIFI_PASS"
+  arch-chroot nmcli d wifi connect "$LC_WIFI_SSID" password "$LC_WIFI_PASS"
 
   # install and setup grub
   arch-chroot /mnt sed -i '/#GRUB_DISABLE_OS_PROBER=false/c\GRUB_DISABLE_OS_PROBER=false' /etc/default/grub
@@ -257,25 +264,27 @@ sub_root() {
   arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
   
   # set root password
-  # echo ""
-  # echo "set password for the root user"
-  # arch-chroot /mnt passwd
-  arch-chroot /mnt echo "root:$LC_ADMIN_USER_PASS" | chpasswd
+  echo ""
+  echo "set password for the root user"
+  arch-chroot /mnt passwd
+  # arch-chroot /mnt echo "root:$LC_ADMIN_USER_PASS" | chpasswd
 
   # add admin user
-  LC_PASS_STR="$LC_ADMIN_USER_NAME:$LC_ADMIN_USER_PASS"
+  # LC_PASS_STR="$LC_ADMIN_USER_NAME:$LC_ADMIN_USER_PASS"
   arch-chroot /mnt useradd -m -G wheel "$LC_ADMIN_USER_NAME";
-  arch-chroot /mnt echo "$LC_PASS_STR" | chpasswd
+  # arch-chroot /mnt echo "$LC_PASS_STR" | chpasswd
 }
 
 
 sub_guide() {
   LC_FSTAB_EXAMPLE_URL='https://gist.githubusercontent.com/itzjustalan/9f03b09f28c448bceba73de05510818c/raw/7024428383fcbd65c4226e0160bdd699e54dde25/fstab'
   curl -s "$LC_FSTAB_EXAMPLE_URL" > "/root/fstabExample"
-  cp "/root/fstabExample" "/mnt/root/"
   cp "/root/.bashrc" "/mnt/root/"
   cp "/root/.vimrc" "/mnt/root/"
   cp -r "/root/aui-src" "/mnt/root/"
+  cp "/root/fstabExample" "/mnt/home/$LC_ADMIN_USER_NAME/"
+  cp "/root/.bashrc" "/mnt/home/$LC_ADMIN_USER_NAME/"
+  cp "/root/.vimrc" "/mnt/home/$LC_ADMIN_USER_NAME/"
   cp -r "/root/aui-src" "/mnt/home/$LC_ADMIN_USER_NAME/"
   echo "reboot and login in as root (password: password) and checkout /root/README.md"
   # test installationGuide.txt && cat $_
@@ -342,6 +351,9 @@ run() {
         "" | "-h" | "--help")
             sub_help
             ;;
+        "-v" | "--version")
+          echo "v$LC_APP_VERSION"
+            ;;
         *)
             shift
             sub_"$subcommand" "$@"
@@ -370,3 +382,4 @@ run "$@";
 #
 ## THE END
 
+LC_HOST_NAME='hp52tx'

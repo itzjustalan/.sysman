@@ -12,7 +12,7 @@ clone_repositories() {
   git clone git@github.work:Deltrasofts/app-customer-api.git
   git clone git@github.work:Deltrasofts/app-sales-executive-api.git
   git clone git@github.work:Deltrasofts/app-salesman-api.git
-  # git clone git@github.work:Deltrasofts/app-backend-api.git
+  git clone git@github.work:Deltrasofts/app-backend-api.git
 }
 
 pin_and_pull() {
@@ -44,8 +44,8 @@ main() {
   fi
 
   # backend setup
-  cd "$LC_PROJ_DIR/backend"
-  # echo "cloning backend repositories in $(pwd)"
+  cd_backend_dir
+  echo "cloning backend repositories into:" && pwd
   clone_repositories
 
 
@@ -69,9 +69,9 @@ main() {
   pin_and_pull "lts"
   cd_backend_dir
 
-  # cd "app-backend-api"
-  # pin_and_pull "lts"
-  # cd_backend_dir
+  cd "app-backend-api"
+  pin_and_pull "lts"
+  cd_backend_dir
 }
 
 

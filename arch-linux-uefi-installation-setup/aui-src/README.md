@@ -11,4 +11,17 @@
   - Run ```aui-user.sh```
   - Run any setup you need ```aui-gui-name.sh```
 
+
+  in boot:
+  - copy aui folder and run the pre script
+
+  in root:
+  - visudo
+  - passwd
+  - passwd alan
+
+  in alan:
+  - run post script
+
 END
+
