@@ -109,7 +109,6 @@ main() {
         ;;
       *)
         shift
-        echo "-$@"
         sub_"${subcommand}" "$@"
         exit_if_command_404
         ;;

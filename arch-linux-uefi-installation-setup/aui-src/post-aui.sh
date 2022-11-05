@@ -42,6 +42,9 @@ paru_apps=(
   
   # tools
   "openssh"              # ssh stuff
+  "cronie"               # cron manager
+  "dmenu"                # dynamic menu lol
+  "acpi"                 # To read out battery information
   "tree"                 # list files indented by depth recursively
   "htop"                 # interactive process manager
   "ncdu"                 # disc usage analyzer
@@ -49,13 +52,17 @@ paru_apps=(
   "lsd"                  # better colored ls and performant
   "bat"                  # better colored cat and performant
   "fd"                   # simple and fast find alternative
+  "jq"                   # Command-line JSON processor
 
   # apps
+  "telegram-desktop-bin" # telegram client
+  "libreoffice-still"    # libre office suite LTS
   "mongodb-compass"      # mongodb front end
   "insomnia-bin"         # electron rest client
   "lxappearance"         # set gtk themes
+  "rustdesk-bin"         # remote desktop
   "bitwarden"            # password manager
-  "rustdesk"             # remote desktop
+  "seahorse"             # gui for gnome-keyring
   "lf"                   # terminal file manager
 
   # programming
@@ -65,6 +72,9 @@ paru_apps=(
   # themes
   "nerd-fonts-hack"      # hack font patched nerd font
   "arc-gtk-theme"        # dark gtk apps
+
+  # system utils
+  "alsa-utils"
 )
 
 
@@ -117,14 +127,14 @@ sub_check() {
 }
 
 sub_setup() {
-  echo "shettup"
+  # echo "shettup"
   # clone the configs
-  # git clone "https://github.com/itzjustalan/.sysman.git"
+  git clone "https://github.com/itzjustalan/.sysman.git" --depth 1 "$HOME/"
 
   # test and create the config dir
   _test_mkdir "$LC_CONFIG"
 
-  # link up moi configs
+  # link up moi configs #todo: make em use linker.sh and links.csv
   _ln_config "alacritty"
   _ln_config "awesome"
   _ln_config "dunst"
@@ -140,7 +150,7 @@ sub_setup() {
   _ln_config "starship.toml"
 
   # add awesome to .xinitrc
-  # echo "exec awesome" >> "$HOME/.xinitrc"
+  echo "exec awesome" >> "$HOME/.xinitrc"
 
   # ssh setup
   # ssh-keygen -t ed25519 -C "itzjustalan@gmail.com"

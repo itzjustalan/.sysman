@@ -179,18 +179,6 @@ sclip(){
   curl -H "Content-Type: application/json" -d "$sclip" $cliplink
 }
 
-cdbb(){
-  echo "$@"
-  tmpchk=$(echo "$@" | grep " -l ");
-  if [ -z "$tmpchk" ]; then
-    tmpdir=$(~/.local/noexec/cdb "$@")
-    echo "$tmpdir"
-    cd "$tmpdir"
-  else
-    ~/.local/noexec/cdb "$@"
-  fi;
-}
-
 
 
 
@@ -241,7 +229,7 @@ __git_complete gr _git_remote
 alias docker="sudo docker"
 
 # node js
-alias nrd="npm run dev"
+# alias nrd="npm run dev"
 alias nrs="npm run start"
 
 # WSl drives
@@ -259,7 +247,7 @@ alias wp="cd ~/wp/"
 alias wd="cd /mnt/c/Users/alanj/Desktop/"
 alias my="cd ~/myfiles/"
 alias myg="cd ~/myfiles/pgms/"
-#alias msc="cd ~/.local/bin/myscripts/"
+# alias msc="cd ~/.local/bin/myscripts/"
 alias msc="cd ~/.sysman"
 alias gdb="cd ~/work/deltra/backend"
 alias gdc="cd ~/work/deltra/flutter/customer_app2/"
@@ -270,16 +258,24 @@ alias gds="cd ~/work/deltra/sales_app2/"
 alias gdt="cd ~/myfiles/repos/.dotfiles/"
 alias gdwsalba="cd ~/work/backend/;tmux new-session \; split-window -h \;"
 
-gdbd(){
-  initialDir=$(pwd);
-  gdb;
-  code ./app-admin-api;
-  code ./app-admin-ui;
-  gdb;
-  ./deltra-backend-tmux-setup.sh
-
-  cd $initialDir;
+nrd() { # shim lol
+  if [ -f "package.json" ]; then
+    npm run dev
+  elif [[ -f "Makefile" ]]; then
+    make
+  fi
 }
+
+# gdbd(){
+#   initialDir=$(pwd);
+#   gdb;
+#   code ./app-admin-api;
+#   code ./app-admin-ui;
+#   gdb;
+#   ./deltra-backend-tmux-setup.sh
+#
+#   cd $initialDir;
+# }
 
 # gdp() {
 #
@@ -429,9 +425,9 @@ cd $(cat $tmp)
 }
 
 # cdb wrapper
-cdb () {
-  cd $(cdb $@)
-}
+# cdb () {
+#   cd $(pgm-name $@)
+# }
 
 
 

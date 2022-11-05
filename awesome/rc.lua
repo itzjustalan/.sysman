@@ -641,6 +641,7 @@ end)
 -- Autostart Applications
 --awful.spawn.with_shell("picom")
 awful.spawn.with_shell("blugon")
+awful.spawn.with_shell("dunst")
 --awful.spawn.with_shell('nitrogen --restore')
 
 -- END

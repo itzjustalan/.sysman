@@ -77,7 +77,7 @@ local function lsp_keymaps(client, bufnr)
   buf_set_keymap('n', 'g]', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
   buf_set_keymap('n', 'g[', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
   buf_set_keymap("n", "ga", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
-  buf_set_keymap("n", "gogi", "<cmd>lua OrganizeGOImports(100)<CR>", opts)
+  buf_set_keymap("n", "gogi", "<cmd>lua OrganizeGOImports(400)<CR>", opts)
   -- buf_set_keymap("n", "<leader>q", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
   -- buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
   -- buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
@@ -86,9 +86,11 @@ local function lsp_keymaps(client, bufnr)
   -- Set some keybinds conditional on server capabilities
   if client.server_capabilities.document_formatting then
     buf_set_keymap("n", "gf", "lua vim.lsp.buf.format { async = true } <CR>", opts)
+    --[[ buf_set_keymap("n", "gf", "<cmd>lua vim.lsp.buf.format { async = true } <CR>", opts) ]]
+    --[[ buf_set_keymap("n", "gf", ":echo hi", opts) ]]
     --[[ buf_set_keymap("n", "ff", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts) ]]
   elseif client.server_capabilities.document_range_formatting then
-    buf_set_keymap("n", "gf", "lua vim.lsp.buf.range_formatting()<CR>", opts)
+    buf_set_keymap("n", "gf", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
   end
 
 end

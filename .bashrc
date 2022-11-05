@@ -31,22 +31,22 @@ shopt -s globstar
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 addMochaColorsToTTY() {
-				printf %b '\e]P0 #1E1E2E' # set background color to "Base" #1E1E2E
-				printf %b '\e]P8 #585B70' # set bright black to "Surface2" #585B70
-				printf %b '\e]P7 #BAC2DE' # set text color to "Text" #BAC2DE
-				printf %b '\e]PF #A6ADC8' # set bright white to "Subtext0" #A6ADC8
-				printf %b '\e]P1 #F38BA8' # set red to "Red" #F38BA8
-				printf %b '\e]P9 #F38BA8' # set bright red to "Red" #F38BA8
-				printf %b '\e]P2 #A6E3A1' # set green to "Green" #A6E3A1
-				printf %b '\e]PA #A6E3A1' # set bright green to "Green" #A6E3A1
-				printf %b '\e]P3 #F9E2AF' # set yellow to "Yellow" #F9E2AF
-				printf %b '\e]PB #F9E2AF' # set bright yellow to "Yellow" #F9E2AF
-				printf %b '\e]P4 #89B4FA' # set blue to "Blue" #89B4FA
-				printf %b '\e]PC #89B4FA' # set bright blue to "Blue" #89B4FA
-				printf %b '\e]P5 #F5C2E7' # set magenta to "Pink" #F5C2E7
-				printf %b '\e]PD #F5C2E7' # set bright magenta to "Pink" #F5C2E7
-				printf %b '\e]P6 #94E2D5' # set cyan to "Teal" #94E2D5
-				printf %b '\e]PE #94E2D5' # set bright cyan to "Teal" #94E2D5
+				printf %b '\e]P01E1E2E' # set background color to "Base" #1E1E2E
+				printf %b '\e]P1F38BA8' # set red to "Red" #F38BA8
+				printf %b '\e]P2A6E3A1' # set green to "Green" #A6E3A1
+				printf %b '\e]P3F9E2AF' # set yellow to "Yellow" #F9E2AF
+				printf %b '\e]P489B4FA' # set blue to "Blue" #89B4FA
+				printf %b '\e]P5F5C2E7' # set magenta to "Pink" #F5C2E7
+				printf %b '\e]P694E2D5' # set cyan to "Teal" #94E2D5
+				printf %b '\e]P7BAC2DE' # set text color to "Text" #BAC2DE
+				printf %b '\e]P8585B70' # set bright black to "Surface2" #585B70
+				printf %b '\e]P9F38BA8' # set bright red to "Red" #F38BA8
+				printf %b '\e]PAA6E3A1' # set bright green to "Green" #A6E3A1
+				printf %b '\e]PBF9E2AF' # set bright yellow to "Yellow" #F9E2AF
+				printf %b '\e]PC89B4FA' # set bright blue to "Blue" #89B4FA
+				printf %b '\e]PDF5C2E7' # set bright magenta to "Pink" #F5C2E7
+				printf %b '\e]PE94E2D5' # set bright cyan to "Teal" #94E2D5
+				printf %b '\e]PFA6ADC8' # set bright white to "Subtext0" #A6ADC8
 				#clear
 }
 

@@ -3,8 +3,8 @@ vim.cmd [[
   autocmd BufRead,BufNewFile *.tex set filetype=tex
   autocmd InsertEnter * norm zz
   autocmd FileType tex,txt,latex,markdown setlocal spell spelllang=en_us
-  autocmd BufWritePre *.go lua vim.lsp.buf.formatting()
-  autocmd BufWritePre *.go  lua OrganizeGOImports(100)
+  autocmd BufWritePre *.go lua vim.lsp.buf.format { async = true }
+  autocmd BufWritePre *.go lua OrganizeGOImports(400)
 
   " auto folds with indentation
   augroup vimrc
