@@ -21,6 +21,8 @@ export PATH=$PATH:
 export PATH=$PATH:~/.cargo/bin/
 export PATH=$PATH:~/.deno/bin/
 export PATH=$PATH:
+export PATH=$PATH:~/fvm/default/bin
+export PATH=$PATH:
 export PATH=$PATH:
 export PATH=$PATH:
 export PATH=$PATH:
@@ -37,9 +39,11 @@ export XDG_CACHE_HOME=${XDG_CACHE_HOME:="$HOME/.cache"}
 export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:="$HOME/.config"}
 
 # android studio stuff
-export ANDROID_SDK_ROOT=~/development/gui-studio
-export ANDROID_HOME=$ANDROID_SDK_ROOT
-export PATH=$PATH:$ANDROID_HOME
+export ANDROID_HOME=/home/alan/Android/Sdk
+export PATH="/home/alan/Android/Sdk:$PATH"
+export PATH="/home/alan/Android/Sdk/platform-tools:$PATH"
+export PATH="/home/alan/Android/Sdk/tools:$PATH"
+export PATH="/home/alan/Android/ndk-build:$PATH"
 export CHROME_EXECUTABLE="/usr/bin/google-chrome-stable"
 
 # cargo
@@ -87,6 +91,9 @@ eval "$(starship init bash)"
 # completions
 # git completions
 source /usr/share/bash-completion/completions/git
+
+# Set PATH, MANPATH, etc., for Homebrew.
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
 
 # - END
