@@ -2,7 +2,7 @@
 --    disable_background = true
 --})
 
-function ColorMyPencilsCuzThePrimeToldMeSo(colorscheme) 
+function ColorMyPencilsCuzThePrimeToldMeSo(colorscheme)
 	colorscheme = colorscheme or "rose-pine"
 	vim.cmd.colorscheme(colorscheme)
 

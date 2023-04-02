@@ -28,6 +28,7 @@ return require('packer').startup(function(use)
   use 'theprimeagen/harpoon'
   use 'mbbill/undotree'
   use 'tpope/vim-fugitive'
+  use 'numToStr/Comment.nvim'
 
   -- LSP
   use {
@@ -37,7 +38,7 @@ return require('packer').startup(function(use)
       {'neovim/nvim-lspconfig'},
       {'williamboman/mason.nvim'},
       {'williamboman/mason-lspconfig.nvim'},
-  
+
       -- Autocompletion
       {'hrsh7th/nvim-cmp'},
       {'hrsh7th/cmp-path'},
@@ -45,7 +46,7 @@ return require('packer').startup(function(use)
       {'hrsh7th/cmp-nvim-lsp'},
       {'hrsh7th/cmp-nvim-lua'},
       {'saadparwaiz1/cmp_luasnip'},
-  
+
       -- Snippets
       {'L3MON4D3/LuaSnip'},
       {'rafamadriz/friendly-snippets'},
