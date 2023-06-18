@@ -67,7 +67,7 @@ set colorcolumn=80
 highlight ColorColumn ctermbg=0 guibg=lightgrey
 
 
-call plug#begin('~/.vim/plugged')
+"call plug#begin('~/.vim/plugged')
 " :PlugInstall
 
 "Plug 'jremmen/vim-ripgrep'
@@ -78,14 +78,14 @@ call plug#begin('~/.vim/plugged')
 "Plug 'git@github.com:kien/ctrlp.vim.git'
 "Plug 'git@github.com:valloric/YouCompleteMe.git'
 "Plug 'mbbill/undotree'
-Plug 'vimwiki/vimwiki'
+"Plug 'vimwiki/vimwiki'
 "Plug 'dart-lang/dart-vim-plugin'
 "Plug 'natebosch/vim-lsc'
 "Plug 'natebosch/vim-lsc-dart'
 "Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 
-call plug#end()
+"call plug#end()
 " :PlugInstall
 
 

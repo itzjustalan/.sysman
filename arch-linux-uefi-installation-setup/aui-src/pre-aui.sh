@@ -5,10 +5,10 @@ LC_BRIGHTNESS='8000'
 LC_KEYBOARD_LAYOUT='us'
 LC_TIMEZONE='Asia/Kolkata'
 LC_WIFI_DEVICE='wlan0'
-LC_WIFI_SSID='name'
+LC_WIFI_SSID='namer'
 LC_WIFI_PASS='pass'
-LC_INST_PART='/dev/sdaX'
-LC_SWAP_PART='/dev/sdaX'
+LC_INST_PART='/dev/sda3'
+LC_SWAP_PART='/dev/sda4'
 LC_EFI_PART='/dev/nvme0n1p1'
 LC_HOST_NAME='hp52tx'
 LC_CPU_MICRO_CODE='intel-ucode' # intel-ucode or amd-ucode
@@ -24,7 +24,6 @@ LC_PACMAN_APPS=( # apps to be installed with pacman
   "base"
   "sudo"
   "curl"
-  "man"
   "git"
   "vim"
   "vi"

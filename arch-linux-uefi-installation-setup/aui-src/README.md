@@ -1,5 +1,7 @@
 # Arch Linux UEFI Installation
 
+Hurmit: https://www.behova.net/install-nerd-font-on-arch-linux/
+
   - Verify and adjust the "LC_" variables declared inside the scripts
   - Copy the ```aui-src``` folder into the Installation medium, usually the USB
   - Boot into the Live environment and wait for it to load
@@ -24,4 +26,3 @@
   - run post script
 
 END
-

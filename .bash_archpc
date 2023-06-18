@@ -93,7 +93,7 @@ eval "$(starship init bash)"
 source /usr/share/bash-completion/completions/git
 
 # Set PATH, MANPATH, etc., for Homebrew.
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+#eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
 
 # - END

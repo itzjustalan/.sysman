@@ -19,11 +19,11 @@ LC_TIMEZONE='Asia/Kolkata'
 LC_WIFI_DEVICE='wlan0'
 LC_WIFI_SSID='name'
 LC_WIFI_PASS='pass'
-LC_INST_PART='/dev/sdaX'
-LC_SWAP_PART='/dev/sdaX'
 LC_EFI_PART='/dev/nvme0n1p1'
-LC_HOST_NAME='hp52tx'
-LC_CPU_CODE='intel-ucode' # intel-ucode or amd-ucode
+LC_INS_PART='/dev/nvme0n1p5'
+LC_SWP_PART='/dev/sdaX'
+LC_HOST_NAME='work-machine'
+LC_CPU_CODE='amd-ucode' # intel-ucode or amd-ucode
 
 
 
@@ -52,9 +52,10 @@ setupkeyboard() {
   fi
 }
 
-init() {
+changebrightness() {
   # dim brightness
-	echo 8000 > /sys/class/backlight/intel_backlight/brightness
+	# echo 8000 > /sys/class/backlight/intel_backlight/brightness
+	echo 10 > /sys/class/backlight/amdgpu_b10/brightness
 }
 
 countto() {
@@ -190,15 +191,15 @@ setupwifi() {
 setparts() {
 	echo "setparts"
   if "$LC_CONFIRM_ALL"; then
-    echo "efi: $LC_EFI_PART, swap: $LC_SWAP_PART, ext4: $LC_INST_PART"
+    echo "efi: $LC_EFI_PART, swap: $LC_SWP_PART, ext4: $LC_INS_PART"
   else
 		LC_CHOICE='3'
 		blkid | nl;
 		read -p "select the partition to install (default=$LC_CHOICE): " LC_CHOICE
-    LC_INST_PART=$(blkid | sed "${LC_CHOICE}q;d" | cut -d':' -f1)
-    echo $LC_CHOICE $LC_INST_PART
-    echo "efi: $LC_EFI_PART, swap: $LC_SWAP_PART, ext4: $LC_INST_PART"
-    read -p "format $LC_INST_PART? (y/N): " confirm
+    LC_INS_PART=$(blkid | sed "${LC_CHOICE}q;d" | cut -d':' -f1)
+    echo $LC_CHOICE $LC_INS_PART
+    echo "efi: $LC_EFI_PART, swap: $LC_SWP_PART, ext4: $LC_INS_PART"
+    read -p "format $LC_INS_PART? (y/N): " confirm
 	  if [[ "$confirm" != [yY] ]]; then
       return
     fi
@@ -209,14 +210,14 @@ setparts() {
   echo "$(lsblk -l)"
   echo ""
   echo ""
-  echo "efi: $LC_EFI_PART, swap: $LC_SWAP_PART, ext4: $LC_INST_PART"
-  echo "!! FORMATTING $LC_INST_PART to  ext4..  ctrl+C to quit"
+  echo "efi: $LC_EFI_PART, swap: $LC_SWP_PART, ext4: $LC_INS_PART"
+  echo "!! FORMATTING $LC_INS_PART to  ext4..  ctrl+C to quit"
   countfrom 5
-  mkfs.ext4 -F "$LC_INST_PART"
-  mkswap "$LC_SWAP_PART"
-  swapon "$LC_SWAP_PART"
-  echo "mounting $LC_INST_PART to /mnt"
-  mount "$LC_INST_PART" "/mnt"
+  mkfs.ext4 -F "$LC_INS_PART"
+  # mkswap "$LC_SWP_PART"
+  # swapon "$LC_SWP_PART"
+  echo "mounting $LC_INS_PART to /mnt"
+  mount "$LC_INS_PART" "/mnt"
   echo "mounting $LC_EFI_PART to /mnt/efi"
   mkdir -p "/mnt/efi"
   mount "$LC_EFI_PART" "/mnt/efi"
@@ -237,7 +238,7 @@ chrootmoiboi() {
   # change root dir to the newly mounted partition
   #arch-chroot /mnt 
 
-  # set system time zone
+  # set system time zone  #todo: dynamically take file name from variable
   arch-chroot /mnt ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
 
   # sync hardware clock
@@ -280,7 +281,7 @@ chrootmoiboi() {
   # set up network manager
 
   # if you want to create initrd
-  # pacstrap does this bt default
+  # pacstrap does this by default
   arch-chroot /mnt mkinitcpio -P
 
   # enable systemd services
@@ -431,16 +432,16 @@ else
 fi
 
   # run modules
-  countto 3
-  setupkeyboard
-  init # yeesh!!
-  bashblings
-  vimblings
-  setuptimezone
-  setupwifi
-  setparts
-  setkernel
-  setupfstab
+  #countto 3
+  #setupkeyboard
+  #changebrightness # yeesh!!
+  #bashblings
+  #vimblings
+  #setuptimezone
+  #setupwifi
+  #setparts
+  #setkernel
+  #setupfstab
   chrootmoiboi
   printguide
 

@@ -1,13 +1,9 @@
 #!/bin/bash
 
-# dependencies - git, curl
+# dependencies - git, curl, pacman,
 LC_APP_VERSION="0.0.1"
 LC_APP_NAME="$(basename -- "$0")"
 LC_APP_NAME="${LC_APP_NAME:-post-aui.sh}"
-
-# local variables
-LC_SYSMAN="$HOME/.sysman"
-LC_CONFIG="$HOME/.config"
 
 # npm_apps=(
 # "prettier"
@@ -16,6 +12,13 @@ LC_CONFIG="$HOME/.config"
 # pip_apps=(
 # "flake8"
 # "black"
+# )
+
+# pacman_apps=(
+# "base-devel"
+# "base"
+# "curl"
+# "git"
 # )
 
 paru_apps=(
@@ -42,9 +45,6 @@ paru_apps=(
   
   # tools
   "openssh"              # ssh stuff
-  "cronie"               # cron manager
-  "dmenu"                # dynamic menu lol
-  "acpi"                 # To read out battery information
   "tree"                 # list files indented by depth recursively
   "htop"                 # interactive process manager
   "ncdu"                 # disc usage analyzer
@@ -52,29 +52,19 @@ paru_apps=(
   "lsd"                  # better colored ls and performant
   "bat"                  # better colored cat and performant
   "fd"                   # simple and fast find alternative
-  "jq"                   # Command-line JSON processor
 
   # apps
-  "telegram-desktop-bin" # telegram client
-  "libreoffice-still"    # libre office suite LTS
   "mongodb-compass"      # mongodb front end
-  "insomnia-bin"         # electron rest client
-  "lxappearance"         # set gtk themes
-  "rustdesk-bin"         # remote desktop
   "bitwarden"            # password manager
-  "seahorse"             # gui for gnome-keyring
+  "rustdesk"             # remote desktop
   "lf"                   # terminal file manager
 
   # programming
   "python3-pip"          # python package manager
   "python"               # python programming language
 
-  # themes
+  # fonts
   "nerd-fonts-hack"      # hack font patched nerd font
-  "arc-gtk-theme"        # dark gtk apps
-
-  # system utils
-  "alsa-utils"
 )
 
 
@@ -92,26 +82,6 @@ _test_mv() {
   if test -f "$1"; then mv -fn "$1" "$1-old"; fi
 }
 
-_test_mkdir() {
-  if [[ ! -d "$1" ]]; then mkdir "$1"; fi
-}
-
-_ln_home() {
-  local src="${1:-}"
-  local dst="${2:-$src}"
-  _test_mv "$HOME/$dst"
-  ln -s "$LC_SYSMAN/$src" "$HOME/$dst"
-  echo "ln -s $LC_SYSMAN/$src $HOME/$dst"
-}
-
-_ln_config() {
-  local src="${1:-}"
-  local dst="${2:-$src}"
-  _test_mv "$LC_CONFIG/$dst"
-  ln -s "$LC_SYSMAN/$src" "$LC_CONFIG/$dst"
-  echo "ln -s $LC_SYSMAN/$src $LC_CONFIG/$dst"
-}
-
 sub_check() {
   echo "running checks.."
   # echo "$EUID - 0 is root"
@@ -127,27 +97,16 @@ sub_check() {
 }
 
 sub_setup() {
-  # echo "shettup"
-  # clone the configs
-  git clone "https://github.com/itzjustalan/.sysman.git" --depth 1 "$HOME/"
-
-  # test and create the config dir
-  _test_mkdir "$LC_CONFIG"
-
-  # link up moi configs #todo: make em use linker.sh and links.csv
-  _ln_config "alacritty"
-  _ln_config "awesome"
-  _ln_config "dunst"
-  _ln_config "nvim-lua" "nvim"
-  _ln_config "paru"
-  _ln_config "picom-jonaburg" "picom"
-  _ln_home "ssh/config" ".ssh/config"
-  _ln_config "tmux"
-  _ln_home ".bash_aliases"
-  _ln_home ".bash_archpc" ".bash_thispc"
-  _ln_home ".bashrc"
-  _ln_home ".vimrc"
-  _ln_config "starship.toml"
+  LC_SYSMAN="$HOME/.sysman"
+  LC_CONFIG="$HOME/.config"
+  git clone "https://github.com/itzjustalan/.sysman.git"
+  # if test -f "$HOME/.bashrc"; then mv "$HOME/.bashrc" "$HOME/.bashrc-old"; fi
+  _test_mv "$HOME/.vimrc"
+  _test_mv "$HOME/.bashrc"
+  ln -s "$LC_SYSMAN/.bash_aliases" "$HOME/.bash_aliases"
+  ln -s "$LC_SYSMAN/.bashrc" "$HOME/.bashrc"
+  ln -s "$LC_SYSMAN/.vimrc" "$HOME/.vimrc"
+  ln -s "$LC_SYSMAN/paru" "$LC_CONFIG/paru"
 
   # add awesome to .xinitrc
   echo "exec awesome" >> "$HOME/.xinitrc"
@@ -188,8 +147,8 @@ sub_apps() {
   curl -sS https://starship.rs/install.sh | sh
   # volta.sh
   curl https://get.volta.sh | bash
-  # pnpm ! bit of a problem with hard links and stuff
-  # curl -fsSL https://get.pnpm.io/install.sh | sh -
+  # pnpm
+  curl -fsSL https://get.pnpm.io/install.sh | sh -
 }
 
 # sub_pip() {
@@ -224,7 +183,7 @@ run() {
             ;;
         *)
             shift
-            sub_"$subcommand" "$@"
+            sub_"$subcommand" "$@"  > /dev/null 2>&1
             if [ $? = 127 ]; then
                 echo "ERROR: '$subcommand' is not a known subcommand."
                 echo "RUN: '$LC_APP_NAME --help' for a list of known subcommands."
@@ -239,11 +198,6 @@ run "$@"
 
 exit 0
 
-  # ln -s "$LC_SYSMAN/.bash_aliases" "$HOME/.bash_aliases"
-  # ln -s "$LC_SYSMAN/.bash_archpc" "$HOME/.bash_thispc"
-  # ln -s "$LC_SYSMAN/.bashrc" "$HOME/.bashrc"
-  # ln -s "$LC_SYSMAN/.vimrc" "$HOME/.vimrc"
-  # ln -s "$LC_SYSMAN/nvim-lua" "$LC_CONFIG/nvim"
 
 # night light
 # paru -S blugon
@@ -252,4 +206,5 @@ exit 0
 #
 #
 # - end
+
 
