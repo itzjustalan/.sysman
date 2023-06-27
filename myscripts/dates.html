@@ -1,0 +1,9 @@
+dates
+<h1># 2023-06-12 16:45:24.000000</h1>
+<script>
+const d = new Date()
+Object.getOwnPropertyNames(Date.prototype).map(fn => {
+  if (fn.startsWith("to"))
+  console.log(d[fn]());
+})
+</script>

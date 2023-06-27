@@ -12,6 +12,8 @@
 set clipboard+=unnamedplus
 "set clipboard+=xclip
 
+set viminfo+=n~/.vim/viminfo
+
 " fix file types
 autocmd BufRead,BufNewFile *.tex set filetype=tex
 autocmd BufRead,BufNewFile /notes/something/*,/other/path/files/*,/add/more/paths/* set filetype=markdown
@@ -147,6 +149,7 @@ nmap <silent> gr <Plug>(coc-references)
 " remaps
 "let mapleader = " "
 let mapleader = "z"
+imap jj <esc><esc>
 
 " -------- STANDARD BINDINGS --------
 " file system

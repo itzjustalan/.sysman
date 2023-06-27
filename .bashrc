@@ -2,6 +2,11 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
+if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -le 4 ]; then
+  exec startx
+  picom &
+fi
+
 # If not running interactively, don't do anything
 case $- in
     *i*) ;;
