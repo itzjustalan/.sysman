@@ -1,11 +1,12 @@
 -- local options
-local opts = {
-  titlebars_enabled = false,
-  statusbar_enabled = false,
-},
--- If LuaRocks is installed, make sure that packages installed through it are
--- found (e.g. lgi). If LuaRocks is not installed, do nothing.
-pcall(require, "luarocks.loader")
+local opts =
+	{
+		titlebars_enabled = false,
+		statusbar_enabled = false,
+	},
+	-- If LuaRocks is installed, make sure that packages installed through it are
+	-- found (e.g. lgi). If LuaRocks is not installed, do nothing.
+	pcall(require, "luarocks.loader")
 
 -- Standard awesome library
 local gears = require("gears")
@@ -26,8 +27,6 @@ require("awful.hotkeys_popup.keys")
 --[[ local _, calendar = pcall(require, "widgets.calendar") ]]
 --[[ local _, battery_widget = pcall(require, "widgets.battery-widget") ]]
 
-
-
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
@@ -40,11 +39,11 @@ if awesome.startup_errors then
 end
 
 local function array_s(m)
-  local s = ''
-  for k, v in pairs(m) do
-    s = s .. k .. ':' .. v .. '\n'
-  end
-  return s
+	local s = ""
+	for k, v in pairs(m) do
+		s = s .. k .. ":" .. v .. "\n"
+	end
+	return s
 end
 
 -- Handle runtime errors after startup
@@ -102,9 +101,9 @@ awful.layout.layouts = {
 	--[[ awful.layout.suit.max.fullscreen, ]]
 	--[[ awful.layout.suit.magnifier, ]]
 	--[[ awful.layout.suit.corner.nw, ]]
- --[[  awful.layout.suit.corner.ne, ]]
- --[[  awful.layout.suit.corner.sw, ]]
- --[[  awful.layout.suit.corner.se, ]]
+	--[[  awful.layout.suit.corner.ne, ]]
+	--[[  awful.layout.suit.corner.sw, ]]
+	--[[  awful.layout.suit.corner.se, ]]
 }
 -- }}}
 
@@ -146,7 +145,7 @@ local mykeyboardlayout = awful.widget.keyboardlayout()
 
 -- {{{ Wibar
 -- Create a textclock widget
-mytextclock = wibox.widget.textclock()
+local mytextclock = wibox.widget.textclock()
 --[[ calendar({}):attach(mytextclock) ]]
 
 -- Create a wibox for each screen and add it
@@ -252,7 +251,7 @@ awful.screen.connect_for_each_screen(function(s)
 	--[[ s.mywibox = awful.wibar({ position = "bottom", screen = s }) ]]
 	--[[ s.mywibox = awful.wibar({ position = "top", screen = s, border_width = 8 }) ]]
 	s.mywibox = awful.wibar({ position = "top", screen = s, height = 40, width = 1600, border_width = 8 })
-  s.mywibox.visible = opts.statusbar_enabled
+	s.mywibox.visible = opts.statusbar_enabled
 
 	-- Add widgets to the wibox
 	s.mywibox:setup({
@@ -267,9 +266,9 @@ awful.screen.connect_for_each_screen(function(s)
 		{ -- Right widgets
 			layout = wibox.layout.fixed.horizontal,
 			mykeyboardlayout,
-      --[[ battery_widget {}, ]]
+			--[[ battery_widget {}, ]]
 			mytextclock,
-      wibox.widget.systray(),
+			wibox.widget.systray(),
 			s.mylayoutbox,
 		},
 	})
@@ -303,9 +302,9 @@ globalkeys = gears.table.join(
 		mymainmenu:show()
 	end, { description = "show main menu", group = "awesome" }),
 	awful.key({ MODKEY }, "b", function()
-    current_screen = awful.screen.focused()
-    current_screen.mywibox.visible = not current_screen.mywibox.visible
-  end, { description = "toggle status bar", group = "awesome" }),
+		current_screen = awful.screen.focused()
+		current_screen.mywibox.visible = not current_screen.mywibox.visible
+	end, { description = "toggle status bar", group = "awesome" }),
 
 	-- Layout manipulation
 	awful.key({ MODKEY, "Shift" }, "j", function()
@@ -425,21 +424,22 @@ clientkeys = gears.table.join(
 		c:raise()
 	end, { description = "(un)maximize vertically", group = "client" }),
 	awful.key({ MODKEY, "Shift" }, "Return", function(c)
-    local m = awful.client.getmaster()
-    if c.window == m.window then
-      c:swap(awful.client.focus.history.list[2])
-    else
-		  c:swap(m)
-    end
+		local m = awful.client.getmaster()
+		if c.window == m.window then
+			c:swap(awful.client.focus.history.list[2])
+		else
+			c:swap(m)
+		end
 	end, { description = "move to master", group = "client" }),
 	awful.key({ MODKEY, "Shift" }, "m", function(c)
 		c.maximized_horizontal = not c.maximized_horizontal
 		c:raise()
 	end, { description = "(un)maximize horizontally", group = "client" }),
 
-  -- custom
-	awful.key({ MODKEY, "Shift" }, "b", function(c) awful.titlebar.toggle(c)
-  end, { description = "toggle window title bar", group = "client" })
+	-- custom
+	awful.key({ MODKEY, "Shift" }, "b", function(c)
+		awful.titlebar.toggle(c)
+	end, { description = "toggle window title bar", group = "client" })
 )
 
 -- Bind all key numbers to tags.
@@ -577,12 +577,13 @@ client.connect_signal("manage", function(c)
 		awful.placement.no_offscreen(c)
 	end
 
-  -- attempt to round the corners
-  --[[ c.shape = gears.shape.rounded_rect ]]
+	-- attempt to round the corners
+	--[[ c.shape = gears.shape.rounded_rect ]]
 
-  -- hide window title bar on new window spawn
-  if not opts.titlebars_enabled then awful.titlebar.hide(c) end
-
+	-- hide window title bar on new window spawn
+	if not opts.titlebars_enabled then
+		awful.titlebar.hide(c)
+	end
 end)
 
 -- Add a titlebar if titlebars_enabled is set to true in the rules.

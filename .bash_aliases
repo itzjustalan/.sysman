@@ -16,7 +16,6 @@
 # To add support for TTYs this line can be optionally added.
 #source ~/.cache/wal/colors-tty.sh
 
-
 # WELCOME
 #if [ "$(date +%F)" != "$(cat ~/dateFile)" ];then
 #    welcome.sh
@@ -24,7 +23,6 @@
 #else
 #    ~/myfiles/repos/shell-color-scripts/colorscript.sh random
 #fi
-
 
 # ~/myfiles/pgms/shell-color-scripts/colorscript.sh random
 #~/myfiles/repos/shell-color-scripts/colorscript.sh random
@@ -34,9 +32,7 @@
 
 # shell completions
 #source <(vr completions bash)   # velociraptor (deno)
-source /usr/share/bash-completion/completions/git   # git
-
-
+source /usr/share/bash-completion/completions/git # git
 
 #aliases
 alias alias_name="actual_alias"
@@ -45,10 +41,10 @@ alias bbash="source ~/.bashrc"
 
 alias h="tac ~/.bash_history | dmenu | tr -d '\n' | xclip -selection c"
 alias c=cat
-alias cp="cp -ir"                         # confirm before overwriting something
+alias cp="cp -ir" # confirm before overwriting something
 alias cpy="cp -r"
-alias df='df -h'                          # human-readable sizes
-alias free='free -m'                      # show sizes in MB
+alias df='df -h'     # human-readable sizes
+alias free='free -m' # show sizes in MB
 alias more=less
 alias sv="sudoedit"
 alias nv=nvim
@@ -56,14 +52,16 @@ alias nv=nvim
 alias m=mpv
 alias z="zathura"
 #alias rm="rm -rfi"
-alias ll='lsd -lah --group-dirs first --color=auto'
+# alias ll='lsd -lah --group-dirs first --color=auto'
+alias ll='lsd -lA --group-dirs=last --color=always --icon=always --icon-theme=fancy --permission=rwx --blocks=permission,user,size,name'
 alias jj="ll"
 alias kk="ll"
 alias cdd="cd .."
 alias cdc="cd -"
 alias diff="diff --color=auto"
 alias mkdir="mkdir -p"
-#alias chbr="sudo changeBrightness"
+alias chbr="sudo /home/alan/.sysman/sys/change-brightness"
+alias bts="sudo /home/alan/.sysman/sys/get-bat-stats.sh"
 alias curdir="pwd | rev | cut -d '/' -f 1 | rev"
 alias sortsize="/bin/ls -lSah --color=auto"
 #alias cowsayy="cowsay -f $(ls ~/myfiles/mycows | shuf -n 1)"
@@ -88,13 +86,13 @@ alias lff="lfcd"
 alias ccal='python3 /usr/bin/calcurse-caldav; calcurse; python3 /usr/bin/calcurse-caldav'
 # alias cppa="echo cd $(pwd) |xsc"
 cppa() {
-  echo cd $(pwd) | xclip -selection clipboard
+	echo cd $(pwd) | xclip -selection clipboard
 }
 
 # pgms
 alias quick="cat ~/myfiles/quick"
 alias qq="cat ~/static/quick"
-alias bb="cat ~/static/bindings"           # bring bindings
+alias bb="cat ~/static/bindings" # bring bindings
 alias adg="cat ~/myfiles/agenda"
 alias eadg="$EDITOR ~/myfiles/agenda"
 alias eqq="$EDITOR ~/static/quick"
@@ -117,8 +115,8 @@ alias xc="xclip -selection clipboard"
 alias ss="takeScreenshot"
 alias ssc="takeCustomScreenshot"
 
-alias sr="ffmpeg -f x11grab -i :0.0"    # screen record without audio
-alias sra="ffmpeg -f x11grab -i :0.0 -f alsa -ac 2 -i default"  # screen record with audio
+alias sr="ffmpeg -f x11grab -i :0.0"                           # screen record without audio
+alias sra="ffmpeg -f x11grab -i :0.0 -f alsa -ac 2 -i default" # screen record with audio
 
 #imgpath="/media/win/f/linux/root/myfiles/repos/wallpapers"
 # imgpath="/media/win/g/walls"
@@ -142,48 +140,43 @@ alias manpup="$EDITOR ~/myfiles/repos/pup/README.md"
 # fzf stuff
 
 fcd() {
-  cd "$(find -L -type d ! -path './cargo/*','./cache/','./config/' | fzf -e)"
+	cd "$(find -L -type d ! -path './cargo/*','./cache/','./config/' | fzf -e)"
 }
 
 op() {
-  xdg-open "$(find -type f ! -path './cargo/*','./cache/','./config/' | fzf)"
+	xdg-open "$(find -type f ! -path './cargo/*','./cache/','./config/' | fzf)"
 }
 
 alias gp="find -type f ! -path './cargo/*','./cache/','./config/' | fzf | sed 's/^..//' | tr -d '\n' | xclip -selection c"
 
-sxq(){
-  sx $@ | gqr;vqr
+sxq() {
+	sx $@ | gqr
+	vqr
 }
 
 csx() {
-  curl "http://0x0.st/$1.txt";
+	curl "http://0x0.st/$1.txt"
 }
 
 csxx() {
-  curl "http://0x0.st/$1";
+	curl "http://0x0.st/$1"
 }
 
-psx(){
-  curl -F"file=@$1" "http://0x0.st"
+psx() {
+	curl -F"file=@$1" "http://0x0.st"
 }
-
 
 # get ip addr
 alias getip="ip addr | grep 'scope global dynamic noprefixroute' | cut -d' ' -f6 | gqr;vqr"
-
 
 cliplink="http://localhost:4321"
 #cliplink="https://28ddd4611d0a.ngrok.io"
 alias clip="curl $cliplink"
 alias clog="curl $cliplink/log"
-sclip(){
-  sclip='{"url": "'$@'"}'
-  curl -H "Content-Type: application/json" -d "$sclip" $cliplink
+sclip() {
+	sclip='{"url": "'$@'"}'
+	curl -H "Content-Type: application/json" -d "$sclip" $cliplink
 }
-
-
-
-
 
 # /pgms
 
@@ -226,7 +219,6 @@ __git_complete gc _git_checkout
 __git_complete gd _git_diff
 __git_complete gr _git_remote
 
-
 # docker commands
 alias docker="sudo docker"
 
@@ -261,11 +253,11 @@ alias gdt="cd ~/myfiles/repos/.dotfiles/"
 alias gdwsalba="cd ~/work/backend/;tmux new-session \; split-window -h \;"
 
 nrd() { # shim lol
-  if [ -f "package.json" ]; then
-    npm run dev
-  elif [[ -f "Makefile" ]]; then
-    make
-  fi
+	if [ -f "package.json" ]; then
+		npm run dev
+	elif [[ -f "Makefile" ]]; then
+		make
+	fi
 }
 
 # gdbd(){
@@ -308,53 +300,52 @@ nrd() { # shim lol
 
 #alias gss="cd ~/pgms/side/"
 
-
 alias gdr="cd ~/pgms/springboot/rocket-science/"
 
 #alias logout="killall xinit"
-alias kl="ps -a | grep xinit"           # kill list
+alias kl="ps -a | grep xinit" # kill list
 
 # rm -rf safety
 
 tm() {
-  echo "all -> $@"
-  if [ "$1" = "-rf" ];then
-    if [ "$2" = "/" ];then
-      echo pottan
-    elif [ "$2" = "~" ];then
-      echo pottan
-    elif [ "$2" = "j" ];then
-      echo pottan rm safety j is locked consult the alias
-    elif [ "$2" = "~/" ];then
-      echo pottan
-    elif [ "$2" = "/home/alanj" ];then
-      echo pottan
-    elif [ "$2" = "/home/alanj/" ];then
-      echo pottan
-    else
-      rm $@
-    fi
-  else
-    rm $@
-  fi
+	echo "all -> $@"
+	if [ "$1" = "-rf" ]; then
+		if [ "$2" = "/" ]; then
+			echo pottan
+		elif [ "$2" = "~" ]; then
+			echo pottan
+		elif [ "$2" = "j" ]; then
+			echo pottan rm safety j is locked consult the alias
+		elif [ "$2" = "~/" ]; then
+			echo pottan
+		elif [ "$2" = "/home/alanj" ]; then
+			echo pottan
+		elif [ "$2" = "/home/alanj/" ]; then
+			echo pottan
+		else
+			rm $@
+		fi
+	else
+		rm $@
+	fi
 }
 
-mkcd(){
-		mkdir -p -- "$1" &&
+mkcd() {
+	mkdir -p -- "$1" &&
 		cd -P -- "$1"
 }
 mkcp() {
 	mkdir -p -- "$2" &&
-	cp "$1" "$2"
+		cp "$1" "$2"
 }
-mkcdird(){
-  mkdir "$(date +%F)" &&
+mkcdird() {
+	mkdir "$(date +%F)" &&
 		cd "$(date +%F)"
 }
 
 umm() {
-  LC_TEXT="\n\n$(date +%Y-%B-%d\ [%H:%M]..)\n$@"
-  echo -en "$LC_TEXT" >> ~/static/umms
+	LC_TEXT="\n\n$(date +%Y-%B-%d\ [%H:%M]..)\n$@"
+	echo -en "$LC_TEXT" >>~/static/umms
 }
 
 alias umms="less ~/static/umms"
@@ -362,40 +353,33 @@ alias umms="less ~/static/umms"
 # sys functions
 [[ -f ~/.local/bin/sys/systemsettings ]] && . ~/.local/bin/sys/systemsettings
 
-
 open() {
-  sxiv $@
+	sxiv $@
 }
-
 
 #./slowcat.pl $(/usr/bin/ls | grep .vt | shuf -n 1)
 
 #colorscript random
 #cd
 
-
 #  timer () {
 #    while :; do notify-send "its time";date;echo huh; sleep $(($_))s; done
 #  }
 
-
-timer () {
-  while :
-  do
-    date
-    notify-send "timer for $1";
-    sleep $1
-    #sleep $((1))m
-  done
+timer() {
+	while :; do
+		date
+		notify-send "timer for $1"
+		sleep $1
+		#sleep $((1))m
+	done
 }
 
-
-
 _alarm() {
-        ( \speaker-test --frequency $1 --test sine )&
-        pid=$!
-        \sleep 0.${2}s
-        \kill -9 $pid
+	(\speaker-test --frequency $1 --test sine) &
+	pid=$!
+	\sleep 0.${2}s
+	\kill -9 $pid
 }
 
 # usable DEL KEY in st
@@ -404,26 +388,25 @@ _alarm() {
 # new cli applications
 #tput smkx
 
-
 # lf icons
 if [ -f ~/.config/lf/icons ]; then
-    . ~/.config/lf/icons
+	. ~/.config/lf/icons
 fi
 
 # cd to last dir on lf exit
-lfcd () {
-tmp="$(mktemp)"
-lf -last-dir-path="$tmp" "$@"
-cd $(cat $tmp)
-#if [ -f "$tmp" ]; then
-# dir="$(cat "$tmp")"
-# rm -f "$tmp"
-#  if [ -d "$dir" ]; then
-#       if [ "$dir" != "$(pwd)" ]; then
-#            cd "$dir"
-#         fi
-#      fi
-#   fi
+lfcd() {
+	tmp="$(mktemp)"
+	lf -last-dir-path="$tmp" "$@"
+	cd $(cat $tmp)
+	#if [ -f "$tmp" ]; then
+	# dir="$(cat "$tmp")"
+	# rm -f "$tmp"
+	#  if [ -d "$dir" ]; then
+	#       if [ "$dir" != "$(pwd)" ]; then
+	#            cd "$dir"
+	#         fi
+	#      fi
+	#   fi
 }
 
 # cdb wrapper
@@ -431,88 +414,69 @@ cd $(cat $tmp)
 #   cd $(pgm-name $@)
 # }
 
-
-
 # deploy blog
-deployMyBlog(){
-    rm -rf ~/vimwiki_html/*;
-    rm -rf ~/www/myblog/public/*;
-    vim -c :VimwikiAll2HTML -c :q -c :q ~/blog/itzjustalan.wiki;
-    cp ~/vimwiki_html/* ~/www/myblog/public/;
-    cp ~/www/myblog/symlinks/actualLinks/* ~/www/myblog/public/;
-    cd ~/www/myblog/;
-    # manual deploying is no longer needed as it
-    # will be taken care of by the github workflow
-    #firebase deploy;
-    git add -A;
-    git commit -m "$(date +%F) automated commit";
-    git push origin main;
-    cd -;
-    #firefox https://itzjustalan-blog.web.app
-    notify-send "MyBlog deployed!"
+deployMyBlog() {
+	rm -rf ~/vimwiki_html/*
+	rm -rf ~/www/myblog/public/*
+	vim -c :VimwikiAll2HTML -c :q -c :q ~/blog/itzjustalan.wiki
+	cp ~/vimwiki_html/* ~/www/myblog/public/
+	cp ~/www/myblog/symlinks/actualLinks/* ~/www/myblog/public/
+	cd ~/www/myblog/
+	# manual deploying is no longer needed as it
+	# will be taken care of by the github workflow
+	#firebase deploy;
+	git add -A
+	git commit -m "$(date +%F) automated commit"
+	git push origin main
+	cd -
+	#firefox https://itzjustalan-blog.web.app
+	notify-send "MyBlog deployed!"
 }
-
 
 # deploy itzjustalan blog
-deployITZblog(){
-  LC_DEF_HTM_DIR="~/vimwiki_html"
-  LC_BLG_DIR="~/pgms/itzjustalan.in/blog"
-  LC_EXP_DIR="~/pgms/itzjustalan.in/blog2html"
-    rm -rf "$LC_DEF_HTM_DIR/*";
-    vim -c :VimwikiAll2HTML -c :q -c :q $LC_BLG_DIR/itzjustalan.wiki;
-    cp -fr "$LC_DEF_HTM_DIR/*" "$LC_EXP_DIR/";
-    #firefox https://itzjustalan-blog.web.app
-    notify-send "MyBlog deployed!"
+deployITZblog() {
+	LC_DEF_HTM_DIR="~/vimwiki_html"
+	LC_BLG_DIR="~/pgms/itzjustalan.in/blog"
+	LC_EXP_DIR="~/pgms/itzjustalan.in/blog2html"
+	rm -rf "$LC_DEF_HTM_DIR/*"
+	vim -c :VimwikiAll2HTML -c :q -c :q $LC_BLG_DIR/itzjustalan.wiki
+	cp -fr "$LC_DEF_HTM_DIR/*" "$LC_EXP_DIR/"
+	#firefox https://itzjustalan-blog.web.app
+	notify-send "MyBlog deployed!"
 }
-
-
-
-
-
-
-
-
-
-
 
 # screenshots with scrot
 takeScreenshot() {
-    screenshotDIR="$HOME/myfiles/screenshots/$(date +%Y)/$(date +%B-%Y)/$(date +%F)";
-    mkdir -p "$screenshotDIR";
-    maim "$screenshotDIR/hp15-screenshot-$(date +%Y-%m-%d_%H-%M-%S-%s).png";
+	screenshotDIR="$HOME/myfiles/screenshots/$(date +%Y)/$(date +%B-%Y)/$(date +%F)"
+	mkdir -p "$screenshotDIR"
+	maim "$screenshotDIR/hp15-screenshot-$(date +%Y-%m-%d_%H-%M-%S-%s).png"
 
+	# screenshotDIR="~/myfiles/screenshots/$(date +%Y)/$(date +%B-%Y)/$(date +%F)";
+	# mkdir -p $screenshotDIR;
+	# scrot -e 'mv $f ~/myfiles/screenshots/scrotTEMP;echo $f';
 
-    # screenshotDIR="~/myfiles/screenshots/$(date +%Y)/$(date +%B-%Y)/$(date +%F)";
-    # mkdir -p $screenshotDIR;
-    # scrot -e 'mv $f ~/myfiles/screenshots/scrotTEMP;echo $f';
-
-    #/bin/ls ~/myfiles/screenshots/scrotTEMP/
-    #screenshotFILE=$(/bin/ls ~/myfiles/screenshots/scrotTEMP/)
-    #mv ~/myfiles/screenshots/scrotTEMP/$screenshotFILE $screenshotDIR/$(date +%Y-%m-%d-%T).png
-    ####mv ~/myfiles/screenshots/scrotTEMP/* $screenshotDIR/;
-    #st scrot -sf ~/myfiles/screenshots/$(date +%Y)/$(date +%B-%Y)/$(date +%F)/$(date +%Y-%m-%d-%T).png"
+	#/bin/ls ~/myfiles/screenshots/scrotTEMP/
+	#screenshotFILE=$(/bin/ls ~/myfiles/screenshots/scrotTEMP/)
+	#mv ~/myfiles/screenshots/scrotTEMP/$screenshotFILE $screenshotDIR/$(date +%Y-%m-%d-%T).png
+	####mv ~/myfiles/screenshots/scrotTEMP/* $screenshotDIR/;
+	#st scrot -sf ~/myfiles/screenshots/$(date +%Y)/$(date +%B-%Y)/$(date +%F)/$(date +%Y-%m-%d-%T).png"
 }
 
 takeCustomScreenshot() {
-    screenshotDIR="$HOME/myfiles/screenshots/$(date +%Y)/$(date +%B-%Y)/$(date +%F)";
-    mkdir -p "$screenshotDIR";
-    maim -s "$screenshotDIR/hp15-screenshot-$(date +%Y-%m-%d_%H-%M-%S-%s).png";
+	screenshotDIR="$HOME/myfiles/screenshots/$(date +%Y)/$(date +%B-%Y)/$(date +%F)"
+	mkdir -p "$screenshotDIR"
+	maim -s "$screenshotDIR/hp15-screenshot-$(date +%Y-%m-%d_%H-%M-%S-%s).png"
 
+	# screenshotDIR="~/myfiles/screenshots/$(date +%Y)/$(date +%B-%Y)/$(date +%F)";
+	# mkdir -p $screenshotDIR;
+	# scrot -sfe 'mv $f ~/myfiles/screenshots/scrotTEMP;echo $f';
 
-
-    # screenshotDIR="~/myfiles/screenshots/$(date +%Y)/$(date +%B-%Y)/$(date +%F)";
-    # mkdir -p $screenshotDIR;
-    # scrot -sfe 'mv $f ~/myfiles/screenshots/scrotTEMP;echo $f';
-
-    #/bin/ls ~/myfiles/screenshots/scrotTEMP/
-    #screenshotFILE=$(/bin/ls ~/myfiles/screenshots/scrotTEMP/)
-    #mv ~/myfiles/screenshots/scrotTEMP/$screenshotFILE $screenshotDIR/$(date +%Y-%m-%d-%T).png
-    ####mv ~/myfiles/screenshots/scrotTEMP/* $screenshotDIR/;
-    #st scrot -sf ~/myfiles/screenshots/$(date +%Y)/$(date +%B-%Y)/$(date +%F)/$(date +%Y-%m-%d-%T).png"
+	#/bin/ls ~/myfiles/screenshots/scrotTEMP/
+	#screenshotFILE=$(/bin/ls ~/myfiles/screenshots/scrotTEMP/)
+	#mv ~/myfiles/screenshots/scrotTEMP/$screenshotFILE $screenshotDIR/$(date +%Y-%m-%d-%T).png
+	####mv ~/myfiles/screenshots/scrotTEMP/* $screenshotDIR/;
+	#st scrot -sf ~/myfiles/screenshots/$(date +%Y)/$(date +%B-%Y)/$(date +%F)/$(date +%Y-%m-%d-%T).png"
 }
-
-
-
 
 # Didable less histry file
 export LESSHISTORYFILE=-
@@ -535,7 +499,6 @@ export LESSHISTORYFILE=-
 
 # dracula FZF
 export FZF_DEFAULT_OPTS='--color=fg:#f8f8f2,bg:#282a36,hl:#bd93f9 --color=fg+:#f8f8f2,bg+:#44475a,hl+:#bd93f9 --color=info:#ffb86c,prompt:#50fa7b,pointer:#ff79c6 --color=marker:#ff79c6,spinner:#ffb86c,header:#6272a4'
-
 
 # TO RUN A FILE IF IT EXISTS LIKE THIS
 # -

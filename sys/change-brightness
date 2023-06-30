@@ -5,27 +5,26 @@ BACKLIGHT_DIR="/sys/class/backlight/amdgpu_bl0"
 MAX_BRIGHTNESS="$(cat "$BACKLIGHT_DIR/max_brightness")"
 CURRENT_BRIGHTNESS="$(cat "$BACKLIGHT_DIR/brightness")"
 
-if [ "$1" = "" ];then
-				echo "MAX_BRIGHTNESS: $MAX_BRIGHTNESS, CURRENT_BRIGHTNESS: $CURRENT_BRIGHTNESS"
+if [ "$1" = "" ];then :
 elif [ "$1" = "+" ];then
-        NEW_BRIGHTNESS=$(( "$CURRENT_BRIGHTNESS" + "$MAX_BRIGHTNESS" * 1/100 ))
-        echo "$NEW_BRIGHTNESS" > "$BACKLIGHT_DIR/brightness"
+  NEW_BRIGHTNESS=$(( "$CURRENT_BRIGHTNESS" + "$MAX_BRIGHTNESS" * 1/100 ))
+  echo "$NEW_BRIGHTNESS" > "$BACKLIGHT_DIR/brightness"
 elif [ "$1" = "-" ];then
-        NEW_BRIGHTNESS=$(( "$CURRENT_BRIGHTNESS" - "$MAX_BRIGHTNESS" * 1/100 ))
-        echo "$NEW_BRIGHTNESS" > "$BACKLIGHT_DIR/brightness"
+  NEW_BRIGHTNESS=$(( "$CURRENT_BRIGHTNESS" - "$MAX_BRIGHTNESS" * 1/100 ))
+  echo "$NEW_BRIGHTNESS" > "$BACKLIGHT_DIR/brightness"
 elif [ "$1" -le 100 ] && [ "$1" -gt 0 ];then
-        #echo "$1% of $MAX_BRIGHTNESS is: $(( "$MAX_BRIGHTNESS"*$1/100 )) units"
-        echo $(( "$MAX_BRIGHTNESS"*$1/100 )) > "$BACKLIGHT_DIR/brightness"
-        exit 0;
-
+  #echo "$1% of $MAX_BRIGHTNESS is: $(( "$MAX_BRIGHTNESS"*$1/100 )) units"
+  echo $(( "$MAX_BRIGHTNESS"*$1/100 )) > "$BACKLIGHT_DIR/brightness"
 elif [ "$1" -le "$MAX_BRIGHTNESS" ] && [ "$1" -ge "100" ];then
-        echo "$1" > "$BACKLIGHT_DIR/brightness"
-        exit 0;
+  echo "$1" > "$BACKLIGHT_DIR/brightness"
 else
-        echo "100-$MAX_BRIGHTNESS or"
-        echo "1-100 for %"
-        exit 0;
+  echo "100-$MAX_BRIGHTNESS or"
+  echo "1-100 for %"
 fi
+
+MAX_BRIGHTNESS="$(cat "$BACKLIGHT_DIR/max_brightness")"
+CURRENT_BRIGHTNESS="$(cat "$BACKLIGHT_DIR/brightness")"
+echo "MAX_BRIGHTNESS: $MAX_BRIGHTNESS, CURRENT_BRIGHTNESS: $CURRENT_BRIGHTNESS"
 
 
 #sudo bash -c "$(declare -f); changeBrightness $newBrightness"
