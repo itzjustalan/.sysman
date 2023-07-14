@@ -43,12 +43,16 @@ setupWindow() {
   tmux new-window -n "$name"
   if ${apps[$name,start]}; then
     tmux send-keys './dev.sh' 'Enter'
-    tmux split-window -hZ
+    # tmux split-window -hZ
+    tmux split-window -h
     tmux send-keys 'nv .' 'Enter'
+    tmux last-pane -Z
   else
     ${apps[$name,run]} && tmux send-keys './dev.sh' 'Enter'
-    tmux split-window -hZ
+    # tmux split-window -hZ
+    tmux split-window -h
     ${apps[$name,edit]} && tmux send-keys 'nv .' 'Enter'
+    tmux last-pane -Z
   fi
   cd "-" 1> /dev/null
 }
@@ -107,7 +111,7 @@ if [ "$#" = 0 ]; then # when ran with no arguments
 	G_SC_BARE=false
   # apps["opw","start"]="true"
   # apps["acs","start"]="true"
-  # apps["gms","start"]="true"
+  # apps["los","start"]="true"
   # apps["gts","start"]="true"
   # apps["sos","start"]="true"
 

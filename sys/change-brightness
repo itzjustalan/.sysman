@@ -4,8 +4,11 @@ BACKLIGHT_DIR="/sys/class/backlight/amdgpu_bl0"
 
 MAX_BRIGHTNESS="$(cat "$BACKLIGHT_DIR/max_brightness")"
 CURRENT_BRIGHTNESS="$(cat "$BACKLIGHT_DIR/brightness")"
+PREVIOUS_BRIGHTNESS="$CURRENT_BRIGHTNESS"
 
 if [ "$1" = "" ];then :
+elif [ "${1::2}" = "--" ];then
+  echo "${1:2}" > "$BACKLIGHT_DIR/brightness"
 elif [ "$1" = "+" ];then
   NEW_BRIGHTNESS=$(( "$CURRENT_BRIGHTNESS" + "$MAX_BRIGHTNESS" * 1/100 ))
   echo "$NEW_BRIGHTNESS" > "$BACKLIGHT_DIR/brightness"
@@ -22,9 +25,8 @@ else
   echo "1-100 for %"
 fi
 
-MAX_BRIGHTNESS="$(cat "$BACKLIGHT_DIR/max_brightness")"
 CURRENT_BRIGHTNESS="$(cat "$BACKLIGHT_DIR/brightness")"
-echo "MAX_BRIGHTNESS: $MAX_BRIGHTNESS, CURRENT_BRIGHTNESS: $CURRENT_BRIGHTNESS"
+echo "MAX_BRIGHTNESS: $MAX_BRIGHTNESS, CURRENT_BRIGHTNESS: $CURRENT_BRIGHTNESS, DIFF: $(( "$CURRENT_BRIGHTNESS" - "$PREVIOUS_BRIGHTNESS"))"
 
 
 #sudo bash -c "$(declare -f); changeBrightness $newBrightness"

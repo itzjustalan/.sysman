@@ -1,6 +1,2 @@
--- local p = ...
--- print(vim.inspect(p .. "-haa"))
-return {}
--- require("keymaps")
--- require("plugins")
--- require("catppuccin")
+-- bootstrap lazy.nvim, LazyVim and your plugins
+require("config.lazy")

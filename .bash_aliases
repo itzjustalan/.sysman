@@ -53,7 +53,7 @@ alias m=mpv
 alias z="zathura"
 #alias rm="rm -rfi"
 # alias ll='lsd -lah --group-dirs first --color=auto'
-alias ll='lsd -lA --group-dirs=last --color=always --icon=always --icon-theme=fancy --permission=rwx --blocks=permission,user,size,name'
+alias ll='lsd -lA --group-dirs=first --color=always --icon=always --icon-theme=fancy --permission=rwx --blocks=permission,user,size,name'
 alias jj="ll"
 alias kk="ll"
 alias cdd="cd .."
@@ -61,7 +61,7 @@ alias cdc="cd -"
 alias diff="diff --color=auto"
 alias mkdir="mkdir -p"
 alias chbr="sudo /home/alan/.sysman/sys/change-brightness"
-alias bts="sudo /home/alan/.sysman/sys/get-bat-stats.sh"
+alias bts="/home/alan/.sysman/sys/get-bat-stats.sh;date"
 alias curdir="pwd | rev | cut -d '/' -f 1 | rev"
 alias sortsize="/bin/ls -lSah --color=auto"
 #alias cowsayy="cowsay -f $(ls ~/myfiles/mycows | shuf -n 1)"
@@ -97,7 +97,7 @@ alias adg="cat ~/myfiles/agenda"
 alias eadg="$EDITOR ~/myfiles/agenda"
 alias eqq="$EDITOR ~/static/quick"
 #alias scrc="scrcpy -S"
-alias shtn="uptime -p;sleep 1s;shutdown now"
+alias shtn="bts;uptime -p;sleep 1s;shutdown now"
 alias start-rdp="sudo /etc/init.d/xrdp start"
 alias stop-rdp="sudo /etc/init.d/xrdp stop"
 alias setx="xrandr --output HDMI-1-1 --auto --rotate right --left-of eDP-1"
@@ -209,6 +209,7 @@ alias gpull="git pull origin main"
 alias gss="git add -A;git commit -m \"automated commit\";git pull origin;git push origin;git status"
 alias gsl="git add -A;git commit -m \"automated commit\";"
 alias gsm="git add -A;git commit -m "
+alias gcb="git branch --color --sort=committerdate | sk --ansi -p \"branch: \" --preview \"git diff --color {-1}\" --preview-window left | xargs git checkout"
 
 # git completions fix
 __git_complete gs _git_status
