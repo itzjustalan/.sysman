@@ -3,6 +3,7 @@
 
 
 #cat ~/.config/emoji | dmenu | awk '{print $1}' | xclip -selection clipboard
-selection=$(cat ~/.config/emoji-list | dmenu -b -l 30)
+# selection=$(cat ~/.config/emoji-list | dmenu -b -l 30)
+selection=$(cat ~/.config/emoji-list | sk)
 echo $selection | awk '{print $1}' | tr -d '\n' | xclip -selection clipboard
 notify-send "$selection"

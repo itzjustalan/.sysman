@@ -9,6 +9,54 @@ add_newline = true
 # [character] # The name of the module we are configuring is "character"
 # success_symbol = "[➜](bold green)" # The "success_symbol" segment is being set to "➜" with the color "bold green"
 
+# ~/.config/starship.toml
+
+[battery]
+style = 'green'
+unknown_symbol = '󰂄 not charging 😌 '  # not_charging_symbol!
+charging_symbol = '󱊤 '
+# discharging_symbol = '󰂃󰀦 '
+discharging_symbol = '🔋🥵💦🚨 Discharging '
+
+[[battery.display]]
+threshold = 70
+style = 'bold red'
+
+[[battery.display]]
+threshold = 80
+style = 'green'
+
+# [[battery.display]]
+# threshold = 50
+# style = 'bold red'
+# charging_symbol = '󱊤 '
+#
+# [[battery.display]]
+# threshold = 60
+# style = 'red'
+# charging_symbol = '󱊤 '
+#
+# [[battery.display]]
+# threshold = 70
+# style = 'yellow'
+# charging_symbol = '󱊥 '
+#
+# # add new state for not charging
+# [[battery.display]]
+# threshold = 80
+# style = 'green'
+# charging_symbol = '󱊦 '
+
+# [[battery.display]]
+# threshold = 99
+# style = 'green'
+# charging_symbol = '󱊦 '
+#
+# [[battery.display]]
+# threshold = 100
+# style = 'bold green'
+# charging_symbol = '󰂅'
+
 [package]
 symbol = " "
 

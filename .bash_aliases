@@ -48,6 +48,7 @@ alias free='free -m' # show sizes in MB
 alias more=less
 alias sv="sudoedit"
 alias nv=nvim
+alias "nv."="nvim ."
 #alias v=nvim
 alias m=mpv
 alias z="zathura"
@@ -209,7 +210,7 @@ alias gpull="git pull origin main"
 alias gss="git add -A;git commit -m \"automated commit\";git pull origin;git push origin;git status"
 alias gsl="git add -A;git commit -m \"automated commit\";"
 alias gsm="git add -A;git commit -m "
-alias gcb="git branch --color --sort=committerdate | sk --ansi -p \"branch: \" --preview \"git diff --color {-1}\" --preview-window left | xargs git checkout"
+alias gcb="git branch --color --sort=committerdate | sk --ansi -p \"branch: \" --preview \"git diff --color {-1}\" --preview-window right | xargs git checkout"
 
 # git completions fix
 __git_complete gs _git_status

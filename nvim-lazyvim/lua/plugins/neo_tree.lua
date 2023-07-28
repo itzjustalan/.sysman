@@ -37,8 +37,10 @@ return {
     close_if_last_window = true,
     filesystem = {
       bind_to_cwd = false,
-      follow_current_file = true,
       use_libuv_file_watcher = true,
+      follow_current_file = {
+        enabled = true,
+      }
     },
     window = {
       popup = {
@@ -103,7 +105,8 @@ return {
       {
         event = "file_opened",
         handler = function(file_path)
-          require("neo-tree").close_all()
+          vim.cmd([[Neotree close]])
+          -- require("neo-tree").close()
         end,
       },
     },
