@@ -88,7 +88,7 @@ setupTMUX() {
 
   cd "$G_WP_DIR"
   tmux new-window -n "deps"
-  tmux send-keys "$G_WP_DEP_EXEC" 'Enter'
+  # tmux send-keys "$G_WP_DEP_EXEC" 'Enter'
 
   # Select window #1 and attach to the session
   tmux select-window -t "$G_WP_NAME:2"
@@ -110,9 +110,9 @@ if [ "$#" = 0 ]; then # when ran with no arguments
   # (google-chrome-stable &> /dev/null &)
 	G_SC_BARE=false
   # apps["opw","start"]="true"
-  # apps["acs","start"]="true"
-  # apps["los","start"]="true"
   # apps["gts","start"]="true"
+  # apps["acs","start"]="true"
+  # apps["gms","start"]="true"
   # apps["sos","start"]="true"
 
 else
@@ -134,7 +134,7 @@ else
       # (insomnia-designer --in-process-gpu &> /dev/null &)
     elif [ -n "${apps[$flag,dir]}" ]; then
       echo "${apps[$flag,dir]}"
-      # apps[$flag,start]=true
+      apps[$flag,start]=true
     elif [ "$flag" = "-d" ] || [ "$flag" = "--dev" ]; then
       echo "--debb"
       # (mingo &> /dev/null &)

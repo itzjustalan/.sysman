@@ -148,7 +148,7 @@ op() {
 	xdg-open "$(find -type f ! -path './cargo/*','./cache/','./config/' | fzf)"
 }
 
-alias gp="find -type f ! -path './cargo/*','./cache/','./config/' | fzf | sed 's/^..//' | tr -d '\n' | xclip -selection c"
+# alias gp="find -type f ! -path './cargo/*','./cache/','./config/' | fzf | sed 's/^..//' | tr -d '\n' | xclip -selection c"
 
 sxq() {
 	sx $@ | gqr
@@ -351,6 +351,23 @@ umm() {
 }
 
 alias umms="less ~/static/umms"
+
+gg() {
+  flags="--new-tab"
+  browser="firefox"
+  engine="https://www.google.com/search?q="
+  if [[ "$1" == "-p" ]]; then
+    flags="$flags --private-window"
+    shift 1
+  fi
+  q=$(echo "$@" | tr " " "+")
+  # echo "$browser $flags $engine$q";
+  eval "$browser $flags $engine$q";
+}
+
+gp() {
+  gg -p $@
+}
 
 # sys functions
 [[ -f ~/.local/bin/sys/systemsettings ]] && . ~/.local/bin/sys/systemsettings
