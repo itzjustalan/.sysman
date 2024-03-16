@@ -14,7 +14,6 @@ add_newline = true
 error_symbol = '🦹: you got no power here!'
 
 [battery]
-style = 'green'
 unknown_symbol = '󰂄 not charging 😌 '  # not_charging_symbol!
 charging_symbol = '󱊤 '
 # discharging_symbol = '󰂃󰀦 '

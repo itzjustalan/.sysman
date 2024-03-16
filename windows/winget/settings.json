@@ -1,0 +1,14 @@
+{
+  "$schema": "https://github.com/microsoft/winget-cli/blob/master/schemas/JSON/settings/settings.schema.0.2.json",
+  "visual": {
+    "progressBar": "accent"
+  },
+  "installBehavior": {
+    "defaultInstallRoot": "D:\\inns\\winget",
+    "portablePackageUserRoot": "D:\\inns\\winget",
+    "portablePackageMachineRoot": "D:\\inns\\winget"
+  },
+  "telemetry": {
+    "disable": true
+  }
+}
