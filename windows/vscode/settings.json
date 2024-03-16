@@ -1,0 +1,32 @@
+{
+    "workbench.colorTheme": "Catppuccin Mocha",
+    "workbench.startupEditor": "none",
+    "workbench.iconTheme": "icons",
+    "editor.fontSize": 14,
+    "editor.wordWrap": "on",
+    "editor.lineNumbers": "on",
+    "vim.useCtrlKeys": true,
+    // "vim.useCtrlKeys": false,
+    "vim.useSystemClipboard": true,
+    "vim.insertModeKeyBindings": [
+        {
+            "before": [
+                "j",
+                "j"
+            ],
+            "after": [
+                "<Esc>",
+                "<Esc>"
+            ]
+        }
+    ],
+    "files.autoSave": "afterDelay",
+    "editor.fontFamily": "Hack, Consolas, 'Courier New', monospace",
+    "extensions.experimental.affinity":{
+        "vscodevim.vim": 1
+    },
+    "workbench.productIconTheme": "bongocat",
+    "workbench.panel.defaultLocation": "right",
+    // "workbench.activityBar.location": "top",
+    "workbench.activityBar.iconClickBehavior": "toggle"
+}
