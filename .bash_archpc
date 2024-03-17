@@ -7,6 +7,9 @@
 #(cat ~/.cache/wal/sequences &)
 
 
+# load envs
+export BUN_INSTALL="$HOME/.bun"
+
 #export PATH=$PATH:/path/to/dir1		  #or
 #export PATH=$PATH:/path/to/dir1:/path/to/dir2
 
@@ -20,12 +23,15 @@ export PATH=$PATH:
 export PATH=$PATH:
 export PATH=$PATH:~/.cargo/bin/
 export PATH=$PATH:~/.deno/bin/
+export PATH=$PATH:~/.bun/bin
+export PATH=$PATH:
 export PATH=$PATH:
 export PATH=$PATH:~/fvm/default/bin
 export PATH=$PATH:
 export PATH=$PATH:
 export PATH=$PATH:
 export PATH=$PATH:
+#export PATH=$BUN_INSTALL/bin:$PATH
 
 # other tools
 export VOLTA_HOME="$HOME/.volta"
