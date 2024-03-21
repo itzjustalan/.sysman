@@ -4,4 +4,6 @@
 
 vim.opt.wrap = true
 vim.g.autoformat = false
+vim.g.fixendofline = false
+vim.g.fixol = false
 

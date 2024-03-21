@@ -85,6 +85,9 @@ export LS_COLORS="$LS_COLORS:ow=1;34:tw=1;34:" # remove sticky colors
 export STARSHIP_LOG=error
 eval "$(starship init bash)"
 
+# zoxide
+eval "$(zoxide init bash)"
+
 
 # nvm setup
 #export NVM_DIR="$HOME/.nvm"

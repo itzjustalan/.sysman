@@ -51,10 +51,11 @@ alias nv=nvim
 alias "nv."="nvim ."
 #alias v=nvim
 alias m=mpv
-alias z="zathura"
+#alias z="zathura"
 #alias rm="rm -rfi"
 # alias ll='lsd -lah --group-dirs first --color=auto'
 alias ll='lsd -lA --group-dirs=first --color=always --icon=always --icon-theme=fancy --permission=rwx --blocks=permission,user,size,name'
+alias lll='lsd -lA --group-dirs=first --color=always --icon=always --icon-theme=fancy --permission=rwx --blocks=permission,user,size,date,name'
 alias jj="ll"
 alias kk="ll"
 alias cdd="cd .."
@@ -83,7 +84,8 @@ alias pSyyu="paru -Syyu"
 alias mci="make clean install"
 alias smci="sudo make clean install"
 alias wcl="wc -l"
-alias lff="lfcd"
+alias lf="yazi"
+alias lff="cd_with_terminal_filemanager"
 alias ccal='python3 /usr/bin/calcurse-caldav; calcurse; python3 /usr/bin/calcurse-caldav'
 # alias cppa="echo cd $(pwd) |xsc"
 cppa() {
@@ -229,11 +231,11 @@ alias docker="sudo docker"
 alias nrs="npm run start"
 
 # WSl drives
-alias c:="cd /media/win/c"
-alias d:="cd /media/win/d"
-alias e:="cd /media/win/e"
-alias f:="cd /media/win/f"
-alias g:="cd /media/win/g"
+alias c:="cd /mnt/win/c"
+alias d:="cd /mnt/win/d"
+alias e:="cd /mnt/win/e"
+alias f:="cd /mnt/win/f"
+alias g:="cd /mnt/win/g"
 
 # tmux
 alias tks="tmux kill-server"
@@ -245,14 +247,14 @@ alias my="cd ~/myfiles/"
 alias myg="cd ~/myfiles/pgms/"
 # alias msc="cd ~/.local/bin/myscripts/"
 alias msc="cd ~/.sysman"
-alias gdb="cd ~/work/oneplay/"
-alias gdc="cd ~/work/deltra/flutter/customer_app2/"
-alias gdd="cd ~/work/deltra/flutter/delivery_app2/"
+alias gdb="cd ~/work/rkd/"
+# alias gdc="cd ~/work/deltra/flutter/customer_app2/"
+# alias gdd="cd ~/work/deltra/flutter/delivery_app2/"
 #alias gdi="cd ~/work/indic_law/"
 #alias gdm="cd ~/work/milibus/"
-alias gds="cd ~/work/deltra/sales_app2/"
-alias gdt="cd ~/myfiles/repos/.dotfiles/"
-alias gdwsalba="cd ~/work/backend/;tmux new-session \; split-window -h \;"
+# alias gds="cd ~/work/deltra/sales_app2/"
+# alias gdt="cd ~/myfiles/repos/.dotfiles/"
+# alias gdwsalba="cd ~/work/backend/;tmux new-session \; split-window -h \;"
 
 nrd() { # shim lol
 	if [ -f "package.json" ]; then
@@ -413,19 +415,16 @@ if [ -f ~/.config/lf/icons ]; then
 fi
 
 # cd to last dir on lf exit
-lfcd() {
-	tmp="$(mktemp)"
-	lf -last-dir-path="$tmp" "$@"
-	cd $(cat $tmp)
-	#if [ -f "$tmp" ]; then
-	# dir="$(cat "$tmp")"
-	# rm -f "$tmp"
-	#  if [ -d "$dir" ]; then
-	#       if [ "$dir" != "$(pwd)" ]; then
-	#            cd "$dir"
-	#         fi
-	#      fi
-	#   fi
+cd_with_terminal_filemanager() {
+	# tmp="$(mktemp)"
+	# lf -last-dir-path="$tmp" "$@"
+	# cd $(cat $tmp)
+  local tmp="$(mktemp -t "yazi-cwd.XXXXX")"
+	yazi "$@" --cwd-file="$tmp"
+	if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+		cd -- "$cwd"
+	fi
+	rm -f -- "$tmp"
 }
 
 # cdb wrapper

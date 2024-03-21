@@ -1,7 +1,7 @@
 {
     "workbench.colorTheme": "Catppuccin Mocha",
     "workbench.startupEditor": "none",
-    "workbench.iconTheme": "icons",
+    "workbench.iconTheme": "catppuccin-mocha",
     "editor.fontSize": 14,
     "editor.wordWrap": "on",
     "editor.lineNumbers": "on",
