@@ -123,9 +123,12 @@
     "spacing": 10
   },
   "clock": {
-    // "timezone": "America/New_York",
+    //"timezone": "America/New_York",
+    //"timezone": "Asia/Kolkata",
+    "timezones": [ "Asia/Kolkata", "America/New_York" ],
     "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-    "format-alt": "{:%Y-%m-%d}"
+    "format-alt": "{:%Y-%m-%d}",
+    "format": "{:%a, %I:%M %p}"
   },
   "cpu": {
     "format": "{usage}% ",
