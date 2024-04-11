@@ -89,7 +89,18 @@ alias lff="cd_with_terminal_filemanager"
 alias ccal='python3 /usr/bin/calcurse-caldav; calcurse; python3 /usr/bin/calcurse-caldav'
 # alias cppa="echo cd $(pwd) |xsc"
 cppa() {
-	echo cd $(pwd) | xclip -selection clipboard
+	# echo cd $(pwd) | xclip -selection clipboard
+	echo cd $(pwd) | wl-copy
+}
+cppf() {
+  filepath="$HOME/screenshots/$(date +%Y)/$(date +%m)"
+  if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
+    # mkdir "$filepath"
+    mkdir -p "$filepath"
+    wl-paste -t image/png > "$filepath/$(date +%Y-%m-%d_%T_%s).png"
+  else
+    echo "not wayland!"
+  fi
 }
 
 # pgms

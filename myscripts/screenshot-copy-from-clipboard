@@ -1,0 +1,9 @@
+#!/bin/bash
+
+filepath="$HOME/screenshots/$(date +%Y)/$(date +%m)"
+if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
+  mkdir -p "$filepath"
+  wl-paste -t image/png > "$filepath/$(date +%Y-%m-%d_%T_%s).png"
+else
+  echo "not wayland!"
+fi

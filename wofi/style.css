@@ -1,0 +1,92 @@
+@define-color base00 #1e1e2e;
+@define-color base01 #181825;
+@define-color base02 #313244;
+@define-color base03 #45475a;
+@define-color base04 #585b70;
+@define-color base05 #cdd6f4;
+@define-color base06 #f5e0dc;
+@define-color base07 #b4befe;
+@define-color base08 #f38ba8;
+@define-color base09 #fab387;
+@define-color base0A #f9e2af;
+@define-color base0B #a6e3a1;
+@define-color base0C #94e2d5;
+@define-color base0D #89b4fa;
+@define-color base0E #cba6f7;
+@define-color base0F #f2cdcd;
+
+window {
+  /* opacity: 0.9; */
+  border: 0px;
+  border-radius: 10px;
+  font-family: monospace;
+  font-size: 18px;
+  background-color: transparent;
+}
+
+#input {
+  border-radius: 10px 10px 0px 0px;
+  padding: 10px;
+  margin: 0px;
+  font-size: 28px;
+  border: 2px solid @base0E;
+  color: @base0B;
+  background-color: @base00;
+  /* background-color: transparent; */
+}
+
+#inner-box {
+  margin: 0px;
+  padding: 20px 40px 0px 40px;
+  color: @base06;
+  background-color: @base00;
+  /* background-color: transparent; */
+  /* background-color: red; */
+}
+
+#outer-box {
+  margin: 0px;
+  border-radius: 10px;
+  background-color: @base00;
+}
+
+#selected {
+  color: @base00;
+  background-color: @base0E;
+}
+
+#entry {
+  padding: 0px;
+  margin-bottom: 16px;
+  border: 2px solid @base0E;
+  background-color: @base00;
+  /* background-color: transparent; */
+}
+
+#text {
+  margin: 0px;
+  /* padding: 2px 2px 2px 10px; */
+  padding: 10px;
+}
+
+#img {
+  margin-left: 8px;
+}
+
+#entry:selected {
+  background-color: @base0E;
+}
+
+/**/
+/* #entry:hover { */
+/*   background-color: #FF000004; */
+/* } */
+/**/
+/* #text:selected { */
+/*   background-color: @base0E; */
+/* } */
+
+/* #scroll { */
+/*   margin: 5px; */
+/*   background-color: @base00; */
+/* } */
