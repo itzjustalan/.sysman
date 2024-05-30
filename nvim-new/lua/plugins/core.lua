@@ -43,4 +43,15 @@ return {
       },
     },
   },
+  {
+    "neovim/nvim-lspconfig",
+    opts = {
+      setup = {
+        biome = function()
+          require("lspconfig").biome.setup{}
+          return true
+        end,
+      }
+    },
+  },
 }
