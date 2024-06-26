@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if pgrep "hyprlock" >/dev/null; then
+  echo "skipping"
+else
+  hyprlock
+fi
+

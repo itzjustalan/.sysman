@@ -1,0 +1,10 @@
+#!/bin/bash
+
+p="${1}"
+
+if pgrep $p >/dev/null; then
+  echo "skipping"
+else
+  "$p" &
+fi
+
