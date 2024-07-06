@@ -104,12 +104,13 @@ cppf() {
 }
 
 # pgms
-alias quick="cat ~/myfiles/quick"
+# alias quick="cat ~/myfiles/quick"
 alias qq="cat ~/static/quick"
 alias bb="cat ~/static/bindings" # bring bindings
 alias adg="cat ~/myfiles/agenda"
 alias eadg="$EDITOR ~/myfiles/agenda"
 alias eqq="$EDITOR ~/static/quick"
+alias wkk="$EDITOR /mnt/win/d/docs/pnotes/pages/index.md"
 #alias scrc="scrcpy -S"
 alias shtn="bts;uptime -p;sleep 1s;shutdown now"
 alias start-rdp="sudo /etc/init.d/xrdp start"
