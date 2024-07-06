@@ -2,10 +2,13 @@
 	email = itzjustalan@gmail.com
 	name = Alan K John
   #signingkey = 92C2C2B2C7836801
-[pull]
-	rebase = true
+[core]
+  pager = delta
+	autocrlf = input
 [init]
 	defaultBranch = main
+[pull]
+	rebase = true
 
 # work specific folders -
 # designcrewz
@@ -23,4 +26,26 @@
 [gpg]
 	program = gpg2
 [safe]
+	directory = /mnt/d
+	directory = /mnt/d/linx/.sysman
+	directory = /mnt/d/work/rkd/identity.charitable.one
+	directory = /mnt/win/d/work/rkd/identity-dashboard-api
+	directory = /mnt/win/d/work/rkd/identity.charitable.one
+	directory = /mnt/win/d/work/rkd/app.charitable.one
+	directory = /mnt/win/d/work/rkd/services
+	directory = /mnt/win/d/linx/.sysman
+	directory = /mnt/win/d/work/rkd/dmc-dashboard
 	directory = *
+
+[interactive]
+    diffFilter = delta --color-only
+[delta]
+    side-by-side = true
+    navigate = true    # use n and N to move between diff sections
+    # delta detects terminal colors automatically; set one of these to disable auto-detection
+    dark = true
+    ; light = true
+[merge]
+    conflictstyle = diff3
+[diff]
+    colorMoved = default

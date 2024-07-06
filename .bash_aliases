@@ -151,6 +151,14 @@ alias avd="~/development/android-sdk/emulator/emulator -avd Pixel_4_API_30"
 alias lofi="mpv https://www.youtube.com/watch?v=5qap5aO4i9A --no-video --force-seekable=yes"
 
 alias manpup="$EDITOR ~/myfiles/repos/pup/README.md"
+#alias pacman=paru
+
+alias bashrc="$EDITOR ~/.bash_thispc"
+#alias npm="pnpm"
+alias runemulator="emulator -avd Pixel_4_API_30"
+alias flrun="flutter run -d emulator-5554"
+# alias chbr="sudo changeBrightness"
+alias zf="fzf --preview \"bat --color=always --style=numbers --line-range=:500 {}\""
 
 # fzf stuff
 
@@ -529,9 +537,6 @@ export LESSHISTORYFILE=-
 #eval "$(starship init bash)"
 
 #source ~/.config/bash/.bash-powerline.sh
-
-# dracula FZF
-export FZF_DEFAULT_OPTS='--color=fg:#f8f8f2,bg:#282a36,hl:#bd93f9 --color=fg+:#f8f8f2,bg+:#44475a,hl+:#bd93f9 --color=info:#ffb86c,prompt:#50fa7b,pointer:#ff79c6 --color=marker:#ff79c6,spinner:#ffb86c,header:#6272a4'
 
 # TO RUN A FILE IF IT EXISTS LIKE THIS
 # -
