@@ -62,7 +62,7 @@ alias cdd="cd .."
 alias cdc="cd -"
 alias diff="diff --color=auto"
 alias mkdir="mkdir -p"
-alias chbr="sudo /home/alan/.sysman/sys/change-brightness"
+# alias chbr="sudo /home/alan/.sysman/sys/change-brightness"
 alias bts="/home/alan/.sysman/sys/get-bat-stats.sh;date"
 alias curdir="pwd | rev | cut -d '/' -f 1 | rev"
 alias sortsize="/bin/ls -lSah --color=auto"
@@ -111,6 +111,7 @@ alias adg="cat ~/myfiles/agenda"
 alias eadg="$EDITOR ~/myfiles/agenda"
 alias eqq="$EDITOR ~/static/quick"
 alias wkk="$EDITOR /mnt/win/d/docs/pnotes/pages/index.md"
+alias vkk="$EDITOR /mnt/win/d/docs/pnotes/pages/index.md"
 #alias scrc="scrcpy -S"
 alias shtn="bts;uptime -p;sleep 1s;shutdown now"
 alias start-rdp="sudo /etc/init.d/xrdp start"
@@ -222,7 +223,7 @@ alias cm="git commit -m "
 alias gl="git log --all --graph --decorate"
 alias gb="git branch"
 alias gc="git checkout"
-alias gd="git diff"
+alias gd="git diff -- ':!package-lock.json' ':!src/routeTree.gen.ts'"
 alias gr="git remote"
 alias grv="git remote -v"
 alias gll="git log --oneline"
@@ -284,6 +285,8 @@ nrd() { # shim lol
 		npm run dev
 	elif [[ -f "Makefile" ]]; then
 		make
+	elif [[ -f "nodemon.json" ]]; then
+    nodemon
 	fi
 }
 

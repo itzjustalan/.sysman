@@ -4,6 +4,8 @@ return {
     config = function()
       require("luasnip.loaders.from_vscode").lazy_load()
       require("luasnip").filetype_extend("typescript", { "javascript" })
+      require("luasnip").filetype_extend("typescriptreact", { "javascript" })
+      require("luasnip").filetype_extend("javascriptreact", { "javascript" })
       require("luasnip").filetype_extend("html", { "javascript" })
       -- require("luasnip.loaders.from_vscode").lazy_load({
       --   paths = { "~/.config/VSCodium/User/snippets" },

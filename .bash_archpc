@@ -6,7 +6,6 @@
 # Not supported in the "fish" shell.
 #(cat ~/.cache/wal/sequences &)
 
-
 # load envs
 export BUN_INSTALL="$HOME/.bun"
 

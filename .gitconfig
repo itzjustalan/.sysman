@@ -9,6 +9,8 @@
 	defaultBranch = main
 [pull]
 	rebase = true
+[include]
+  path = ~/.sysman/catppuccin.gitconfig
 
 # work specific folders -
 # designcrewz
@@ -42,9 +44,11 @@
 [delta]
     side-by-side = true
     navigate = true    # use n and N to move between diff sections
+    line-numbers = true
     # delta detects terminal colors automatically; set one of these to disable auto-detection
     dark = true
     ; light = true
+  features = catppuccin-mocha
 [merge]
     conflictstyle = diff3
 [diff]
