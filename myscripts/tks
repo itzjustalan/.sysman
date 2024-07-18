@@ -1,0 +1,10 @@
+#/bin/bash
+
+if [ -z "$1" ]
+  then
+    ses=$(tmux ls | fzf | cut -d: -f1)
+    tmux kill-session -t $ses
+  else
+    tmux kill-session -t $1
+fi
+

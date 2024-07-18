@@ -262,7 +262,7 @@ alias g:="cd /mnt/win/g"
 # tmux
 # tmux ls
 # tmux kill-server
-alias tks="tmux kill-session -t"
+# alias tks="tmux kill-session -t"
 
 # work spaces
 alias wp="cd ~/wp/"
