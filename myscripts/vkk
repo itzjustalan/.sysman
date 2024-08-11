@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+EDITOR=nvim
+DEFAULT_FILE="gbs - rkd.md"
+PAGES_PATH="/mnt/win/d/docs/pnotes/pages/"
+PAGE=$(printf "$DEFAULT_FILE\n$(ls $PAGES_PATH)" | fzf)
+$EDITOR -c "cd $PAGES_PATH" "$PAGES_PATH$PAGE"
+

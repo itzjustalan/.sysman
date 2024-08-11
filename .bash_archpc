@@ -57,6 +57,16 @@ export CHROME_EXECUTABLE="/usr/bin/google-chrome-stable"
 # cargo
 . "$HOME/.cargo/env"
 
+alias chbr="brightnessctl -d intel_backlight set"
+
+nordlayerConnectToGlobusStaticIp() {
+  nordlayer connect globussystems-DMKQ96Kt
+}
+
+nordlayerDisconnect() {
+  nordlayer disconnect
+}
+
 
 # usaable DEL KEY in st
 tput smkx   # use tput rmkx to quit application mode

@@ -110,8 +110,8 @@ alias bb="cat ~/static/bindings" # bring bindings
 alias adg="cat ~/myfiles/agenda"
 alias eadg="$EDITOR ~/myfiles/agenda"
 alias eqq="$EDITOR ~/static/quick"
-alias wkk="$EDITOR /mnt/win/d/docs/pnotes/pages/index.md"
-alias vkk="$EDITOR /mnt/win/d/docs/pnotes/pages/index.md"
+# alias wkk="$EDITOR /mnt/win/d/docs/pnotes/pages/index.md"
+# alias vkk="$EDITOR /mnt/win/d/docs/pnotes/pages/index.md"
 #alias scrc="scrcpy -S"
 alias shtn="bts;uptime -p;sleep 1s;shutdown now"
 alias start-rdp="sudo /etc/init.d/xrdp start"
@@ -246,7 +246,7 @@ __git_complete gd _git_diff
 __git_complete gr _git_remote
 
 # docker commands
-alias docker="sudo docker"
+# alias docker="sudo docker"
 
 # node js
 # alias nrd="npm run dev"
@@ -263,6 +263,7 @@ alias g:="cd /mnt/win/g"
 # tmux ls
 # tmux kill-server
 # alias tks="tmux kill-session -t"
+alias tmuxResizeP="tmux resizep -t 0 -x 70%"
 
 # work spaces
 alias wp="cd ~/wp/"
@@ -280,6 +281,13 @@ alias gdb="cd ~/work/rkd/"
 # alias gdt="cd ~/myfiles/repos/.dotfiles/"
 # alias gdwsalba="cd ~/work/backend/;tmux new-session \; split-window -h \;"
 
+alias dpsa="docker ps -a"
+alias dspa="docker system prune -af"
+alias nrt="npm run test"
+alias nrb="npm run build"
+alias nrs="npm run start"
+alias nrl="npm run local"
+alias nrf="npm run format"
 nrd() { # shim lol
 	if [ -f "package.json" ]; then
 		npm run dev
@@ -288,6 +296,9 @@ nrd() { # shim lol
 	elif [[ -f "nodemon.json" ]]; then
     nodemon
 	fi
+}
+npmScripts() {
+  jq '.scripts' package.json
 }
 
 # gdbd(){
@@ -520,6 +531,11 @@ takeCustomScreenshot() {
 	#mv ~/myfiles/screenshots/scrotTEMP/$screenshotFILE $screenshotDIR/$(date +%Y-%m-%d-%T).png
 	####mv ~/myfiles/screenshots/scrotTEMP/* $screenshotDIR/;
 	#st scrot -sf ~/myfiles/screenshots/$(date +%Y)/$(date +%B-%Y)/$(date +%F)/$(date +%Y-%m-%d-%T).png"
+}
+
+watchCurl() {
+   # watch -n 2 "curl -g -w '\n%{http_code}\n' '"$url"' -H 'Authorization: Bearer $pa'"
+    watch -n "$1" "curl -g -w '\n%{http_code}\n' '$2' -H '$3'"
 }
 
 # Didable less histry file
