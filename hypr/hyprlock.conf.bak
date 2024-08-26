@@ -1,9 +1,9 @@
-# # source = ~/.cache/wal/colors-hyprland.conf
+source = ~/.cache/wal/colors-hyprland.conf
 
 # BACKGROUND
 background {
     monitor =
-    # path = ~/.sysman/walls/iss.jpg
+    path = ~/.sysman/walls/iss.jpg
     blur_passes = 3
     contrast = 0.8916
     brightness = 0.8172
