@@ -89,8 +89,11 @@ alias lff="cd_with_terminal_filemanager"
 alias ccal='python3 /usr/bin/calcurse-caldav; calcurse; python3 /usr/bin/calcurse-caldav'
 # alias cppa="echo cd $(pwd) |xsc"
 cppa() {
-	# echo cd $(pwd) | xclip -selection clipboard
-	echo cd $(pwd) | wl-copy
+  if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
+	  echo cd $(pwd) | wl-copy
+  else
+	  echo cd $(pwd) | xclip -selection clipboard
+  fi
 }
 cppf() {
   filepath="$HOME/screenshots/$(date +%Y)/$(date +%m)"
@@ -172,6 +175,15 @@ op() {
 }
 
 # alias gp="find -type f ! -path './cargo/*','./cache/','./config/' | fzf | sed 's/^..//' | tr -d '\n' | xclip -selection c"
+
+# fzf git stuff
+fgc() {
+  local branches branch
+  branches=$(git for-each-ref --count=30 --sort=-committerdate refs/heads/ --format="%(refname:short)") &&
+  branch=$(echo "$branches" |
+           fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
+  git checkout $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
+}
 
 sxq() {
 	sx $@ | gqr
@@ -282,7 +294,10 @@ alias gdb="cd ~/work/rkd/"
 # alias gdwsalba="cd ~/work/backend/;tmux new-session \; split-window -h \;"
 
 alias dpsa="docker ps -a"
-alias dspa="docker system prune -af"
+alias dspa-SURE-KILL-ALL-="echo try dspa-SURE-KILL-ALL-y"
+alias dspa-SURE-KILL-ALL-y="docker system prune -af"
+alias postgresContainerStart="docker start postgresdb"
+alias postgresContainerCreate="docker run --name postgresdb -p 5432:5432 -e POSTGRES_PASSWORD=test -d postgres"
 alias nrt="npm run test"
 alias nrb="npm run build"
 alias nrs="npm run start"

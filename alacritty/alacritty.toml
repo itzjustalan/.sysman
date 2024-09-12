@@ -33,10 +33,11 @@ background = "#1a1b26"
 foreground = "#c0caf5"
 
 [font]
-size = 15
+# size = 8
+size = 14
 
 [font.normal]
 family = "Hurmit Nerd Font"
 
 [window]
-opacity = 0.3
+opacity = 0.8
