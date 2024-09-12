@@ -34,6 +34,7 @@
 #source <(vr completions bash)   # velociraptor (deno)
 source /usr/share/bash-completion/completions/git # git
 
+export EDITOR=nvim
 #aliases
 alias alias_name="actual_alias"
 
@@ -584,4 +585,10 @@ export LESSHISTORYFILE=-
 # -
 # THANKYOU
 
+[[ -f ~/.bashenvs ]] && . ~/.bashenvs
+
+# source configs specific to this pc
+if [ -f ~/.bash_thispc ]; then
+    . ~/.bash_thispc
+fi
 #the end tadaaa

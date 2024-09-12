@@ -1,1 +1,9 @@
-echo "alan-01"
+
+alias ll="ls -lah"
+
+export EDITOR=nvim
+
+export PATH=$PATH:~/.local/bin/
+export PATH="$PATH:/opt/nvim-linux64/bin"
+
+eval "$(zoxide init bash)"
