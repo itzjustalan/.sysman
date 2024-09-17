@@ -116,4 +116,5 @@ source /usr/share/bash-completion/completions/git
 #eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
 
-# - END
+shuf -n 1 $HOME/static/kanye_quotes.txt | lolcat
+echo "        - Kanye West" | lolcat
