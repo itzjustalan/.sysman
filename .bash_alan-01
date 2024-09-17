@@ -7,3 +7,7 @@ export PATH=$PATH:~/.local/bin/
 export PATH="$PATH:/opt/nvim-linux64/bin"
 
 eval "$(zoxide init bash)"
+eval "$(starship init bash)"
+
+shuf -n 1 $HOME/static/kanye_quotes.txt | lolcat
+echo "        - Kanye West" | lolcat
