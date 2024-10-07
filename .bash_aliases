@@ -586,6 +586,7 @@ export LESSHISTORYFILE=-
 # THANKYOU
 
 [[ -f ~/.bashenvs ]] && . ~/.bashenvs
+[[ -f ~/.bash_completions ]] && . ~/.bash_completions
 
 # source configs specific to this pc
 if [ -f ~/.bash_thispc ]; then

@@ -19,7 +19,7 @@ style = "green"
 
 # ~/.config/starship.toml
 [character]
-error_symbol = '🦹: you got no power here!'
+error_symbol = ' '
 
 [battery]
 unknown_symbol = '󰂄 not charging 😌 '  # not_charging_symbol!

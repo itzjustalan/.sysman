@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 #./bashExamples $(ls)
 # also maybe like add that array thingy
