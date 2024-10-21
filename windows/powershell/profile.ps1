@@ -1,5 +1,39 @@
 using namespace System.Management.Automation
 
+# Shows navigable menu of all options when hitting Tab
+Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
+
+# Autocompletion for arrow keys
+Set-PSReadlineKeyHandler -Key UpArrow -Function HistorySearchBackward
+Set-PSReadlineKeyHandler -Key DownArrow -Function HistorySearchForward
+
+Register-ArgumentCompleter -CommandName ssh,scp,sftp -Native -ScriptBlock {
+    param($wordToComplete, $commandAst, $cursorPosition)
+
+    $knownHosts = Get-Content ${Env:HOMEPATH}\.ssh\config `
+    | Select-String -Pattern "^Host " `
+    | ForEach-Object { $_ -replace "host ", "" } `
+    | Sort-Object -Unique
+
+    # For now just assume it's a hostname.
+    $textToComplete = $wordToComplete
+    $generateCompletionText = {
+        param($x)
+        $x
+    }
+    if ($wordToComplete -match "^(?<user>[-\w/\\]+)@(?<host>[-.\w]+)$") {
+        $textToComplete = $Matches["host"]
+        $generateCompletionText = {
+            param($hostname)
+            $Matches["user"] + "@" + $hostname
+        }
+    }
+
+    $knownHosts `
+    | Where-Object { $_ -like "${textToComplete}*" } `
+    | ForEach-Object { [CompletionResult]::new((&$generateCompletionText($_)), $_, [CompletionResultType]::ParameterValue, $_) }
+}
+
 $ENV:STARSHIP_CONFIG = "C:\Users\gbsal\starship.toml"
 Invoke-Expression (&starship init powershell)
 
@@ -37,46 +71,10 @@ function ga { git add -A }
 function gs { git status $args }
 function gb { git branch $args }
 function gc { git checkout $args }
-function gm { git commit -m }
+function cm { git commit -m $args }
 function gl { git log --all --graph --decorate }
 function grv { git remote -v }
 
-
-# Shows navigable menu of all options when hitting Tab
-Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
-
-
-# Autocompletion for arrow keys
-Set-PSReadlineKeyHandler -Key UpArrow -Function HistorySearchBackward
-Set-PSReadlineKeyHandler -Key DownArrow -Function HistorySearchForward
-
-
-Register-ArgumentCompleter -CommandName ssh,scp,sftp -Native -ScriptBlock {
-    param($wordToComplete, $commandAst, $cursorPosition)
-
-    $knownHosts = Get-Content ${Env:HOMEPATH}\.ssh\config `
-    | Select-String -Pattern "^Host " `
-    | ForEach-Object { $_ -replace "host ", "" } `
-    | Sort-Object -Unique
-
-    # For now just assume it's a hostname.
-    $textToComplete = $wordToComplete
-    $generateCompletionText = {
-        param($x)
-        $x
-    }
-    if ($wordToComplete -match "^(?<user>[-\w/\\]+)@(?<host>[-.\w]+)$") {
-        $textToComplete = $Matches["host"]
-        $generateCompletionText = {
-            param($hostname)
-            $Matches["user"] + "@" + $hostname
-        }
-    }
-
-    $knownHosts `
-    | Where-Object { $_ -like "${textToComplete}*" } `
-    | ForEach-Object { [CompletionResult]::new((&$generateCompletionText($_)), $_, [CompletionResultType]::ParameterValue, $_) }
-}
 
 
 
