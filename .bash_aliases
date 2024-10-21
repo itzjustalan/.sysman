@@ -1,4 +1,4 @@
-#neofetch	#takes time to load try peafetch or shell-color-scripts instead #neofetch --ascii "$(fortune | cowsay -f bspa
+#neofetch	#takes time to load try peafetch or shell-color-scripts instead #neofetch --ascii "$(fortune | cowsay -f bsp0
 #lowfish -W 30)"
 #neofetch --ascii "$(fortune | cowsay -f $(/usr/bin/ls /usr/share/cows/ | shuf -n 1) -W 30 )"
 
@@ -32,7 +32,8 @@
 
 # shell completions
 #source <(vr completions bash)   # velociraptor (deno)
-source /usr/share/bash-completion/completions/git # git
+# source /usr/share/bash-completion/completions/git # git
+[[ -f /usr/share/bash-completion/completions/git ]] && . /usr/share/bash-completion/completions/git
 
 export EDITOR=nvim
 #aliases
@@ -250,13 +251,13 @@ alias gsm="git add -A;git commit -m "
 alias gcb="git branch --color --sort=committerdate | sk --ansi -p \"branch: \" --preview \"git diff --color {-1}\" --preview-window right | xargs git checkout"
 
 # git completions fix
-__git_complete gs _git_status
-__git_complete ga _git_add
-__git_complete gm _git_commit
-__git_complete gb _git_branch
-__git_complete gc _git_checkout
-__git_complete gd _git_diff
-__git_complete gr _git_remote
+__git_complete gs _git_status &>/dev/null;
+__git_complete ga _git_add &>/dev/null;
+__git_complete gm _git_commit &>/dev/null;
+__git_complete gb _git_branch &>/dev/null;
+__git_complete gc _git_checkout &>/dev/null;
+__git_complete gd _git_diff &>/dev/null;
+__git_complete gr _git_remote &>/dev/null;
 
 # docker commands
 # alias docker="sudo docker"
@@ -592,4 +593,5 @@ export LESSHISTORYFILE=-
 if [ -f ~/.bash_thispc ]; then
     . ~/.bash_thispc
 fi
+
 #the end tadaaa
