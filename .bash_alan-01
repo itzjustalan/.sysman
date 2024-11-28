@@ -2,7 +2,7 @@
 alias shtn="echo not yo pc baby!;exit"
 alias ll="ls -lah"
 alias ta0="tmux attach -t 0"
-alias run-forest-run="nodemon -e php -w ./app/Console/Commands -x time php artisan constituent-profile:update --chunk-size 200 --client rkd"
+alias run-forest-run="nodemon -e php -w ./app/Console/Commands -x time php artisan constituent-profile:update --chunk-size 200"
 alias format-this-php-codebase="./tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --config=./.php-cs-fixer.php"
 
 export EDITOR=nvim
