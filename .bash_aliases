@@ -457,6 +457,24 @@ _alarm() {
 	\kill -9 $pid
 }
 
+switch2ssh() {
+  remote_name="origin"
+  hurl=$(git remote get-url $remote_name)
+
+  if [[ $hurl == "git"* ]]; then
+    echo "ssh url detected: $hurl"
+    return;
+  fi
+
+  echo "http url detected: $hurl"
+  host=$(echo $hurl | cut -d'/' -f3)
+  user=$(echo $hurl | cut -d'/' -f4)
+  repo=$(echo $hurl | cut -d'/' -f5)
+  url="git@$host:$user/$repo"
+  echo "switching to ssh url: $url $remote_name"
+  git remote set-url $remote_name $url
+}
+
 # usable DEL KEY in st
 # use tput rmkx to quit application mode
 # as this might have isssues with some
