@@ -17,9 +17,9 @@ LOG_FILE="$PROJECT_DIR/.sysman-run.log"
 BACKUP_LOG="$PROJECT_DIR/.sysman-backups.txt"
 
 # Custom path mapping: "file_or_folder_inside_$CUSTOM_LINKS_DIR destination_absolute_path"
-CUSTOM_MAPPINGS=(
-  "test.conf /usr/local/share/other/other.conf"
-)
+# CUSTOM_MAPPINGS=(
+#   "test.conf /usr/local/share/other/other.conf"
+# )
 
 echo "=====[ sysman setup: $(date) ]=====" >> "$LOG_FILE"
 
@@ -198,7 +198,7 @@ symlink_files() {
   symlink_files_for "$PLATFORM"
   symlink_files_for "$HOSTNAME"
 
-  symlink_files_for_custom
+  # symlink_files_for_custom
 }
 
 run_pre_hooks() {
@@ -290,11 +290,11 @@ EOF
 # ─── Argument Parsing ──────────────────────────────────────────────────────────
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --debug) DEBUG=true ;;
     --dry-run|-d) DRY_RUN=true ;;
     --verbose|-v) VERBOSE=true ;;
     --help|-h) print_usage; exit 0 ;;
     --user|-u) shift; TARGET_USER="$1" ;;
+    --debug) DEBUG=true && VERBOSE=true;;
     --clean-backups|-c) CLEAN_BACKUPS=true ;;
     *) echo "Unknown option: $1"; print_usage; exit 1 ;;
   esac
