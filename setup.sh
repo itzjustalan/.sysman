@@ -17,9 +17,9 @@ LOG_FILE="$PROJECT_DIR/.sysman-run.log"
 BACKUP_LOG="$PROJECT_DIR/.sysman-backups.txt"
 
 # Custom path mapping: "file_or_folder_inside_$CUSTOM_LINKS_DIR destination_absolute_path"
-# CUSTOM_MAPPINGS=(
-#   "test.conf /usr/local/share/other/other.conf"
-# )
+CUSTOM_MAPPINGS=(
+  # "test.conf /usr/local/share/other/other.conf"
+)
 
 echo "=====[ sysman setup: $(date) ]=====" >> "$LOG_FILE"
 
@@ -160,14 +160,14 @@ symlink_files_for() {
   home_source="$AUTO_LINK_DIR/${prefix:+$prefix/}home"
   config_source="$AUTO_LINK_DIR/${prefix:+$prefix/}config"
 
-  if [[ -d "$home_source" ]]; then
+  if [[ -d "$home_source" ]] && compgen -G "$home_source/*" > /dev/null; then
     for file in "$home_source"/*; do
       should_skip "$file" && continue
       symlink_file "$file" "$home_dir/$(basename "$file")"
     done
   fi
 
-  if [[ -d "$config_source" ]]; then
+  if [[ -d "$config_source" ]] && compgen -G "$config_source/*" > /dev/null; then
     for file in "$config_source"/*; do
       should_skip "$file" && continue
       symlink_file "$file" "$home_dir/.config/$(basename "$file")"
