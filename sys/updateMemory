@@ -1,2 +1,0 @@
-mem=`/usr/bin/free | awk '/Mem/ {printf $3 / 1024.0}'`
-echo "$mem MiB" > /home/alanj/.local/bin/sys/statusblocks/memoryBlock

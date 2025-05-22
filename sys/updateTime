@@ -1,2 +1,0 @@
-dte="$(date +"%a %dth %b - %H:%M:%S")"
-echo "$dte" > /home/alanj/.local/bin/sys/statusblocks/dateBlock

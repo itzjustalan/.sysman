@@ -1,0 +1,18 @@
+deviceStatus=$(cat /sys/class/net/wlo1/operstate)
+if [ "$deviceStatus" = "down" ];then
+    echo "🛸" > /home/alanj/.local/bin/sys/statusblocks/networkBlock
+else
+    #rx_bytes=$(cat /sys/class/net/wlo1/statistics/rx_bytes)
+    #echo "$((rx_bytes/125000)) Mbps" > /home/alanj/.local/bin/sys/statusblocks/networkBlock
+    #echo "$((rx_bytes/1048576)) MiB" > /home/alanj/.local/bin/sys/statusblocks/networkBlock
+    #echo "$((rx_bytes/125000)) Mb/s" > /home/alanj/.local/bin/sys/statusblocks/networkBlock
+    #R1=`cat /sys/class/net/wlo1/statistics/rx_bytes`
+    R1=`cat /proc/net/dev | awk '{print $2}' | sed -n 5p`
+    sleep 1s
+    #R2=`cat /sys/class/net/wlo1/statistics/rx_bytes`
+    R2=`cat /proc/net/dev | awk '{print $2}' | sed -n 5p`
+    RBPS=`expr $R2 - $R1`
+    RKBPS=`expr $RBPS / 1024`
+    echo "$RKBPS - $RBPS"
+    echo "$RBPS b/s" > /home/alanj/.local/bin/sys/statusblocks/networkBlock
+fi

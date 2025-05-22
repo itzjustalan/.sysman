@@ -1,9 +1,0 @@
-echo "poda $1"
-
-echo "/home/alanj/.local/bin/sys/sss"
-
-echo "ip: $(ip addr | grep "scope global dynamic noprefixroute" | cut -d ' ' -f 6)"
-
-cd ~/pgms/dockers/clipboard
-
-npm run dev

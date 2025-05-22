@@ -1,0 +1,27 @@
+#
+# wm independent hotkeys
+#
+
+# terminal emulator
+super + Return
+	alacritty
+
+alt + shift + t
+	alacritty
+
+super + l
+  scriptsSelector
+
+super + p
+  processKILLER
+
+ctrl + alt + Delete
+  processKILLER
+
+
+
+# Applications
+# ---------->
+
+control + i
+  xmouseless

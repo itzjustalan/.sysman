@@ -1,0 +1,10 @@
+batStatus=$(cat /sys/class/power_supply/BAT1/status)
+capacity=$(cat /sys/class/power_supply/BAT1/capacity)
+if [ "$batStatus" = "Discharging" ];
+then
+    notify-send -t 30000 "❗You're not plugged in 🔴"
+    _alarm 80 330
+    echo "🛑 $capacity%" > /home/alanj/.local/bin/sys/statusblocks/batteryBlock
+else
+    echo "🔋 $capacity%" > /home/alanj/.local/bin/sys/statusblocks/batteryBlock
+fi

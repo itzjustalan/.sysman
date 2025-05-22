@@ -1,0 +1,119 @@
+#!/bin/bash
+
+# !! IMPORTANT !!
+# better off as a binary to support different architectures and alternate files
+
+# app variables
+APP_VERS="0.0.1"
+APP_NAME="$(basename -- "$0")"
+APP_NAME="${APP_NAME:-linker}"
+
+# local variables
+LC_BASE_PATH="$HOME/.sysman"
+
+sub_help(){
+  echo ""
+  echo "USAGE: $APP_NAME <FLAG> <subcommand> <..paths>"
+  echo ""
+  echo "FLAG:"
+  echo ""
+  echo "    -l, --link    links <source> to <destination>"
+  echo ""
+  echo "SUBCOMMANDS:"
+  echo ""
+  echo "    link          links <source> to <destination>"
+  echo "    config        links given path to $HOME/.config/"
+  echo "    run <FILE>    read links from FILE"
+  echo ""
+}
+
+test_config_dir() {
+  if [[ ! -d "$HOME/.config" ]]; then
+    mkdir -p "$HOME/.config"
+  fi
+}
+
+wrap_home() {
+  # https://stackoverflow.com/a/13210909
+  echo "${1/"$HOME"/\$HOME}"
+}
+
+unwrap_home() {
+  # https://unix.stackexchange.com/a/635782
+  echo $(printf %s "$1" | envsubst '$HOME$TEST')
+}
+
+add_link() {
+  if [[ ! -d "$HOME/.config/linker" ]]; then
+    mkdir -p "$HOME/.config/linker"
+  fi
+  echo "$(wrap_home "$1"),$(wrap_home "$2"),all" >> "$HOME/.config/linker/links.csv"
+}
+
+sub_run() {
+  while read l
+  do
+    echo "Record is : $l"
+    sorc=$(echo "$l" | cut -d',' -f1)
+    dest=$(echo "$l" | cut -d',' -f2)
+    host=$(echo "$l" | cut -d',' -f3)
+    echo "ln -s $sorc $dest - $host =? $(uname -n)"
+    # echo "ln -s $(unwrap_home "$sorc") $(unwrap_home "$dest")"
+  done < "$1"
+}
+
+sub_config() {
+  local name="$1"
+  local realp=$(realpath "$name")
+  local sorc=$(wrap_home "$realp")
+  local dest="\$HOME/.config/"
+  # echo "$@, $name $realp $sorc $dest"
+  # echo "ln -s $sorc $dest"
+  # echo $(printf %s "$dest" | envsubst)
+  # echo "-ln -s $(unwrap_home "$sorc") $(unwrap_home "$dest")"
+  ln -s $(unwrap_home "$sorc") $(unwrap_home "$dest")
+  # echo $(printf %s "-ln -s $sorc $dest")
+  # ln -s $(echo "$sorc $dest")
+  add_link "$sorc" "$dest"
+
+  # ln -s "$LC_BASE_PATH/awesome" "$HOME/.config/"
+}
+
+sub_link() {
+  local sorc=$(realpath "$1")
+  local dest=$(realpath "$2")
+  ln -s $(unwrap_home "$sorc") $(unwrap_home "$dest")
+        echo "$?"
+  add_link "$sorc" "$dest"
+}
+
+exit_if_command_404() {
+  if [ $? = 127 ]; then
+      echo "ERROR: '$subcommand' is not a known subcommand." >&2
+      echo "       Run '$APP_NAME --help' for a list of known subcommands." >&2
+      exit 1
+  fi
+}
+
+main() {
+  # test_config_dir
+  # link_config name="awesome"
+  subcommand="$1"
+  case "$subcommand" in
+      "" | "-h" | "--help")
+        sub_help
+        ;;
+      "-l" | "--link")
+        shift 1
+        sub_link "$1" "$2"
+        ;;
+      *)
+        shift
+        sub_"${subcommand}" "$@"
+        exit_if_command_404
+        ;;
+  esac
+  echo "ran all modules :main"
+}
+
+main "$@"

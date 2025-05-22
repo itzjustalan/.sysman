@@ -1,0 +1,36 @@
+if [ "$1" = "t" ];then
+        amixer set Master unmute;
+        updateVolume;
+        return 0;
+fi
+if [ "$1" = "m" ];then
+        amixer set Master mute;
+        updateVolume;
+        return 0;
+fi
+if [ "$1" = "+" ];then
+        amixer set Master 10+;
+        updateVolume;
+        return 0;
+fi
+if [ "$1" = "-" ];then
+        amixer set Master 10-;
+        updateVolume;
+        return 0;
+fi
+if [ $1 -le 100 ] && [ $1 -gt 0 ]
+then
+        amixer set Master "$1%";
+        updateVolume;
+        return 0;
+elif [ $1 -le 65536 ] && [ $1 -ge 100 ]
+then
+        amixer set Master "$1";
+        updateVolume;
+        return 0;
+else
+        echo "100-65536 or"
+        echo "1-100 for %"
+        echo "t to toggle" 
+        echo "m to Mute"
+fi
