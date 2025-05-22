@@ -227,7 +227,7 @@ run_hooks_for() {
     for file in "$HOOKS_FILES_DIR/${prefix:+$prefix/}"/*; do
       should_skip "$file" "pre.sh" "post.sh" && continue
       if $DRY_RUN; then
-        log "[dry-run] Would run hook: $hook"
+        log "[dry-run] Would run hook: $file"
       else
         $VERBOSE && bash "$file" || quiet bash "$file"
       fi
