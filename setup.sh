@@ -309,6 +309,7 @@ fi
 # ─── Main ──────────────────────────────────────────────────────────────────────
 PLATFORM=$(detect_platform)
 HOSTNAME=$(hostname)
+DEBUG=true && VERBOSE=true
 
 log "Platform: $PLATFORM"
 log "Hostname: $HOSTNAME"
