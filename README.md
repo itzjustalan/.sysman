@@ -4,6 +4,7 @@ sed -i 's/\r//g' file
 # for win11
 ```cmd
 mklink C:\Users\{username}\Documents\WindowsPowerShell\profile.ps1 D:\linx\.sysman\windows\powershell\profile.ps1
+mklink /d C:\Users\user\AppData\Local\nvim D:\.sysman\links\shared\config\nvim
 ```
 
 
