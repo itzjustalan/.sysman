@@ -1,0 +1,149 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+declare -A EFFECTS=(
+  [reset]=0 [bold]=1 [dim]=2 [italic]=3 [underline]=4
+  [blink]=5 [reverse]=7 [hidden]=8 [strike]=9
+  [double_underline]=21 [normal_intensity]=22
+  [no_italic]=23 [no_underline]=24 [no_blink]=25
+  [no_reverse]=27 [no_hidden]=28 [no_strike]=29
+  [fraktur]=20 [overline]=53 [no_overline]=55
+)
+
+declare -A COLORS
+
+generate_colors() {
+  local index=0
+  for name in black maroon green olive navy purple teal silver grey red lime yellow blue fuchsia aqua white; do
+    COLORS["$name"]="$index"
+    ((++index))
+  done
+
+  index=16
+  for r in 0 95 135 175 215 255; do
+    for g in 0 95 135 175 215 255; do
+      for b in 0 95 135 175 215 255; do
+        hex=$(printf '%02x%02x%02x' "$((r))" "$((g))" "$((b))")
+        COLORS["rgb_$hex"]=$index
+        ((index++))
+      done
+    done
+  done
+
+  for i in {232..255}; do
+    gray=$((8 + (i - 232) * 10))
+    COLORS["gray_$gray"]=$i
+  done
+}
+
+print_help() {
+  cat <<EOF
+Usage: colorize.sh [OPTIONS] [TEXT...]
+
+  COLOR run $0 --list to view all supported values
+
+Options:
+  --fg COLOR        Foreground color (e.g. red, rgb_ff0000, gray_50)
+  --bg COLOR        Background color
+  --<effect>        Text effect (e.g. --bold, --underline, etc.)
+  --list            List all colors with preview
+  --help            Show this help
+
+Examples:
+  ./colorize.sh --fg red --bold "Hello"
+  echo "Hello" | ./colorize.sh --fg rgb_00ff00 --bg black --underline
+  ./colorize.sh --list
+
+All Effects:
+$(for k in "${!EFFECTS[@]}"; do echo "  --$k"; done | sort)
+EOF
+}
+
+list_colors() {
+  local esc="\033[" reset="\033[0m"
+
+  echo "Basic 0–15 colors:"
+  for name in "${!COLORS[@]}"; do
+    local code=${COLORS[$name]}
+    if (( code < 16 )); then
+      printf "${esc}38;5;%sm%-15s${reset}  " "$code" "$name"
+      (( (code + 1) % 4 == 0 )) && echo
+    fi
+  done
+
+  echo -e "\n\nColor Cube (RGB):"
+  for i in {16..231}; do
+    printf "${esc}38;5;%sm%3d${reset} " "$i" "$i"
+    (( (i - 15) % 12 == 0 )) && echo
+  done
+
+  echo -e "\n\nGrayscale:"
+  for i in {232..255}; do
+    printf "${esc}38;5;%sm%3d${reset} " "$i" "$i"
+  done
+  echo
+}
+
+main() {
+  generate_colors
+
+  local fg="" bg=""
+  local style=()
+  local args=()
+  local use_stdin=false
+
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --help)
+        print_help
+        exit 0
+        ;;
+      --list)
+        list_colors
+        exit 0
+        ;;
+      --fg)
+        shift
+        [[ -z "${COLORS[$1]:-}" ]] && echo "Unknown foreground: $1" && exit 1
+        fg="${COLORS[$1]}"
+        ;;
+      --bg)
+        shift
+        [[ -z "${COLORS[$1]:-}" ]] && echo "Unknown background: $1" && exit 1
+        bg="${COLORS[$1]}"
+        ;;
+      --*)
+        key="${1#--}"
+        [[ -z "${EFFECTS[$key]:-}" ]] && echo "Unknown flag: $1" && exit 1
+        style+=("${EFFECTS[$key]}")
+        ;;
+      *)
+        args+=("$1")
+        ;;
+    esac
+    shift
+  done
+
+  [[ -n "$fg" ]] && style+=("38;5;${fg}")
+  [[ -n "$bg" ]] && style+=("48;5;${bg}")
+
+  local esc="\033[" reset="\033[0m"
+  local prefix="${esc}$(IFS=';'; echo "${style[*]}")m"
+
+  if [[ ${#args[@]} -gt 0 ]]; then
+    echo -e "${prefix}${args[*]}${reset}"
+  elif [ -t 0 ]; then
+    echo "No input provided. Use --help for usage info." >&2
+    exit 1
+  else
+    # stdin is pipe/redirect, read it
+    while IFS= read -r line; do
+      echo -e "${prefix}${line}${reset}"
+    done
+  fi
+
+}
+
+main "$@"
+
