@@ -1,0 +1,9 @@
+
+
+
+. "/home/alan/.deno/env"
+. /home/alan/.local/share/bash-completion/completions/deno.bash
+
+eval "$(zoxide init bash)"
+eval "$(starship init bash)"
+
