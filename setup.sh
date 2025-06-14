@@ -12,7 +12,8 @@ restore_shopt_states() {
     fi
     exit 0;
 }
-trap 'restore_shopt_states' EXIT ERR SIGTERM SIGINT
+# trap 'restore_shopt_states' EXIT ERR SIGTERM SIGINT
+trap 'restore_shopt_states' EXIT
 
 shopt -s dotglob
 shopt -s nullglob
@@ -121,7 +122,6 @@ echo "" >> "$LOG_FILE"
 echo "=====[ sysman setup: $(date) ]=====" >> "$LOG_FILE"
 
 # ─── Utility Functions ─────────────────────────────────────────────────────────
-# TODO: use properly
 quiet() {
   if $SILENT; then
     "$@" > /dev/null 2>> "$LOG_FILE"
@@ -131,7 +131,7 @@ quiet() {
 }
 
 detect_package_manager() {
-  # TODO: install paru via post install if arch
+  # TODO: install paru via pre install if arch
   if command -v paru &>/dev/null; then echo "paru"
   elif command -v pacman &>/dev/null; then echo "pacman"
   elif command -v apt-get &>/dev/null; then echo "apt"
@@ -151,6 +151,8 @@ detect_platform() {
       elif [ -f /etc/os-release ]; then
         . /etc/os-release
         echo "$ID"  # e.g., ubuntu, arch
+      elif [ -n "$TERMUX_VERSION" ]; then
+        echo "termux"
       else
         echo "linux"
       fi
@@ -375,7 +377,7 @@ run_pre_hooks() {
         log_dry "Would run hook: $hook"
       else
         log_info "Running $hook"
-        quiet bash "$hook"
+        source "$hook"
       fi
     fi
   done
@@ -397,7 +399,7 @@ run_hooks_for() {
           log_dry "Would run hook: $file"
         else
           log_info "Running $file"
-          quiet bash "$file"
+          source "$file"
         fi
       done
     fi
@@ -408,7 +410,7 @@ run_hooks_for() {
       log_dry "Would run hook: $post_hook"
     else
       log_info "Running $post_hook"
-      quiet bash "$post_hook"
+      source "$post_hook"
     fi
   fi
 }
