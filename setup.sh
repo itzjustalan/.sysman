@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
 set -e
+shopt -s dotglob
+
 # ─── Imports ─────────────────────────────────────────────────────────────
 FILE_IMPORTS=(
   "./paint"
@@ -236,7 +238,7 @@ symlink_file() {
 
   mkdir -p "$(dirname "$dest")"
   quiet ln -sf "$src" "$dest"
-  log_info "Linked: $src → $dest"
+  log_success "Linked: $src → $dest"
 }
 
 symlink_files_for() {
@@ -246,12 +248,18 @@ symlink_files_for() {
   local home_source config_source
   home_source="$AUTO_LINK_DIR/${prefix:+$prefix/}home"
   config_source="$AUTO_LINK_DIR/${prefix:+$prefix/}config"
+  log_debug "home_source: $home_source"
+  log_debug "config_source: $config_source"
 
-  if [[ -d "$home_source" ]] && compgen -G "$home_source/*" > /dev/null; then
+  log_debug "Debugging symlink_files_for for source: '$home_source'"
+  if [[ -d "$home_source" ]]; then
     for file in "$home_source"/*; do
+      log_debug "Linking $file -> " "$home_dir/$(basename "$file")"
       should_skip "$file" && continue
       symlink_file "$file" "$home_dir/$(basename "$file")"
     done
+  else
+    echo "nsauh"
   fi
 
   if [[ -d "$config_source" ]] && compgen -G "$config_source/*" > /dev/null; then
@@ -277,6 +285,50 @@ symlink_files() {
   symlink_files_for "$HOSTNAME"
 
   symlink_files_for_custom
+}
+
+run_sanity_checks() {
+  log_info "Running sanity checks..."
+
+  if ! command -v paint &>/dev/null; then
+    log_error "'paint' command not available. Make sure ./paint is a valid script that defines it."
+    exit 1
+  fi
+
+  if ! id "$TARGET_USER" &>/dev/null; then
+    log_error "Target user '$TARGET_USER' does not exist."
+    exit 1
+  fi
+
+  local home_dir
+  home_dir=$(eval echo "~$TARGET_USER")
+  if [[ ! -w "$home_dir" ]]; then
+    log_error "Home directory '$home_dir' for user '$TARGET_USER' is not writable."
+    exit 1
+  fi
+
+  local required_dirs=("$AUTO_LINK_DIR" "$TOOLS_FILES_DIR" "$HOOKS_FILES_DIR")
+  for dir in "${required_dirs[@]}"; do
+    if [[ ! -d "$dir" ]]; then
+      log_error "Required directory missing: $dir"
+      exit 1
+    fi
+  done
+
+  local required_cmds=(sudo bash ln grep xargs)
+  for cmd in "${required_cmds[@]}"; do
+    if ! command -v "$cmd" &>/dev/null; then
+      log_error "Required command '$cmd' is not installed or not in PATH."
+      exit 1
+    fi
+  done
+
+  if [[ "$EUID" -ne 0 ]] && ! sudo -v &>/dev/null; then
+    log_error "This script needs sudo access but sudo is not available or permission is denied."
+    exit 1
+  fi
+
+  log_success "All sanity checks passed."
 }
 
 run_pre_hooks() {
@@ -351,7 +403,7 @@ clean_backups() {
       $DRY_RUN && ((++skipped_count)) && continue;
 
       if rm -rf "$backup"; then
-        log_info "Successfully deleted: $backup"
+        log_success "Deleted: $backup"
         ((++deleted_count))
       else
         log_error "Failed to delete: $backup (check permissions)"
@@ -369,13 +421,13 @@ clean_backups() {
     $DRY_RUN && return 0;
 
     if rm -f "$BACKUP_LOG"; then
-      log_info "Successfully deleted backup log: $BACKUP_LOG"
+      log_success "Deleted backup log: $BACKUP_LOG"
     else
       log_error "Failed to delete backup log: $BACKUP_LOG (check permissions)"
     fi
   fi
 
-  log_info "Cleanup process completed. Deleted $deleted_count backups, skipped $skipped_count non-existent."
+  log_success "Cleanup process completed. Deleted $deleted_count backups, skipped $skipped_count non-existent."
 }
 
 print_usage() {
@@ -418,11 +470,11 @@ fi
 # ─── Main ──────────────────────────────────────────────────────────────────────
 PLATFORM=$(detect_platform)
 HOSTNAME=$(hostname)
-DEBUG=true && VERBOSE=true
 
 log_debug "Platform: $PLATFORM"
 log_debug "Hostname: $HOSTNAME"
 
+run_sanity_checks
 run_pre_hooks
 install_tools
 symlink_files
