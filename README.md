@@ -1,6 +1,9 @@
 sed -i 's/^M//g' file
 sed -i 's/\r//g' file
 
+absh color pgm -> wrap it up
+https://stackoverflow.com/a/33206814
+
 # for win11
 ```cmd
 mklink C:\Users\{username}\Documents\WindowsPowerShell\profile.ps1 D:\linx\.sysman\windows\powershell\profile.ps1

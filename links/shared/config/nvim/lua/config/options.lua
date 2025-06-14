@@ -6,6 +6,9 @@ vim.opt.wrap = true
 vim.g.autoformat = false
 vim.g.fixendofline = false
 
+-- force vim to use unix style line endings
+vim.opt.fileformats = { "unix", "dos", "mac" }
+
 -- replace tabs with 3 spaces
 -- vim.opt.expandtab = true
 -- vim.opt.tabstop = 3
