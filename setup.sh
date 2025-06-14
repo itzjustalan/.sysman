@@ -1,11 +1,24 @@
 #!/usr/bin/env bash
 
 set -e
+# ─── Imports ─────────────────────────────────────────────────────────────
+FILE_IMPORTS=(
+  "./paint"
+)
+
+for file in "${FILE_IMPORTS[@]}"; do
+  if [[ -f "$file" ]]; then
+    source "$file"
+  else
+    echo "$file not found"; exit 1;
+  fi
+done
 
 # ─── Configuration ─────────────────────────────────────────────────────────────
 DEBUG=false
+SILENT=true
+P_EMOJI=true
 DRY_RUN=false
-VERBOSE=false
 CLEAN_BACKUPS=false
 TARGET_USER="$USER"
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -21,30 +34,76 @@ CUSTOM_MAPPINGS=(
   # "test.conf /usr/local/share/other/other.conf"
 )
 
+LOG_LEVEL_NONE=0
+LOG_LEVEL_ERROR=1
+LOG_LEVEL_WARN=2
+LOG_LEVEL_INFO=3
+LOG_LEVEL_DEBUG=4
+LOG_LEVEL=${LOG_LEVEL_INFO}
+
+print_emoji() {
+  $P_EMOJI && echo "$*"
+}
+
+log_error() {
+  [[ $LOG_LEVEL -ge $LOG_LEVEL_ERROR ]] && echo -e "$(print_emoji '🚨 ')[ $(date +%H:%M:%S) ]$(paint --fg red [ ERR ] $*)"
+}
+
+log_warn() {
+  [[ $LOG_LEVEL -ge $LOG_LEVEL_WARN ]] && echo -e "$(print_emoji ⚠️) [ $(date +%H:%M:%S) ]$(paint --fg yellow [ WRN ] $*)"
+}
+
+log_info() {
+  [[ $LOG_LEVEL -ge $LOG_LEVEL_INFO ]] && echo -e "$(print_emoji ℹ️) [ $(date +%H:%M:%S) ]$(paint --fg blue [ INF ] $*)"
+}
+
+log_debug() {
+  [[ $LOG_LEVEL -ge $LOG_LEVEL_DEBUG ]] && echo -e "$(print_emoji 🤖) [ $(date +%H:%M:%S) ]$(paint --fg grey [ DBG ] $*)"
+}
+
+log_success() {
+  [[ $LOG_LEVEL -ge $LOG_LEVEL_INFO ]] && echo -e "$(print_emoji ✅) [ $(date +%H:%M:%S) ]$(paint --fg green [ SUC ] $*)"
+}
+
+log_dry() {
+  $DRY_RUN && [[ $LOG_LEVEL -ge $LOG_LEVEL_WARN ]] && echo -e "⚠️ [ $(date +%H:%M:%S) ]$(paint --fg yellow [ WRN ]) $(paint --fg purple [ DRY ]) $(paint --fg purple --italic $*)"
+}
+
+log_time() {
+  local start_time=$(date +%s)
+  log_info "Started command [$*]"
+
+  eval "$@"
+  local exit_code=$?
+
+  local end_time=$(date +%s)
+  local duration=$((end_time - start_time))
+
+  local hours=$((duration / 3600))
+  local minutes=$(((duration % 3600) / 60))
+  local seconds=$((duration % 60))
+  local human_duration=$(printf "%02d:%02d:%02d" "$hours" "$minutes" "$seconds")
+
+  if [ $exit_code -eq 0 ]; then
+    log_info "Finished command [$*] [Duration: $human_duration]"
+  else
+    log_error "Command [$*] failed with exit code $exit_code after $human_duration"
+  fi
+
+  return $exit_code
+}
+
+echo "" >> "$LOG_FILE"
 echo "=====[ sysman setup: $(date) ]=====" >> "$LOG_FILE"
 
 # ─── Utility Functions ─────────────────────────────────────────────────────────
+# TODO: use properly
 quiet() {
   if $DEBUG; then
     "$@" 2>&1 | tee -a "$LOG_FILE"
   else
     "$@" > /dev/null 2>> "$LOG_FILE"
   fi
-}
-
-log() {
-  local msg="[INFO] $1"
-  echo "$msg" >> "$LOG_FILE"
-  $VERBOSE && echo "$msg"
-}
-
-debug_log() {
-  echo "[DEBUG] $1" >> "$LOG_FILE"
-  $DEBUG && echo "[DEBUG] $1"
-}
-
-d_log() {
-  debug_log "$1"
 }
 
 detect_package_manager() {
@@ -77,32 +136,49 @@ detect_platform() {
   esac
 }
 
+dos_to_unix() {
+  local src="$1"
+  local tmpfile
+
+  if [[ ! -f "$src" ]]; then
+    log_error "File not found: $src"
+    return 1
+  fi
+
+  tmpfile="$(mktemp)"
+  quiet cp "$src" "$tmpfile"
+  quiet sed -i 's/^M$//g' "$tmpfile"
+  quiet sed -i 's/\r$//g' "$tmpfile"
+
+  cat "$tmpfile"
+  quiet rm -f "$tmpfile"
+}
+
+
 install_tools() {
   local pkgmgr=$(detect_package_manager)
   local tools_file="$TOOLS_FILES_DIR/${pkgmgr}"
 
-  [[ "$pkgmgr" == "unknown" ]] && echo "package manager found." && exit 1
-  [[ ! -f "$tools_file" ]] && echo "$tools_file not found." && exit 1
+  [[ "$pkgmgr" == "unknown" ]] && log_error "package manager found." && return 1;
+  [[ ! -f "$tools_file" ]] && log_error "$tools_file not found." && return 1:
 
   # Read all tools into a single string, ignoring comments and blank lines
-  local tools=$(grep -vE '^\s*#|^\s*$' "$tools_file" | xargs)
+  local tools=$(dos_to_unix "$tools_file" | grep -vE '^\s*#|^\s*$' | xargs)
 
   if [[ -z "$tools" ]]; then
-    log "No tools to install for $pkgmgr"
+    log_info "No tools to install for $pkgmgr"
     return
   fi
 
-  log "Installing tools with $pkgmgr: $tools"
+  log_dry "Would install tools with $pkgmgr: $tools"
+  $DRY_RUN && return 0;
 
-  if $DRY_RUN; then
-    log "[dry-run] Would install tools with $pkgmgr: $tools"
-    return
-  fi
+  log_info "Installing tools with $pkgmgr: $tools"
 
   case "$pkgmgr" in
-    apt) quiet sudo apt-get install -y $tools ;;
-    dnf) quiet sudo dnf install -y $tools ;;
-    pacman) quiet sudo pacman -S --noconfirm $tools ;;
+    apt) quiet sudo bash -c "apt-get update && apt-get install -y --no-install-recommends $tools" ;;
+    dnf) quiet sudo bash -c "dnf install -y $tools" ;;
+    pacman) quiet sudo bash -c "pacman -S --noconfirm $tools" ;;
     brew) quiet brew install $tools ;;
     *) echo "Unsupported package manager: $pkgmgr" && exit 1 ;;
   esac
@@ -128,28 +204,39 @@ symlink_file() {
   local timestamp
   timestamp=$(date +%Y%m%d%H%M%S)
 
-  if [[ -L "$dest" && "$(readlink "$dest")" == "$src" ]]; then
-    return
-  fi
+  local canonical_src
+  local canonical_dest_target
+
+  canonical_src=$(cd "$(dirname "$src")" && pwd -P)/$(basename "$src")
 
   if [[ -e "$dest" || -L "$dest" ]]; then
+    if [[ -L "$dest" ]]; then
+      canonical_dest_target=$(readlink -f "$dest")
+    else
+      canonical_dest_target=$(cd "$(dirname "$dest")" && pwd -P)/$(basename "$dest")
+    fi
+
+    if [[ "$canonical_dest_target" == "$canonical_src" ]]; then
+      log_info "Already correctly linked: $src → $dest"
+      return;
+    fi
+
     local backup="${dest}.backup.${timestamp}"
     if $DRY_RUN; then
-      log "[dry-run] Would back up: $dest → $backup"
+      log_dry "Would back up: $dest → $backup"
     else
-      log "Backing up: $dest → $backup"
+      log_info "Backing up: $dest → $backup"
       quiet mv "$dest" "$backup"
       echo "$backup" >> "$BACKUP_LOG"
     fi
   fi
 
-  if $DRY_RUN; then
-    log "[dry-run] Would symlink: $src → $dest"
-  else
-    mkdir -p "$(dirname "$dest")"
-    quiet ln -sf "$src" "$dest"
-    log "Linked: $src → $dest"
-  fi
+  log_dry "Would symlink: $src → $dest"
+  $DRY_RUN && return 0;
+
+  mkdir -p "$(dirname "$dest")"
+  quiet ln -sf "$src" "$dest"
+  log_info "Linked: $src → $dest"
 }
 
 symlink_files_for() {
@@ -176,20 +263,11 @@ symlink_files_for() {
 }
 
 symlink_files_for_custom() {
-  log "Linking custom paths..."
   for entry in "${CUSTOM_MAPPINGS[@]}"; do
     local src="$CUSTOM_LINKS_DIR/$(cut -d' ' -f1 <<< "$entry")"
     local dest="$(cut -d' ' -f2- <<< "$entry")"
 
-    if [[ -L "$dest" && "$(readlink "$dest")" == "$src" ]]; then
-      return
-    fi
-
-    if $DRY_RUN; then
-      log "[dry-run] Would symlink: $src → $dest"
-    else
-      symlink_file "$src" "$dest"
-    fi
+    symlink_file "$src" "$dest"
   done
 }
 
@@ -198,7 +276,7 @@ symlink_files() {
   symlink_files_for "$PLATFORM"
   symlink_files_for "$HOSTNAME"
 
-  # symlink_files_for_custom
+  symlink_files_for_custom
 }
 
 run_pre_hooks() {
@@ -211,9 +289,9 @@ run_pre_hooks() {
   for hook in "${hooks[@]}"; do
     if [[ -f "$hook" ]]; then
       if $DRY_RUN; then
-        log "[dry-run] Would run hook: $hook"
+        log_dry "Would run hook: $hook"
       else
-        $VERBOSE && bash "$hook" || quiet bash "$hook"
+        quiet bash "$hook"
       fi
     fi
   done
@@ -227,18 +305,18 @@ run_hooks_for() {
     for file in "$HOOKS_FILES_DIR/${prefix:+$prefix/}"/*; do
       should_skip "$file" "pre.sh" "post.sh" && continue
       if $DRY_RUN; then
-        log "[dry-run] Would run hook: $file"
+        log_dry "Would run hook: $file"
       else
-        $VERBOSE && bash "$file" || quiet bash "$file"
+        quiet bash "$file"
       fi
     done
   fi
 
   if [[ -f "$post_hook" ]]; then
     if $DRY_RUN; then
-      log "[dry-run] Would run hook: $hook"
+      log_dry "Would run hook: $hook"
     else
-      $VERBOSE && bash "$post_hook" || quiet bash "$post_hook"
+      quiet bash "$post_hook"
     fi
   fi
 }
@@ -255,17 +333,49 @@ clean_backups() {
   fi
 
   if [[ ! -s "$BACKUP_LOG" ]]; then
-    log "No backups to clean." && return
+    log_info "No backups to clean. Log file does not exist or is empty."
+    return
   fi
 
-  log "Cleaning backups listed in: $BACKUP_LOG"
+  log_info "Cleaning backups listed in: $BACKUP_LOG"
+
+  local deleted_count=0
+  local skipped_count=0
+
+  local temp_backup_list=$(mktemp)
+  cp "$BACKUP_LOG" "$temp_backup_list"
 
   while IFS= read -r backup; do
-    [[ ! -e "$backup" ]] && continue
-    rm -rf "$backup"
-  done < "$BACKUP_LOG"
+    if [[ -e "$backup" ]]; then
+      log_dry "Would remove $backup"
+      $DRY_RUN && ((++skipped_count)) && continue;
 
-  rm -rf "$BACKUP_LOG"
+      if rm -rf "$backup"; then
+        log_info "Successfully deleted: $backup"
+        ((++deleted_count))
+      else
+        log_error "Failed to delete: $backup (check permissions)"
+      fi
+    else
+      log_info "Skipping non-existent backup: $backup"
+      ((++skipped_count))
+    fi
+  done < "$temp_backup_list"
+
+  rm -f "$temp_backup_list"
+
+  if [[ -f "$BACKUP_LOG" ]]; then
+    log_dry "Would remove $BACKUP_LOG"
+    $DRY_RUN && return 0;
+
+    if rm -f "$BACKUP_LOG"; then
+      log_info "Successfully deleted backup log: $BACKUP_LOG"
+    else
+      log_error "Failed to delete backup log: $BACKUP_LOG (check permissions)"
+    fi
+  fi
+
+  log_info "Cleanup process completed. Deleted $deleted_count backups, skipped $skipped_count non-existent."
 }
 
 print_usage() {
@@ -275,13 +385,11 @@ Usage: $0 [options]
 Options:
   --debug                 Show full command output (stdout/stderr)
   --dry-run, -d           Simulate actions without making changes
-  --verbose, -v           Show informative log output
   --clean-backups, -c     Clean up backed up files and exit
   --user, -u USERNAME     Setup files for a specific user (e.g. root)
   --help, -h              Show this help message and exit
 
 Examples:
-  $0 --verbose
   $0 --dry-run --user root
   $0 --clean-backups
 EOF
@@ -290,12 +398,13 @@ EOF
 # ─── Argument Parsing ──────────────────────────────────────────────────────────
 while [[ $# -gt 0 ]]; do
   case "$1" in
+    --no-emoji) P_EMOJI=false;;
     --dry-run|-d) DRY_RUN=true ;;
-    --verbose|-v) VERBOSE=true ;;
     --help|-h) print_usage; exit 0 ;;
     --user|-u) shift; TARGET_USER="$1" ;;
-    --debug) DEBUG=true && VERBOSE=true;;
     --clean-backups|-c) CLEAN_BACKUPS=true ;;
+    --debug) DEBUG=true; LOG_LEVEL=${LOG_LEVEL_DEBUG};;
+    --quiet|-q) SILENT=true; LOG_LEVEL=${LOG_LEVEL_NONE} ;;
     *) echo "Unknown option: $1"; print_usage; exit 1 ;;
   esac
   shift
@@ -311,17 +420,18 @@ PLATFORM=$(detect_platform)
 HOSTNAME=$(hostname)
 DEBUG=true && VERBOSE=true
 
-log "Platform: $PLATFORM"
-log "Hostname: $HOSTNAME"
+log_debug "Platform: $PLATFORM"
+log_debug "Hostname: $HOSTNAME"
 
 run_pre_hooks
 install_tools
 symlink_files
 run_hooks
 
-[[ -f "$BACKUP_LOG" ]] && log "Files backed up and not deleted yet -"
-[[ -f "$BACKUP_LOG" ]] && cat "$BACKUP_LOG"
-[[ -f "$BACKUP_LOG" ]] && log "run: $0 --clean-backups # to delete the backups"
+[[ -f "$BACKUP_LOG" ]] && log_info "Files backed up and not deleted yet -"
+[[ -f "$BACKUP_LOG" ]] && [[ $LOG_LEVEL -ge $LOG_LEVEL_INFO ]] && cat "$BACKUP_LOG"
+[[ -f "$BACKUP_LOG" ]] && log_info "run: $0 --clean-backups # to delete the backups"
 
-$VERBOSE && echo "Setup complete for user: $TARGET_USER"
+log_info "Setup complete for user: $TARGET_USER"
+
 

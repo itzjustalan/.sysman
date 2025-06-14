@@ -1,0 +1,172 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+paint() {
+  declare -gA PAINT_EFFECTS=(
+    [reset]=0 [bold]=1 [dim]=2 [italic]=3 [underline]=4
+    [blink]=5 [reverse]=7 [hidden]=8 [strike]=9
+    [double_underline]=21 [normal_intensity]=22
+    [no_italic]=23 [no_underline]=24 [no_blink]=25
+    [no_reverse]=27 [no_hidden]=28 [no_strike]=29
+    [fraktur]=20 [overline]=53 [no_overline]=55
+  )
+
+  declare -gA PAINT_COLORS
+
+  PAINT_generate_colors() {
+    local index=0
+    for name in black maroon green olive navy purple teal silver grey red lime yellow blue fuchsia aqua white; do
+      PAINT_COLORS["$name"]="$index"
+      ((++index))
+    done
+
+    index=16
+    for r in 0 95 135 175 215 255; do
+      for g in 0 95 135 175 215 255; do
+        for b in 0 95 135 175 215 255; do
+          hex=$(printf '%02x%02x%02x' "$((r))" "$((g))" "$((b))")
+          PAINT_COLORS["rgb_$hex"]=$index
+          ((++index))
+        done
+      done
+    done
+
+    for i in {232..255}; do
+      gray=$((8 + (i - 232) * 10))
+      PAINT_COLORS["gray_$gray"]=$i
+    done
+  }
+
+  PAINT_print_help() {
+    cat <<EOF
+Usage: paint [OPTIONS] [TEXT...]
+
+Options:
+  --fg COLOR                Set foreground color.
+  --bg COLOR                Set background color.
+  --<EFFECT>                Apply text effects.
+  --list                    Preview all colors.
+  --help                    Show this help.
+  [-t, --text TEXT]         Optionally override positional args and stdin.
+
+  COLOR: Supported color codes. [ paint --list ]
+
+  EFFECT: Effects to apply on TEXT. Can add multiple.
+
+$(for k in "${!PAINT_EFFECTS[@]}"; do echo "  --$k"; done | sort)
+
+Examples:
+  paint --list
+  paint --fg red --italic --underline "Hello"
+  echo "Hello" | paint --fg rgb_00ff00 --bg black --underline
+  source ./paint; paint --fg red --italic --underline "Hello"
+EOF
+  }
+
+  PAINT_list_colors() {
+    local esc="\033[" reset="\033[0m"
+
+    echo "Basic 0–15 colors:"
+    for name in "${!PAINT_COLORS[@]}"; do
+      local code=${PAINT_COLORS[$name]}
+      if (( code < 16 )); then
+        printf "${esc}38;5;%sm%-15s${reset}  " "$code" "$name"
+        (( (code + 1) % 2 == 0 )) && echo
+      fi
+    done
+
+    echo -e "\n\nColor Cube (RGB):"
+    for i in {16..231}; do
+      for name in "${!PAINT_COLORS[@]}"; do
+        [[ "${PAINT_COLORS[$name]}" -eq "$i" ]] || continue
+        printf "${esc}38;5;%sm%-15s${reset}  " "$i" "$name"
+        break
+      done
+      (( (i - 15) % 4 == 0 )) && echo
+    done
+
+    echo -e "\n\nGrayscale:"
+    for i in {232..255}; do
+      for name in "${!PAINT_COLORS[@]}"; do
+        [[ "${PAINT_COLORS[$name]}" -eq "$i" ]] || continue
+        printf "${esc}38;5;%sm%-15s${reset}  " "$i" "$name"
+        break
+      done
+      (( (i - 231) % 4 == 0 )) && echo
+    done
+
+    echo -e "\n\nText Effects:"
+    for name in "${!PAINT_EFFECTS[@]}"; do
+      local code=${PAINT_EFFECTS[$name]}
+      printf "${esc}%sm%s${reset}  " "$code" "$name"
+    done
+    echo
+  }
+
+  PAINT_generate_colors
+
+  local fg="" bg="" text=""
+  local style=()
+  local args=()
+
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --help)
+        PAINT_print_help
+        return 0
+        ;;
+      --list)
+        PAINT_list_colors
+        return 0
+        ;;
+      --fg)
+        shift
+        [[ -z "${PAINT_COLORS[$1]:-}" ]] && echo "Unknown foreground: $1" && return 1
+        fg="${PAINT_COLORS[$1]}"
+        ;;
+      --bg)
+        shift
+        [[ -z "${PAINT_COLORS[$1]:-}" ]] && echo "Unknown background: $1" && return 1
+        bg="${PAINT_COLORS[$1]}"
+        ;;
+      --text|-t)
+        shift
+        text="$1"
+        ;;
+      --*)
+        key="${1#--}"
+        [[ -z "${PAINT_EFFECTS[$key]:-}" ]] && echo "Unknown flag: $1" && return 1
+        style+=("${PAINT_EFFECTS[$key]}")
+        ;;
+      *)
+        args+=("$1")
+        ;;
+    esac
+    shift
+  done
+
+  [[ -n "$fg" ]] && style+=("38;5;${fg}")
+  [[ -n "$bg" ]] && style+=("48;5;${bg}")
+
+  local esc="\033[" reset="\033[0m"
+  local prefix="${esc}$(IFS=';'; echo "${style[*]}")m"
+
+  if [[ -n "$text" ]]; then
+    echo -e "${prefix}${text}${reset}"
+  elif [[ ${#args[@]} -gt 0 ]]; then
+    echo -e "${prefix}${args[*]}${reset}"
+  elif [ -t 0 ]; then
+    echo "No input provided. Use --help for usage info." >&2
+    return 1
+  else
+    while IFS= read -r line; do
+      echo -e "${prefix}${line}${reset}"
+    done
+  fi
+}
+
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+  paint "$@"
+fi
+
