@@ -6,6 +6,9 @@ vim.opt.wrap = true
 vim.g.autoformat = false
 vim.g.fixendofline = false
 
+-- use system clipboard
+vim.opt.clipboard = "unnamedplus"
+
 -- force vim to use unix style line endings
 vim.opt.fileformats = { "unix", "dos", "mac" }
 
