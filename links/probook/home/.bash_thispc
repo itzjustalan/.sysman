@@ -1,0 +1,11 @@
+
+
+
+. "/home/alan/.deno/env"
+. /home/alan/.local/share/bash-completion/completions/deno.bash
+
+eval "$(starship init bash)"
+
+# NOTE: must be the last https://github.com/ajeetdsouza/zoxide/issues/1013#issuecomment-2760232603
+eval "$(zoxide init bash)"
+

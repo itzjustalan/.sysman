@@ -27,6 +27,14 @@ local function map(mode, lhs, rhs, opts)
   end
 end
 
+-- Insert --
 map("i", "jj", "<esc><esc>", "esc to normal mode")
+map("i", "ji", "<esc><esc>:join<cr>i", "escape")
 -- map("n", "ZZ", vim.cmd.qall, "close all files and quit vim")
+
+-- Visual --
+map("v", "p", '"_dP', "noob paste")
+map("v", "lkj", "<esc><esc>", "escape")
+map("v", "<", "<gv", "Stay in indent mode")
+map("v", ">", ">gv", "Stay in indent mode")
 
