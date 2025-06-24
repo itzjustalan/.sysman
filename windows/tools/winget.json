@@ -1,0 +1,104 @@
+{
+  "$schema" : "https://aka.ms/winget-packages.schema.2.0.json",
+  "Sources": [
+    {
+      "Packages": [
+        {
+          "PackageIdentifier" : "Bitwarden.Bitwarden"
+        },
+        {
+          "PackageIdentifier" : "7zip.7zip"
+        },
+        {
+          "PackageIdentifier" : "ente-io.auth-desktop"
+        },
+        {
+          "PackageIdentifier": "Git.Git"
+        },
+        {
+          "PackageIdentifier" : "SourceFoundry.HackFonts"
+        },
+        {
+          "PackageIdentifier" : "ImageMagick.ImageMagick"
+        },
+        {
+          "PackageIdentifier" : "OBSProject.OBSStudio"
+        },
+        {
+          "PackageIdentifier" : "NCHSoftware.WavePad"
+        },
+        {
+          "PackageIdentifier" : "Mozilla.Firefox"
+        },
+        {
+          "PackageIdentifier" : "Mozilla.Thunderbird"
+        },
+        {
+          "PackageIdentifier" : "Mozilla.Thunderbird.ESR"
+        },
+        {
+          "PackageIdentifier" : "Notepad++.Notepad++"
+        },
+        {
+          "PackageIdentifier" : "RustDesk.RustDesk"
+        },
+        {
+          "PackageIdentifier" : "VideoLAN.VLC"
+        },
+        {
+          "PackageIdentifier" : "SoftDeluxe.FreeDownloadManager"
+        },
+        {
+          "PackageIdentifier" : "Amazon.AWSCLI"
+        },
+        {
+          "PackageIdentifier" : "Neovim.Neovim"
+        },
+        {
+          "PackageIdentifier" : "Alacritty.Alacritty"
+        },
+        {
+          "PackageIdentifier" : "Starship.Starship"
+        },
+        {
+          "PackageIdentifier" : "BurntSushi.ripgrep.MSVC"
+        },
+        {
+          "PackageIdentifier" : "ajeetdsouza.zoxide"
+        },
+        {
+          "PackageIdentifier" : "jqlang.jq"
+        },
+        {
+          "PackageIdentifier" : "junegunn.fzf"
+        },
+        {
+          "PackageIdentifier" : "lsd-rs.lsd"
+        },
+        {
+          "PackageIdentifier" : "sharkdp.fd"
+        },
+        {
+          "PackageIdentifier" : "sxyazi.yazi"
+        },
+        {
+          "PackageIdentifier" : "Microsoft.VisualStudioCode"
+        },
+        {
+          "PackageIdentifier" : "Microsoft.WindowsTerminal"
+        },
+        {
+          "PackageIdentifier" : "Debian.Debian"
+        }
+      ],
+      "SourceDetails" : {
+        "Argument" : "https://cdn.winget.microsoft.com/cache",
+        "Identifier" : "Microsoft.Winget.Source_8wekyb3d8bbwe",
+        "Name" : "winget",
+        "Type" : "Microsoft.PreIndexed.Package"
+      }
+    }
+  ],
+  "WinGetVersion" : "1.10.390"
+}
+
