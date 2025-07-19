@@ -29,19 +29,19 @@ if ! command -v nvim &>/dev/null; then
       arch_name="$(uname -m)"
       if [ "$arch_name" = "arm64" ]; then
         curl -LO https://github.com/neovim/neovim/releases/download/nightly/nvim-macos-arm64.tar.gz
-        tar xzf nvim-macos-arm64.tar.gz
-        sudo mv nvim-macos-arm64/bin/nvim /usr/local/bin/nvim
+        rm -rf /usr/local/bin/nvim
+        tar -C /usr/local/bin -xzf nvim-macos-arm64.tar.gz
         rm -rf nvim-macos-arm64 nvim-macos-arm64.tar.gz
       else
         curl -LO https://github.com/neovim/neovim/releases/download/nightly/nvim-macos-x86_64.tar.gz
-        tar xzf nvim-macos-x86_64.tar.gz
-        sudo mv nvim-macos-x86_64/bin/nvim /usr/local/bin/nvim
+        rm -rf /usr/local/bin/nvim
+        tar -C /usr/local/bin -xzf nvim-macos-x86_64.tar.gz
         rm -rf nvim-macos-x86_64 nvim-macos-x86_64.tar.gz
       fi
   else
     curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
-    tar -xzf nvim-linux-x86_64.tar.gz
-    sudo mv nvim-linux-x86_64/bin/nvim /usr/local/bin/nvim
+    rm -rf /usr/local/bin/nvim
+    tar -C /usr/local/bin -xzf nvim-linux-x86_64.tar.gz
     rm -rf nvim-linux-x86_64 nvim-linux-x86_64.tar.gz
   fi
 fi

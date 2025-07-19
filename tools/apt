@@ -1,5 +1,5 @@
 curl
 git
-lsg
+lsd
 tmux
 tree
