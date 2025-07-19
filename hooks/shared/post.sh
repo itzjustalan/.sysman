@@ -41,8 +41,8 @@ if ! command -v nvim &>/dev/null; then
   else
     curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
     tar -xzf nvim-linux-x86_64.tar.gz
-    sudo mv nvim-linux64/bin/nvim /usr/local/bin/nvim
-    rm -rf nvim-linux64 nvim-linux-x86_64.tar.gz
+    sudo mv nvim-linux-x86_64/bin/nvim /usr/local/bin/nvim
+    rm -rf nvim-linux-x86_64 nvim-linux-x86_64.tar.gz
   fi
 fi
 
