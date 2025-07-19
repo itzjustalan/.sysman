@@ -1,0 +1,439 @@
+# .zsh_aliases
+# Converted from .bash_aliases for Zsh
+
+#--------------------------------------------------
+# META
+#--------------------------------------------------
+# Set the default editor
+export EDITOR=nvim
+
+alias bbash="source ~/.zshrc"
+alias basha="$EDITOR ~/.zsh_aliases"
+
+#--------------------------------------------------
+# GENERAL UTILITIES
+#--------------------------------------------------
+alias h="tac ~/.zsh_history | dmenu | tr -d '\n' | xclip -selection c"
+alias c='cat'
+alias cp='cp -ir'      # Confirm before overwriting
+alias cpy='cp -r'
+alias df='df -h'       # Human-readable sizes
+alias free='free -m'     # Show sizes in MB
+alias more='less'
+alias sv='sudoedit'
+alias nv='nvim'
+alias "nv."="nvim ."
+alias m='mpv'
+alias diff='diff --color=auto'
+alias mkdir='mkdir -p'
+alias wcl='wc -l'      # Count lines
+alias xc='xclip -selection clipboard'
+alias sortsize='/bin/ls -lSah --color=auto'
+alias whatismyipaddress='ipconfig getifaddr en0'
+
+#--------------------------------------------------
+# LISTING & NAVIGATION
+#--------------------------------------------------
+# Use lsd for a modern 'ls' experience
+alias ll='lsd -lA --group-dirs=first --color=always --icon=always --icon-theme=fancy --permission=rwx --blocks=permission,user,size,name'
+alias lll='lsd -lA --group-dirs=first --color=always --icon=always --icon-theme=fancy --permission=rwx --blocks=permission,user,size,date,name'
+alias jj='ll'
+alias kk='ll'
+
+# Quick navigation
+alias cdd='cd ..'
+alias cdc='cd -' # Go to the previous directory
+
+# File manager (yazi)
+alias lf='yazi'
+alias lff='cd_with_terminal_filemanager' # Exit yazi into the last directory
+
+# FZF integration
+alias zf='fzf --preview "bat --color=always --style=numbers --line-range=:500 {}"'
+
+#--------------------------------------------------
+# SYSTEM & HARDWARE
+#--------------------------------------------------
+alias bts='/home/alan/.sysman/sys/get-bat-stats.sh; date'
+alias shtn='bts; uptime -p; sleep 1s; shutdown now'
+alias rescan='sudo /sys/class/net/wlo1/device/rescan'
+alias setx='xrandr --output HDMI-1-1 --auto --rotate right --left-of eDP-1'
+
+# RDP
+alias start-rdp='sudo /etc/init.d/xrdp start'
+alias stop-rdp='sudo /etc/init.d/xrdp stop'
+
+# WSL Drives
+alias c:='cd /mnt/win/c'
+alias d:='cd /mnt/win/d'
+alias e:='cd /mnt/win/e'
+alias f:='cd /mnt/win/f'
+alias g:='cd /mnt/win/g'
+
+#--------------------------------------------------
+# PACKAGE MANAGEMENT (Paru)
+#--------------------------------------------------
+alias pS='paru -S'
+alias pR='paru -R'
+alias pQ='paru -Q'
+alias pQi='paru -Qi'
+alias pSi='paru -Si'
+alias pSyy='paru -Syy'
+alias pSyyu='paru -Syyu'
+
+#--------------------------------------------------
+# DEVELOPMENT & BUILD
+#--------------------------------------------------
+alias mci='make clean install'
+alias smci='sudo make clean install'
+alias pmi='patch --merge -i'
+
+# Node.js
+alias nrs='npm run start'
+alias nrt='npm run test'
+alias nrb='npm run build'
+alias nrl='npm run local'
+alias nrf='npm run format'
+
+# Bun
+alias brd='bun run dev'
+alias brs='bun run start'
+alias brt='bun run test'
+alias brb='bun run build'
+alias brl='bun run local'
+alias brf='bun run format'
+
+# Flutter
+alias f='flutter'
+alias flutter='fvm flutter'
+alias fbundle='flutter build appbundle'
+alias fpg='flutter clean; flutter pub get'
+alias flrun='flutter run -d emulator-5554'
+alias fbaspa='name=$(pwd | rev | cut -d "/" -f 1 | rev);echo grr \"${name}\";flutter build apk --split-per-abi;mv ./build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk ./build/app/outputs/flutter-apk/${name}.apk;echo ${name}.apk built;'
+
+# Android Emulator
+alias runemulator='emulator -avd Pixel_4_API_30'
+alias avd='~/development/android-sdk/emulator/emulator -avd Pixel_4_API_30'
+
+#--------------------------------------------------
+# GIT
+#--------------------------------------------------
+alias gs='git status'
+alias ga='git add -A'
+alias gm='git commit'
+alias cm='git commit -m'
+alias gl='git log --all --graph --decorate'
+alias gb='git branch'
+alias gc='git checkout'
+alias gd="git diff -- ':!package-lock.json' ':!src/routeTree.gen.ts'"
+alias gr='git remote'
+alias grv='git remote -v'
+alias gll='git log --oneline'
+alias gpusha='git push --all'
+alias grso='git remote show origin'
+alias gpush='git push origin main'
+alias gpull='git pull origin main'
+alias gsl='git add -A; git commit -m "automated commit"'
+alias gsm='git add -A; git commit -m'
+alias gss='gsl; git pull origin; git push origin; git status'
+alias gcb='git branch --color --sort=committerdate | sk --ansi -p "branch: " --preview "git diff --color {-1}" --preview-window right | xargs git checkout'
+
+#--------------------------------------------------
+# DOCKER
+#--------------------------------------------------
+alias dpsa='docker ps -a'
+alias dspa-SURE-KILL-ALL-='echo "Are you sure? Type dspa-SURE-KILL-ALL-y to proceed."'
+alias dspa-SURE-KILL-ALL-y='docker system prune -af'
+alias postgresContainerStart='docker start postgresdb'
+alias postgresContainerCreate='docker run --name postgresdb -p 5432:5432 -e POSTGRES_PASSWORD=test -d postgres'
+
+#--------------------------------------------------
+# MEDIA & FUN
+#--------------------------------------------------
+alias m='mpv'
+alias lofi="mpv 'https://www.youtube.com/watch?v=5qap5aO4i9A' --no-video --force-seekable=yes"
+alias sr='ffmpeg -f x11grab -i :0.0' # Screen record (no audio)
+alias sra='ffmpeg -f x11grab -i :0.0 -f alsa -ac 2 -i default' # Screen record (with audio)
+alias ss='takeScreenshot'
+alias ssc='takeCustomScreenshot'
+alias vavs='curl -s -L https://raw.githubusercontent.com/keroserene/rickrollrc/master/roll.sh | bash'
+
+# Youtube-dl
+alias ydl='youtube-dl'
+alias ydlF='youtube-dl -F'
+alias ydlf='youtube-dl --external-downloader /usr/bin/axel -f'
+alias ydld='youtube-dl --external-downloader /usr/bin/axel -f best'
+alias ydldd='youtube-dl --write-description --skip-download --youtube-skip-dash-manifest'
+alias ydla="youtube-dl --external-downloader /usr/bin/axel -f 'bestaudio[ext=m4a]'"
+
+# QR Codes
+alias gqr='qrencode -s10 -o ~/outputqrcode.png'
+alias vqr='sxiv ~/outputqrcode.png; rqr'
+alias rqr='qrencode -o ~/outputqrcode.png " "; clear'
+
+#--------------------------------------------------
+# PERSONAL SCRIPTS & WORKSPACES
+#--------------------------------------------------
+alias qq='cat ~/static/quick'
+alias bb='cat ~/static/bindings'
+alias adg='cat ~/myfiles/agenda'
+alias eqq='$EDITOR ~/static/quick'
+alias eadg='$EDITOR ~/myfiles/agenda'
+alias vvk="$EDITOR ~/vimwiki/index.md;cd ~/vimwiki;git add -A;git commit -m 'automated sync from termux n9p';git pull origin main;git push origin main;echo 'wiki synced!'"
+alias ttl='cat ~/vimwiki/personal/timeslots .; date'
+alias eemb='$EDITOR ~/blog/itzjustalan.wiki'
+alias ddmb='deployMyBlog'
+alias ws='wiki-search'
+alias umms='less ~/static/umms'
+
+# Workspace shortcuts
+alias wp='cd ~/wp/'
+alias wd='cd /mnt/c/Users/alanj/Desktop/'
+alias my='cd ~/myfiles/'
+alias myg='cd ~/myfiles/pgms/'
+alias msc='cd ~/.sysman'
+alias gdb='cd ~/work/rkd/'
+alias gdr='cd ~/pgms/springboot/rocket-science/'
+
+#--------------------------------------------------
+# FUNCTIONS
+#--------------------------------------------------
+
+# Copy current path to clipboard
+cppa() {
+  if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
+    echo "cd $(pwd)" | wl-copy
+  else
+    echo "cd $(pwd)" | xclip -selection clipboard
+  fi
+}
+
+# Paste image from clipboard to a file
+cppf() {
+  filepath="$HOME/screenshots/$(date +%Y)/$(date +%m)"
+  mkdir -p "$filepath"
+  if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
+    wl-paste -t image/png > "$filepath/$(date +%Y-%m-%d_%T_%s).png"
+  else
+    echo "This function currently only supports Wayland."
+    return 1
+  fi
+}
+
+_fzf_complete_docker() {
+    ARGS="$@"
+    if [[ "$ARGS" == "docker exec"* ]]; then
+      _fzf_complete --preview 'docker container logs {1} | tail' -- "$@" < <(
+        docker container ls --format "table {{ .ID }}\t{{ .Image }}\t{{ .Names }}" | awk 'NR>1 {print $0}'
+      )
+    fi
+}
+
+_fzf_complete_docker_post() {
+  awk '{print $1}'
+}
+
+# FZF: cd into a directory
+fcd() {
+  local dir
+  dir=$(find -L . -type d ! -path './.git/*' ! -path '*/node_modules/*' ! -path '*/target/*' | fzf --height 40% --reverse) && cd "$dir"
+}
+
+# FZF: Open a file with xdg-open
+op() {
+  local file
+  file=$(find . -type f ! -path './.git/*' ! -path '*/node_modules/*' ! -path '*/target/*' | fzf --height 40% --reverse) && xdg-open "$file"
+}
+
+# FZF: Git checkout branch
+fgc() {
+  local branches branch
+  branches=$(git for-each-ref --count=30 --sort=-committerdate refs/heads/ --format="%(refname:short)") &&
+  branch=$(echo "$branches" |
+         fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
+  git checkout $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
+}
+
+# Share something to 0x0.st and show QR code
+sxq() {
+  sx $@ | gqr
+  vqr
+}
+
+# Curl from 0x0.st
+csx() {
+  curl "http://0x0.st/$1.txt"
+}
+csxx() {
+  curl "http://0x0.st/$1"
+}
+
+# Post file to 0x0.st
+psx() {
+  curl -F"file=@$1" "http://0x0.st"
+}
+
+# Get local IP and show as QR code
+alias getip="ip addr | grep 'inet ' | grep -v '127.0.0.1' | awk '{print \$2}' | cut -d'/' -f1 | gqr; vqr"
+
+# A shim for running dev scripts
+nrd() {
+  if [[ -f "nodemon.json" ]]; then
+    nodemon
+  elif [[ -f "Makefile" ]]; then
+    make
+  elif [[ -f "bun.lock" ]]; then
+    bun run dev
+  elif [ -f "package.json" ]; then
+    npm run dev
+  fi
+}
+
+# List npm scripts
+npmScripts() {
+  jq '.scripts' package.json
+}
+
+# A safer 'rm -rf'
+tm() {
+  if [ "$1" = "-rf" ]; then
+    case "$2" in
+      "/"|"/home"|"~"|"~/"|"/home/alan"|"/home/alanj/")
+        echo "Safety lock: You tried to delete a critical directory. Aborting."
+        return 1
+        ;;
+      *)
+        command rm $@
+        ;;
+    esac
+  else
+    command rm $@
+  fi
+}
+
+# Make a directory and cd into it
+mkcd() {
+  mkdir -p -- "$1" && cd -P -- "$1"
+}
+
+# Make directory for a file and copy it there
+mkcp() {
+  mkdir -p -- "$(dirname "$2")" && cp "$1" "$2"
+}
+
+# Make a directory with today's date and cd into it
+mkcdird() {
+  mkdir "$(date +%F)" && cd "$(date +%F)"
+}
+
+# Simple note-taking function
+umm() {
+  LC_TEXT="\n\n$(date +%Y-%B-%d\ [%H:%M]..)\n$@"
+  echo -en "$LC_TEXT" >> ~/static/umms
+}
+
+# Google Search
+gg() {
+  local flags="--new-tab"
+  local browser="firefox"
+  local engine="https://www.google.com/search?q="
+  if [[ "$1" == "-p" ]]; then
+    flags="$flags --private-window"
+    shift
+  fi
+  local q=$(echo "$@" | tr " " "+")
+  eval "$browser $flags $engine$q"
+}
+
+# Private Google Search
+gp() {
+  gg -p "$@"
+}
+
+# Timer function
+timer() {
+  while :; do
+    sleep "$1"
+    notify-send "Timer done: $1" "Time: $(date)"
+  done
+}
+
+# Switch a git remote from HTTPS to SSH
+switch2ssh() {
+  local remote_name="origin"
+  local hurl=$(git remote get-url $remote_name)
+
+  if [[ $hurl == "git"* ]]; then
+    echo "Already using SSH URL: $hurl"
+    return
+  fi
+
+  echo "HTTPS URL detected: $hurl"
+  local host=$(echo $hurl | cut -d'/' -f3)
+  local user=$(echo $hurl | cut -d'/' -f4)
+  local repo=$(echo $hurl | cut -d'/' -f5)
+  local url="git@$host:$user/$repo"
+  echo "Switching to SSH URL: $url"
+  git remote set-url $remote_name $url
+}
+
+# CD with file manager (yazi)
+cd_with_terminal_filemanager() {
+  local tmp="$(mktemp -t "yazi-cwd.XXXXX")"
+  yazi "$@" --cwd-file="$tmp"
+  if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+    cd -- "$cwd"
+  fi
+  rm -f -- "$tmp"
+}
+
+# Deploy blog
+deployMyBlog() {
+  rm -rf ~/vimwiki_html/*
+  rm -rf ~/www/myblog/public/*
+  vim -c ':VimwikiAll2HTML' -c ':q' -c ':q' ~/blog/itzjustalan.wiki
+  cp ~/vimwiki_html/* ~/www/myblog/public/
+  cp ~/www/myblog/symlinks/actualLinks/* ~/www/myblog/public/
+  cd ~/www/myblog/
+  git add -A
+  git commit -m "$(date +%F) automated commit"
+  git push origin main
+  cd -
+  notify-send "MyBlog deployed!"
+}
+
+# Screenshot functions using 'maim'
+takeScreenshot() {
+  local screenshotDIR="$HOME/myfiles/screenshots/$(date +%Y)/$(date +%B-%Y)/$(date +%F)"
+  mkdir -p "$screenshotDIR"
+  maim "$screenshotDIR/hp15-screenshot-$(date +%Y-%m-%d_%H-%M-%S-%s).png"
+  notify-send "Screenshot saved."
+}
+
+takeCustomScreenshot() {
+  local screenshotDIR="$HOME/myfiles/screenshots/$(date +%Y)/$(date +%B-%Y)/$(date +%F)"
+  mkdir -p "$screenshotDIR"
+  maim -s "$screenshotDIR/hp15-screenshot-$(date +%Y-%m-%d_%H-%M-%S-%s).png"
+  notify-send "Selected area captured."
+}
+
+#--------------------------------------------------
+# SHELL CONFIG & APPEARANCE
+#--------------------------------------------------
+
+# Starship prompt (recommended for Zsh)
+# To use, uncomment the line below.
+eval "$(starship init zsh)"
+
+# Disable less history file
+export LESSHISTORYFILE='-'
+
+# Source other configuration files if they exist
+[[ -f ~/.zsh_envs ]] && source ~/.zsh_envs
+[[ -f ~/.zsh_completions ]] && source ~/.zsh_completions
+
+# Source configs specific to this pc
+if [ -f ~/.zsh_thispc ]; then
+  source ~/.zsh_thispc
+fi
+

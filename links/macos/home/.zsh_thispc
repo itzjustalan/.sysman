@@ -1,0 +1,10 @@
+
+# update PATH
+PATH=$PATH:/usr/local/bin
+
+# bun completions
+[ -s "/Users/alankjohn/.bun/_bun" ] && source "/Users/alankjohn/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"

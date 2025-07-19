@@ -1,3 +1,4 @@
+return {}
 return {
   {
     "kristijanhusak/vim-dadbod-ui",

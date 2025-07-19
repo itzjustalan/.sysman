@@ -171,15 +171,19 @@ dos_to_unix() {
     return 1
   fi
 
-  tmpfile="$(mktemp)"
-  quiet cp "$src" "$tmpfile"
-  quiet sed -i 's/^M$//g' "$tmpfile"
-  quiet sed -i 's/\r$//g' "$tmpfile"
+  tmpfile=$(mktemp)
 
+  if command -v gsed &>/dev/null; then
+    quiet gsed -i 's/^M//g' "$src" > "$tmpfile"
+    quiet gsed -i 's/\r$//g' "$src" > "$tmpfile"
+  else
+    quiet tr -d '\r' < "$src" > "$tmpfile"
+  fi
+
+  # Output the cleaned content to stdout
   cat "$tmpfile"
-  quiet rm -f "$tmpfile"
+  quiet rm -f "$tmpfile" # Clean up the temporary file
 }
-
 
 install_tools() {
   local pkgmgr=$(detect_package_manager)
