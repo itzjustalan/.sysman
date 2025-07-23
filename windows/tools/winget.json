@@ -4,10 +4,25 @@
     {
       "Packages": [
         {
+          "PackageIdentifier" : "7zip.7zip"
+        },
+        {
+          "PackageIdentifier" : "ajeetdsouza.zoxide"
+        },
+        {
+          "PackageIdentifier" : "Alacritty.Alacritty"
+        },
+        {
+          "PackageIdentifier" : "Amazon.AWSCLI"
+        },
+        {
           "PackageIdentifier" : "Bitwarden.Bitwarden"
         },
         {
-          "PackageIdentifier" : "7zip.7zip"
+          "PackageIdentifier" : "BurntSushi.ripgrep.MSVC"
+        },
+        {
+          "PackageIdentifier" : "Debian.Debian"
         },
         {
           "PackageIdentifier" : "ente-io.auth-desktop"
@@ -16,55 +31,10 @@
           "PackageIdentifier": "Git.Git"
         },
         {
-          "PackageIdentifier" : "SourceFoundry.HackFonts"
-        },
-        {
           "PackageIdentifier" : "ImageMagick.ImageMagick"
         },
         {
-          "PackageIdentifier" : "OBSProject.OBSStudio"
-        },
-        {
-          "PackageIdentifier" : "NCHSoftware.WavePad"
-        },
-        {
-          "PackageIdentifier" : "Mozilla.Firefox"
-        },
-        {
-          "PackageIdentifier" : "Mozilla.Thunderbird"
-        },
-        {
-          "PackageIdentifier" : "Mozilla.Thunderbird.ESR"
-        },
-        {
-          "PackageIdentifier" : "Notepad++.Notepad++"
-        },
-        {
-          "PackageIdentifier" : "RustDesk.RustDesk"
-        },
-        {
-          "PackageIdentifier" : "VideoLAN.VLC"
-        },
-        {
-          "PackageIdentifier" : "SoftDeluxe.FreeDownloadManager"
-        },
-        {
-          "PackageIdentifier" : "Amazon.AWSCLI"
-        },
-        {
-          "PackageIdentifier" : "Neovim.Neovim"
-        },
-        {
-          "PackageIdentifier" : "Alacritty.Alacritty"
-        },
-        {
-          "PackageIdentifier" : "Starship.Starship"
-        },
-        {
-          "PackageIdentifier" : "BurntSushi.ripgrep.MSVC"
-        },
-        {
-          "PackageIdentifier" : "ajeetdsouza.zoxide"
+          "PackageIdentifier": "jdx.mise"
         },
         {
           "PackageIdentifier" : "jqlang.jq"
@@ -76,19 +46,52 @@
           "PackageIdentifier" : "lsd-rs.lsd"
         },
         {
-          "PackageIdentifier" : "sharkdp.fd"
-        },
-        {
-          "PackageIdentifier" : "sxyazi.yazi"
-        },
-        {
           "PackageIdentifier" : "Microsoft.VisualStudioCode"
         },
         {
           "PackageIdentifier" : "Microsoft.WindowsTerminal"
         },
         {
-          "PackageIdentifier" : "Debian.Debian"
+          "PackageIdentifier" : "Mozilla.Firefox"
+        },
+        {
+          "PackageIdentifier" : "Mozilla.Thunderbird"
+        },
+        {
+          "PackageIdentifier" : "Mozilla.Thunderbird.ESR"
+        },
+        {
+          "PackageIdentifier" : "NCHSoftware.WavePad"
+        },
+        {
+          "PackageIdentifier" : "Neovim.Neovim"
+        },
+        {
+          "PackageIdentifier" : "Notepad++.Notepad++"
+        },
+        {
+          "PackageIdentifier" : "OBSProject.OBSStudio"
+        },
+        {
+          "PackageIdentifier" : "RustDesk.RustDesk"
+        },
+        {
+          "PackageIdentifier" : "sharkdp.fd"
+        },
+        {
+          "PackageIdentifier" : "SoftDeluxe.FreeDownloadManager"
+        },
+        {
+          "PackageIdentifier" : "SourceFoundry.HackFonts"
+        },
+        {
+          "PackageIdentifier" : "Starship.Starship"
+        },
+        {
+          "PackageIdentifier" : "sxyazi.yazi"
+        },
+        {
+          "PackageIdentifier" : "VideoLAN.VLC"
         }
       ],
       "SourceDetails" : {

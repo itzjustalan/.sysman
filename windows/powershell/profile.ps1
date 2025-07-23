@@ -38,15 +38,18 @@ $ENV:STARSHIP_CONFIG = "C:\Users\gbsal\starship.toml"
 Invoke-Expression (&starship init powershell)
 
 Set-Alias nv nvim -Force -Option AllScope
-Set-Alias ll lsd -Force -Option AllScope
 
 function msc {
     Set-Location "D:\linx\.sysman"
 }
 
-# function ll {
-#     Get-ChildItem -Force $args
-# }
+function ll {
+    lsd -lA --group-dirs=first --color=always --icon=always --icon-theme=fancy --permission=rwx --blocks=permission,user,size,name
+}
+
+function lll {
+    lsd -lA --group-dirs=first --color=always --icon=always --icon-theme=fancy --permission=rwx --blocks=permission,user,size,date,name
+}
 
 function nrd { npm run dev }
 function nrs { npm run start }

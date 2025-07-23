@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage Widgets</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Catppuccin Mocha Palette */
+        :root {
+            --mocha-rosewater: #f5e0dc;
+            --mocha-flamingo: #f2cdcd;
+            --mocha-pink: #f5c2e7;
+            --mocha-mauve: #cba6f7;
+            --mocha-red: #f38ba8;
+            --mocha-maroon: #eba0ac;
+            --mocha-peach: #fab387;
+            --mocha-yellow: #f9e2af;
+            --mocha-green: #a6e3a1;
+            --mocha-teal: #94e2d5;
+            --mocha-sky: #89dceb;
+            --mocha-sapphire: #74c7ec;
+            --mocha-blue: #89b4fa;
+            --mocha-lavender: #b4befe;
+            --mocha-text: #cdd6f4;
+            --mocha-subtext1: #bac2de;
+            --mocha-subtext0: #a6adc8;
+            --mocha-overlay2: #9399b2;
+            --mocha-overlay1: #7f849c;
+            --mocha-overlay0: #6c7086;
+            --mocha-surface2: #585b70;
+            --mocha-surface1: #45475a;
+            --mocha-surface0: #313244;
+            --mocha-base: #1e1e2e;
+            --mocha-mantle: #181825;
+            --mocha-crust: #11111b;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--mocha-base); /* Dark background */
+            color: var(--mocha-text); /* Light text */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .selection\:bg-blue-800.selection\:text-white::selection {
+            background-color: var(--mocha-blue);
+            color: var(--mocha-crust);
+        }
+
+        .grid-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            aspect-ratio: 1 / 1; /* Keep items square */
+            width: 100%; /* Fill parent grid cell */
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .grid-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .grid-item img {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+            border-radius: 8px; /* Rounded corners for favicons */
+            margin-bottom: 0.5rem;
+            background-color: var(--mocha-mantle); /* Subtle background for visibility */
+            padding: 4px;
+        }
+
+        /* Modal specific styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.6); /* Darker overlay */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: var(--mocha-surface1);
+            margin: auto;
+            padding: 20px;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            max-width: 90%;
+            width: 400px;
+            text-align: center;
+            color: var(--mocha-text);
+        }
+
+        .close-button {
+            color: var(--mocha-overlay1);
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: var(--mocha-rosewater);
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="selection:bg-blue-800 selection:text-white">
+
+    <div class="max-w-4xl w-full mx-auto p-4 md:p-8 space-y-8">
+
+        <div class="flex flex-col md:flex-row justify-between items-center bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700"
+             style="background-color: var(--mocha-surface0); border-color: var(--mocha-surface2);">
+            <div class="flex flex-col items-center md:items-start mb-6 md:mb-0 md:mr-8">
+                <h2 class="text-3xl md:text-4xl font-extrabold mb-2" style="color: var(--mocha-blue);">Current Time</h2>
+                <div id="clock" class="text-5xl md:text-6xl font-bold tracking-wider" style="color: var(--mocha-text);"></div>
+                <div id="date" class="text-lg md:text-xl mt-2" style="color: var(--mocha-subtext0);"></div>
+            </div>
+
+            <div class="flex flex-col items-center md:items-end">
+                <h2 class="text-3xl md:text-4xl font-extrabold mb-2" style="color: var(--mocha-green);">Weather (Simulated)</h2>
+                <div id="weather" class="text-4xl md:text-5xl font-bold" style="color: var(--mocha-text);">
+                    <span id="temperature">25°C</span>, <span id="condition">Sunny</span>
+                </div>
+                <div class="text-md md:text-lg mt-2" style="color: var(--mocha-subtext0);">Location: <span id="location">Your City</span></div>
+                <p class="text-sm mt-2" style="color: var(--mocha-overlay0);">
+                    Note: Actual weather data requires an API key and backend. This is simulated.
+                </p>
+            </div>
+        </div>
+
+        <div class="bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700"
+             style="background-color: var(--mocha-surface0); border-color: var(--mocha-surface2);">
+            <h2 class="text-3xl md:text-4xl font-extrabold mb-6 text-center" style="color: var(--mocha-mauve);">Quick Links</h2>
+            <div id="button-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                </div>
+        </div>
+
+    </div>
+
+    <div id="message-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal()">×</span>
+            <p id="modal-message" class="text-lg mb-4"></p>
+            <button class="font-bold py-2 px-4 rounded-lg transition duration-300"
+                    style="background-color: var(--mocha-blue); color: var(--mocha-crust); hover:background-color: var(--mocha-lavender);"
+                    onclick="closeModal()">
+                OK
+            </button>
+        </div>
+    </div>
+
+
+    <script>
+        // Global variables for __app_id and __firebase_config are provided by the Canvas environment.
+        // If running outside Canvas, these will be undefined, so we provide default values.
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
+
+        // --- Utility Functions ---
+
+        /**
+         * Displays a custom modal message to the user.
+         * @param {string} message - The message to display.
+         */
+        function showModal(message) {
+            const modal = document.getElementById('message-modal');
+            const modalMessage = document.getElementById('modal-message');
+            modalMessage.textContent = message;
+            modal.classList.remove('hidden'); // Show the modal
+        }
+
+        /**
+         * Hides the custom modal.
+         */
+        function closeModal() {
+            const modal = document.getElementById('message-modal');
+            modal.classList.add('hidden'); // Hide the modal
+        }
+
+        // --- Clock Widget ---
+        /**
+         * Updates the digital clock and date display.
+         */
+        function updateClock() {
+            const now = new Date();
+            const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+            const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+
+            document.getElementById('clock').textContent = now.toLocaleTimeString('en-US', timeOptions);
+            document.getElementById('date').textContent = now.toLocaleDateString('en-US', dateOptions);
+        }
+
+        // Update clock immediately on load and then every second
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        // --- Weather Widget (Simulated) ---
+        /**
+         * Simulates weather data. In a real application, this would fetch from a weather API.
+         */
+        function simulateWeather() {
+            const temperatures = ['22°C', '25°C', '28°C', '30°C', '32°C'];
+            const conditions = ['Sunny', 'Partly Cloudy', 'Clear', 'Hot'];
+            const locations = ['New Delhi', 'Mumbai', 'Bengaluru', 'Chennai', 'Kolkata'];
+
+            const randomTemp = temperatures[Math.floor(Math.random() * temperatures.length)];
+            const randomCondition = conditions[Math.floor(Math.random() * conditions.length)];
+            const randomLocation = locations[Math.floor(Math.random() * locations.length)];
+
+            document.getElementById('temperature').textContent = randomTemp;
+            document.getElementById('condition').textContent = randomCondition;
+            document.getElementById('location').textContent = randomLocation;
+        }
+
+        // Simulate weather data on load
+        simulateWeather();
+        // You could update this less frequently, e.g., every 30 minutes, using setInterval for a real API.
+
+        // --- Button Grid ---
+        // Array of websites with their URLs and names.
+        // The favicon URL is constructed using Google's favicon service.
+        const websites = [
+            { name: "Google", url: "https://www.google.com" },
+            { name: "YouTube", url: "https://www.youtube.com" }, // Corrected YouTube URL
+            { name: "GitHub", url: "https://www.github.com" },
+            { name: "Stack Overflow", url: "https://stackoverflow.com" },
+            { name: "Wikipedia", url: "https://www.wikipedia.org" },
+            { name: "Reddit", url: "https://www.reddit.com" },
+            { name: "Amazon", url: "https://www.amazon.in" },
+            { name: "Netflix", url: "https://www.netflix.com" },
+            { name: "X (Twitter)", url: "https://www.x.com" },
+            { name: "LinkedIn", url: "https://www.linkedin.com" },
+            { name: "Canva", url: "https://www.canva.com" },
+            { name: "JioCinema", url: "https://www.jiocinema.com" },
+            { name: "Disney+ Hotstar", url: "https://www.hotstar.com" },
+            { name: "Flipkart", url: "https://www.flipkart.com" },
+            { name: "Myntra", url: "https://www.myntra.com" },
+        ];
+
+        /**
+         * Generates the favicon URL using Google's service.
+         * For "highest quality" and robust caching (e.g., for a week),
+         * a Service Worker or a backend proxy is generally needed due to CORS and browser caching limitations.
+         * This function uses Google's public favicon service.
+         * @param {string} domain - The domain of the website (e.g., "google.com").
+         * @returns {string} The URL to the favicon.
+         */
+        function getFaviconUrl(domain) {
+            // Google's S2 Favicons service is convenient but may not always provide the "highest quality"
+            // or be consistently available. Browsers will cache these based on HTTP headers provided by Google.
+            return `https://www.google.com/s2/favicons?sz=64&domain=${domain}`; // sz=64 requests a 64x64 icon
+        }
+
+        /**
+         * Creates and appends a button to the grid for each website.
+         */
+        function createButtons() {
+            const buttonGrid = document.getElementById('button-grid');
+            buttonGrid.innerHTML = ''; // Clear existing buttons
+
+            websites.forEach(site => {
+                let domain;
+                try {
+                    domain = new URL(site.url).hostname;
+                } catch (e) {
+                    console.error(`Invalid URL for ${site.name}: ${site.url}`, e);
+                    showModal(`Invalid URL found for ${site.name}. Skipping button creation.`);
+                    return; // Skip this site if URL is invalid
+                }
+
+                const faviconUrl = getFaviconUrl(domain);
+
+                const button = document.createElement('a');
+                button.href = site.url;
+                button.target = "_blank";
+                button.rel = "noopener noreferrer";
+
+                button.classList.add(
+                    'grid-item',
+                    'flex', 'flex-col', 'items-center', 'justify-center',
+                    'p-4', 'rounded-xl', 'shadow-md', 'transition', 'duration-200', 'ease-in-out',
+                    'transform', 'hover:scale-105', 'focus:outline-none', 'focus:ring-2', 'focus:ring-offset-2',
+                    'text-center', 'no-underline'
+                );
+                // Catppuccin Mocha specific classes
+                button.style.backgroundColor = 'var(--mocha-surface2)';
+                button.style.color = 'var(--mocha-text)';
+                button.style.setProperty('--tw-shadow-color', 'var(--mocha-crust)'); /* Adjust shadow color for dark theme */
+                button.style.setProperty('--tw-ring-color', 'var(--mocha-blue)'); /* Focus ring color */
+                button.style.setProperty('--tw-ring-offset-color', 'var(--mocha-base)'); /* Focus ring offset color */
+
+
+                // Hover and active states using direct style manipulation for simplicity with variables
+                button.onmouseenter = () => button.style.backgroundColor = 'var(--mocha-surface1)';
+                button.onmouseleave = () => button.style.backgroundColor = 'var(--mocha-surface2)';
+                button.onmousedown = () => button.style.backgroundColor = 'var(--mocha-surface0)';
+                button.onmouseup = () => button.style.backgroundColor = 'var(--mocha-surface1)';
+
+
+                const img = document.createElement('img');
+                img.src = faviconUrl;
+                img.alt = `${site.name} Favicon`;
+                img.onerror = function() {
+                    // Fallback if favicon loading fails: use a placeholder or generic icon
+                    this.src = `https://placehold.co/48x48/6c7086/cdd6f4?text=${site.name.charAt(0)}`; // Catppuccin-themed placeholder
+                    // showModal(`Could not load favicon for ${site.name}. Using a fallback.`); // Optional: Too many modals can be annoying
+                };
+                img.classList.add('w-12', 'h-12', 'object-contain', 'rounded-xl', 'mb-2', 'p-1');
+                img.style.backgroundColor = 'var(--mocha-surface0)'; // Background for the image itself
+
+                const span = document.createElement('span');
+                span.textContent = site.name;
+                span.classList.add('text-sm', 'font-semibold', 'truncate', 'w-full');
+
+                button.appendChild(img);
+                button.appendChild(span);
+                buttonGrid.appendChild(button);
+            });
+        }
+
+        // Create buttons on window load
+        window.onload = function() {
+            createButtons();
+        };
+
+        // --- Service Worker Registration (Conceptual - requires separate 'service-worker.js' file) ---
+        // To truly cache all CDN links and favicons for a specific duration (e.g., a week),
+        // you would register a Service Worker. Below is a conceptual outline.
+        /*
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(registration => {
+                        console.log('Service Worker registered with scope:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.error('Service Worker registration failed:', error);
+                    });
+            });
+        }
+        */
+
+        // --- Example service-worker.js content (would be in a separate file) ---
+        /*
+        const CACHE_NAME = 'my-homepage-cache-v1';
+        const URLS_TO_CACHE = [
+            '/', // The index.html itself
+            'https://cdn.tailwindcss.com',
+            // Add other static assets if any
+            // Favicons from Google's service are dynamic based on domain,
+            // so you'd use a runtime caching strategy for them.
+        ];
+
+        self.addEventListener('install', (event) => {
+            event.waitUntil(
+                caches.open(CACHE_NAME)
+                    .then((cache) => {
+                        return cache.addAll(URLS_TO_CACHE);
+                    })
+            );
+        });
+
+        self.addEventListener('fetch', (event) => {
+            // For favicons from Google's service
+            if (event.request.url.startsWith('https://www.google.com/s2/favicons')) {
+                event.respondWith(
+                    caches.open(CACHE_NAME).then(cache => {
+                        return cache.match(event.request).then(response => {
+                            // If cached, return it. Otherwise, fetch and cache.
+                            return response || fetch(event.request).then(networkResponse => {
+                                // Cache for a week (example, requires Cache-Control max-age header to be honored)
+                                // Note: The actual cache duration is more complex and depends on the server's headers.
+                                // For a true "cache for a week", you'd need to manipulate headers or use IndexedDB with expiration.
+                                // This simple put will cache it, but browser still respects original headers.
+                                cache.put(event.request, networkResponse.clone());
+                                return networkResponse;
+                            });
+                        });
+                    })
+                );
+                return;
+            }
+
+            // For other requests (e.g., your HTML, Tailwind CSS)
+            event.respondWith(
+                caches.match(event.request)
+                    .then((response) => {
+                        return response || fetch(event.request);
+                    })
+            );
+        });
+
+        self.addEventListener('activate', (event) => {
+            event.waitUntil(
+                caches.keys().then((cacheNames) => {
+                    return Promise.all(
+                        cacheNames.map((cacheName) => {
+                            if (cacheName !== CACHE_NAME) {
+                                return caches.delete(cacheName);
+                            }
+                        })
+                    );
+                })
+            );
+        });
+        */
+    </script>
+</body>
+</html>

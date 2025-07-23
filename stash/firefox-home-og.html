@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage Widgets</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom font for a clean look */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a202c; /* Dark background */
+            color: #e2e8f0; /* Light text */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        /* Specific styles for responsive button grid, ensuring square aspect ratio where possible */
+        .grid-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            aspect-ratio: 1 / 1; /* Keep items square */
+            width: 100%; /* Fill parent grid cell */
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .grid-item:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Style for the favicon image inside the button */
+        .grid-item img {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+            border-radius: 8px; /* Rounded corners for favicons */
+            margin-bottom: 0.5rem;
+            background-color: rgba(255, 255, 255, 0.1); /* Subtle background for visibility */
+            padding: 4px;
+        }
+
+        /* Modal specific styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: #2d3748;
+            margin: auto;
+            padding: 20px;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 90%;
+            width: 400px;
+            text-align: center;
+        }
+
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: #e2e8f0;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="selection:bg-blue-800 selection:text-white">
+
+    <!-- Main Container -->
+    <div class="max-w-4xl w-full mx-auto p-4 md:p-8 space-y-8">
+
+        <!-- Clock and Weather Section -->
+        <div class="flex flex-col md:flex-row justify-between items-center bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700">
+            <!-- Clock Widget -->
+            <div class="flex flex-col items-center md:items-start mb-6 md:mb-0 md:mr-8">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-blue-400 mb-2">Current Time</h2>
+                <div id="clock" class="text-5xl md:text-6xl font-bold text-white tracking-wider"></div>
+                <div id="date" class="text-lg md:text-xl text-gray-400 mt-2"></div>
+            </div>
+
+            <!-- Weather Widget -->
+            <div class="flex flex-col items-center md:items-end">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-green-400 mb-2">Weather (Simulated)</h2>
+                <div id="weather" class="text-4xl md:text-5xl font-bold text-white">
+                    <span id="temperature">25°C</span>, <span id="condition">Sunny</span>
+                </div>
+                <div class="text-md md:text-lg text-gray-400 mt-2">Location: <span id="location">Your City</span></div>
+                <p class="text-sm text-gray-500 mt-2">
+                    Note: Actual weather data requires an API key and backend. This is simulated.
+                </p>
+            </div>
+        </div>
+
+        <!-- Button Grid Section -->
+        <div class="bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700">
+            <h2 class="text-3xl md:text-4xl font-extrabold text-purple-400 mb-6 text-center">Quick Links</h2>
+            <div id="button-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                <!-- Buttons will be injected here by JavaScript -->
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Custom Modal for Messages -->
+    <div id="message-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal()">&times;</span>
+            <p id="modal-message" class="text-lg text-white mb-4"></p>
+            <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300" onclick="closeModal()">
+                OK
+            </button>
+        </div>
+    </div>
+
+
+    <script>
+        // Global variables for __app_id and __firebase_config are provided by the Canvas environment.
+        // If running outside Canvas, these will be undefined, so we provide default values.
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
+
+        // --- Utility Functions ---
+
+        /**
+         * Displays a custom modal message to the user.
+         * @param {string} message - The message to display.
+         */
+        function showModal(message) {
+            const modal = document.getElementById('message-modal');
+            const modalMessage = document.getElementById('modal-message');
+            modalMessage.textContent = message;
+            modal.classList.remove('hidden'); // Show the modal
+        }
+
+        /**
+         * Hides the custom modal.
+         */
+        function closeModal() {
+            const modal = document.getElementById('message-modal');
+            modal.classList.add('hidden'); // Hide the modal
+        }
+
+        // --- Clock Widget ---
+        /**
+         * Updates the digital clock and date display.
+         */
+        function updateClock() {
+            const now = new Date();
+            const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+            const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+
+            document.getElementById('clock').textContent = now.toLocaleTimeString('en-US', timeOptions);
+            document.getElementById('date').textContent = now.toLocaleDateString('en-US', dateOptions);
+        }
+
+        // Update clock immediately on load and then every second
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        // --- Weather Widget (Simulated) ---
+        /**
+         * Simulates weather data. In a real application, this would fetch from a weather API.
+         */
+        function simulateWeather() {
+            const temperatures = ['22°C', '25°C', '28°C', '30°C', '32°C'];
+            const conditions = ['Sunny', 'Partly Cloudy', 'Clear', 'Hot'];
+            const locations = ['New Delhi', 'Mumbai', 'Bengaluru', 'Chennai', 'Kolkata'];
+
+            const randomTemp = temperatures[Math.floor(Math.random() * temperatures.length)];
+            const randomCondition = conditions[Math.floor(Math.random() * conditions.length)];
+            const randomLocation = locations[Math.floor(Math.random() * locations.length)];
+
+            document.getElementById('temperature').textContent = randomTemp;
+            document.getElementById('condition').textContent = randomCondition;
+            document.getElementById('location').textContent = randomLocation;
+        }
+
+        // Simulate weather data on load
+        simulateWeather();
+        // You could update this less frequently, e.g., every 30 minutes, using setInterval for a real API.
+
+        // --- Button Grid ---
+        // Array of websites with their URLs and names.
+        // The favicon URL is constructed using Google's favicon service.
+        const websites = [
+            { name: "Google", url: "https://www.google.com" },
+            { name: "YouTube", url: "https://www.youtube.com" },
+            { name: "GitHub", url: "https://www.github.com" },
+            { name: "Stack Overflow", url: "https://stackoverflow.com" },
+            { name: "Wikipedia", url: "https://www.wikipedia.org" },
+            { name: "Reddit", url: "https://www.reddit.com" },
+            { name: "Amazon", url: "https://www.amazon.in" },
+            { name: "Netflix", url: "https://www.netflix.com" },
+            { name: "X (Twitter)", url: "https://www.x.com" },
+            { name: "LinkedIn", url: "https://www.linkedin.com" },
+            { name: "Canva", url: "https://www.canva.com" },
+            { name: "JioCinema", url: "https://www.jiocinema.com" },
+            { name: "Disney+ Hotstar", url: "https://www.hotstar.com" },
+            { name: "Flipkart", url: "https://www.flipkart.com" },
+            { name: "Myntra", url: "https://www.myntra.com" },
+        ];
+
+        /**
+         * Generates the favicon URL using Google's service.
+         * @param {string} domain - The domain of the website (e.g., "google.com").
+         * @returns {string} The URL to the favicon.
+         */
+        function getFaviconUrl(domain) {
+            // Use Google's S2 Favicons service for simplicity.
+            // Note: This service might not be available or stable long-term,
+            // or might not provide favicons for all sites.
+            // A more robust solution would involve fetching favicons directly
+            // or using a dedicated favicon API.
+            return `https://www.google.com/s2/favicons?domain=${domain}`;
+        }
+
+        /**
+         * Creates and appends a button to the grid for each website.
+         */
+        function createButtons() {
+            const buttonGrid = document.getElementById('button-grid');
+            buttonGrid.innerHTML = ''; // Clear existing buttons
+
+            websites.forEach(site => {
+                const domain = new URL(site.url).hostname;
+                const faviconUrl = getFaviconUrl(domain);
+
+                // Create the button (anchor tag for better accessibility for links)
+                const button = document.createElement('a');
+                button.href = site.url;
+                button.target = "_blank"; // Open in new tab
+                button.rel = "noopener noreferrer"; // Security best practice for target="_blank"
+
+                // Add Tailwind classes for styling
+                button.classList.add(
+                    'grid-item',
+                    'flex', 'flex-col', 'items-center', 'justify-center',
+                    'bg-gray-700', 'hover:bg-gray-600', 'active:bg-gray-500',
+                    'p-4', 'rounded-xl', 'shadow-md', 'transition', 'duration-200', 'ease-in-out',
+                    'transform', 'hover:scale-105', 'focus:outline-none', 'focus:ring-2', 'focus:ring-blue-500',
+                    'text-center', 'no-underline', 'text-white' // Ensure text is white and no underline
+                );
+
+                // Create favicon image
+                const img = document.createElement('img');
+                img.src = faviconUrl;
+                img.alt = `${site.name} Favicon`;
+                img.onerror = function() {
+                    // Fallback if favicon loading fails: use a placeholder or generic icon
+                    this.src = `https://placehold.co/48x48/6b7280/ffffff?text=${site.name.charAt(0)}`;
+                    showModal(`Could not load favicon for ${site.name}. Using a fallback.`);
+                };
+                img.classList.add('w-12', 'h-12', 'object-contain', 'rounded-xl', 'mb-2', 'bg-gray-600', 'p-1');
+
+                // Create text label
+                const span = document.createElement('span');
+                span.textContent = site.name;
+                span.classList.add('text-sm', 'font-semibold', 'truncate', 'w-full'); // Truncate long names
+
+                // Append elements to the button
+                button.appendChild(img);
+                button.appendChild(span);
+
+                // Append button to the grid
+                buttonGrid.appendChild(button);
+            });
+        }
+
+        // Create buttons on window load
+        window.onload = function() {
+            createButtons();
+        };
+
+    </script>
+</body>
+</html>
+
