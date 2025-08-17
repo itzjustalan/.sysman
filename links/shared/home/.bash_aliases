@@ -604,6 +604,10 @@ export LESSHISTORYFILE=-
 # -
 # THANKYOU
 
+# Use bash-completion, if available
+[[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] && \
+    . /usr/share/bash-completion/bash_completion
+
 [[ -f ~/.bashenvs ]] && . ~/.bashenvs
 [[ -f ~/.bash_completions ]] && . ~/.bash_completions
 
