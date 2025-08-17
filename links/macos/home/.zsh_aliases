@@ -142,6 +142,8 @@ alias gcb='git branch --color --sort=committerdate | sk --ansi -p "branch: " --p
 # DOCKER
 #--------------------------------------------------
 alias dpsa='docker ps -a'
+alias dx='docker exec -it'
+alias dgi="docker ps -a | fzf | cut -d' ' -f1 | tr -d '\n' | pbcopy"
 alias dspa-SURE-KILL-ALL-='echo "Are you sure? Type dspa-SURE-KILL-ALL-y to proceed."'
 alias dspa-SURE-KILL-ALL-y='docker system prune -af'
 alias postgresContainerStart='docker start postgresdb'
@@ -187,6 +189,7 @@ alias ws='wiki-search'
 alias umms='less ~/static/umms'
 
 # Workspace shortcuts
+alias ta0='tmux attach -t 0'
 alias wp='cd ~/wp/'
 alias wd='cd /mnt/c/Users/alanj/Desktop/'
 alias my='cd ~/myfiles/'
