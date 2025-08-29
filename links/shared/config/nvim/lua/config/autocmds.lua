@@ -25,10 +25,10 @@ autocmd({ "BufRead", "BufNewFile" }, {
 })
 
 -- Center cursor on InsertEnter
-autocmd("InsertEnter", {
-  pattern = "*",
-  command = "normal! zz",
-})
+-- autocmd("InsertEnter", {
+--   pattern = "*",
+--   command = "normal! zz",
+-- })
 
 -- Spellcheck for writing files
 autocmd("FileType", {
