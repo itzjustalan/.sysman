@@ -1,11 +1,13 @@
 return {
+  { import = "lazyvim.plugins" },
   {
     "LazyVim/LazyVim",
+    version = "14.15.0",
     opts = {
       colorscheme = "catppuccin",
     },
   },
-  { import = "lazyvim.plugins.extras.coding.copilot" },
+  -- { import = "lazyvim.plugins.extras.coding.copilot" },
   { import = "lazyvim.plugins.extras.coding.luasnip" },
   { import = "lazyvim.plugins.extras.editor.harpoon2" },
   { import = "lazyvim.plugins.extras.formatting.prettier" },
