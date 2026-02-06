@@ -143,3 +143,4 @@ fi
 # pnpm end
 
 # bun
+. "$HOME/.cargo/env"

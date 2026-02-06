@@ -1,4 +1,3 @@
-import = ["/home/alan/.config/alacritty/themes/catppuccin/catppuccin-mocha.toml"]
 
 [[colors.indexed_colors]]
 color = "#ff9e64"
@@ -33,11 +32,14 @@ background = "#1a1b26"
 foreground = "#c0caf5"
 
 [font]
-size = 8
+size = 14
 # size = 14
 
 [font.normal]
 family = "Hurmit Nerd Font"
 
 [window]
-opacity = 0.8
+opacity = 0.95
+
+[general]
+import = ["/home/alan/.config/alacritty/themes/catppuccin/catppuccin-mocha.toml"]

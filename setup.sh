@@ -4,13 +4,13 @@ _original_shopt_dotglob=$(shopt -p dotglob 2>/dev/null || echo '')
 _original_shopt_nullglob=$(shopt -p nullglob 2>/dev/null || echo '')
 
 restore_shopt_states() {
-    if [[ -n "$_original_shopt_dotglob" ]]; then
-        eval "$_original_shopt_dotglob"
-    fi
-    if [[ -n "$_original_shopt_nullglob" ]]; then
-        eval "$_original_shopt_nullglob"
-    fi
-    exit 0;
+  if [[ -n "$_original_shopt_dotglob" ]]; then
+    eval "$_original_shopt_dotglob"
+  fi
+  if [[ -n "$_original_shopt_nullglob" ]]; then
+    eval "$_original_shopt_nullglob"
+  fi
+  exit 0
 }
 # trap 'restore_shopt_states' EXIT ERR SIGTERM SIGINT
 trap 'restore_shopt_states' EXIT
@@ -24,7 +24,7 @@ SILENT=false
 P_EMOJI=true
 DRY_RUN=false
 CLEAN_BACKUPS=false
-TARGET_USER="$USER"
+TARGET_USER="$(whoami)"
 APP_NAME="sysman"
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 AUTO_LINK_DIR="$PROJECT_DIR/links"
@@ -39,6 +39,20 @@ CUSTOM_MAPPINGS=(
   # "test.conf /usr/local/share/other/other.conf"
 )
 
+OS_PKG_MANAGERS=(
+  paru
+  pacman
+  apt-get
+  brew
+  apk
+  dnf
+)
+
+PKG_MANAGERS=(
+  cargo
+  uv
+)
+
 # ─── Imports ─────────────────────────────────────────────────────────────
 FILE_IMPORTS=(
   "./paint"
@@ -48,7 +62,8 @@ for file in "${FILE_IMPORTS[@]}"; do
   if [[ -f "$file" ]]; then
     source "$file"
   else
-    echo "$file not found"; exit 1;
+    echo "$file not found"
+    exit 1
   fi
 done
 
@@ -61,37 +76,37 @@ LOG_LEVEL=${LOG_LEVEL_INFO}
 
 print_emoji() {
   $P_EMOJI && echo "$*"
-  return 0;
+  return 0
 }
 
 log_error() {
   [[ $LOG_LEVEL -ge $LOG_LEVEL_ERROR ]] && echo -e "$(print_emoji '🚨 ')[ $(date +%H:%M:%S) ]$(paint --fg red [ ERR ] $*)"
-  return 0;
+  return 0
 }
 
 log_warn() {
   [[ $LOG_LEVEL -ge $LOG_LEVEL_WARN ]] && echo -e "$(print_emoji ⚠️) [ $(date +%H:%M:%S) ]$(paint --fg yellow [ WRN ] $*)"
-  return 0;
+  return 0
 }
 
 log_info() {
   [[ $LOG_LEVEL -ge $LOG_LEVEL_INFO ]] && echo -e "$(print_emoji ℹ️) [ $(date +%H:%M:%S) ]$(paint --fg blue [ INF ] $*)"
-  return 0;
+  return 0
 }
 
 log_debug() {
   [[ $LOG_LEVEL -ge $LOG_LEVEL_DEBUG ]] && echo -e "$(print_emoji 🤖) [ $(date +%H:%M:%S) ]$(paint --fg grey [ DBG ] $*)"
-  return 0;
+  return 0
 }
 
 log_success() {
   [[ $LOG_LEVEL -ge $LOG_LEVEL_INFO ]] && echo -e "$(print_emoji ✅) [ $(date +%H:%M:%S) ]$(paint --fg green [ SUC ] $*)"
-  return 0;
+  return 0
 }
 
 log_dry() {
   [[ "$DRY_RUN" == "true" ]] && [[ $LOG_LEVEL -ge $LOG_LEVEL_WARN ]] && echo -e "⚠️ [ $(date +%H:%M:%S) ]$(paint --fg yellow [ WRN ]) $(paint --fg purple [ DRY ]) $(paint --fg purple --italic $*)"
-  return 0;
+  return 0
 }
 
 log_time() {
@@ -118,47 +133,46 @@ log_time() {
   return $exit_code
 }
 
-echo "" >> "$LOG_FILE"
-echo "=====[ sysman setup: $(date) ]=====" >> "$LOG_FILE"
+echo "" >>"$LOG_FILE"
+echo "=====[ sysman setup: $(date) ]=====" >>"$LOG_FILE"
 
 # ─── Utility Functions ─────────────────────────────────────────────────────────
 quiet() {
   if $SILENT; then
-    "$@" > /dev/null 2>> "$LOG_FILE"
+    "$@" >/dev/null 2>>"$LOG_FILE"
   else
     "$@" 2>&1 | tee -a "$LOG_FILE"
   fi
 }
 
-detect_package_manager() {
+detect_os_package_manager() {
   # TODO: install paru via pre install if arch
-  if command -v paru &>/dev/null; then echo "paru"
-  elif command -v pacman &>/dev/null; then echo "pacman"
-  elif command -v apt-get &>/dev/null; then echo "apt"
-  elif command -v brew &>/dev/null; then echo "brew"
-  elif command -v apk &>/dev/null; then echo "apk"
-  elif command -v dnf &>/dev/null; then echo "dnf"
-  else echo "unknown"
-  fi
+  for pkgmgr in "${OS_PKG_MANAGERS[@]}"; do
+    if command -v "$pkgmgr" &>/dev/null; then
+      echo "$pkgmgr"
+      return;
+    fi
+  done
+  echo "unknown"
 }
 
 detect_platform() {
   uname_out="$(uname -s)"
   case "${uname_out}" in
-    Linux*)
-      if grep -qEi "(microsoft|wsl)" /proc/version &>/dev/null; then
-        echo "wsl"
-      elif [ -f /etc/os-release ]; then
-        . /etc/os-release
-        echo "$ID"  # e.g., ubuntu, arch
-      elif [ -n "$TERMUX_VERSION" ]; then
-        echo "termux"
-      else
-        echo "linux"
-      fi
-      ;;
-    Darwin*) echo "macos" ;;
-    *) echo "unknown" ;;
+  Linux*)
+    if grep -qEi "(microsoft|wsl)" /proc/version &>/dev/null; then
+      echo "wsl"
+    elif [ -f /etc/os-release ]; then
+      . /etc/os-release
+      echo "$ID" # e.g., ubuntu, arch
+    elif [ -n "$TERMUX_VERSION" ]; then
+      echo "termux"
+    else
+      echo "linux"
+    fi
+    ;;
+  Darwin*) echo "macos" ;;
+  *) echo "unknown" ;;
   esac
 }
 
@@ -171,22 +185,44 @@ dos_to_unix() {
     return 1
   fi
 
-  tmpfile="$(mktemp)"
-  quiet cp "$src" "$tmpfile"
-  quiet sed -i 's/^M$//g' "$tmpfile"
-  quiet sed -i 's/\r$//g' "$tmpfile"
+  tmpfile=$(mktemp)
 
+  if command -v gsed &>/dev/null; then
+    quiet gsed -i 's/^M//g' "$src" >"$tmpfile"
+    quiet gsed -i 's/\r$//g' "$src" >"$tmpfile"
+  else
+    quiet tr -d '\r' <"$src" >"$tmpfile"
+  fi
+
+  # Output the cleaned content to stdout
   cat "$tmpfile"
-  quiet rm -f "$tmpfile"
+  quiet rm -f "$tmpfile" # Clean up the temporary file
 }
 
+install_pakgs() {
+  for pkgmgr in "${PKG_MANAGERS[@]}"; do
+    if command -v "$pkgmgr" &>/dev/null; then
+      local tools_file="$TOOLS_FILES_DIR/${pkgmgr}"
+      mapfile -t tools < <(dos_to_unix "$tools_file" | grep -vE '^\s*#|^\s*$')
+      case "$pkgmgr" in
+      cargo) quiet cargo install "${tools[@]}" ;;
+      uv)
+        for tool in "${tools[@]}"; do
+          quiet uv tool install "$tool"
+        done
+        ;;
+      *) echo "Unsupported package manager: $pkgmgr" && exit 1 ;;
+      esac
+    fi
+  done
+}
 
 install_tools() {
-  local pkgmgr=$(detect_package_manager)
+  local pkgmgr=$(detect_os_package_manager)
   local tools_file="$TOOLS_FILES_DIR/${pkgmgr}"
 
-  [[ "$pkgmgr" == "unknown" ]] && log_error "package manager found." && return 1;
-  [[ ! -f "$tools_file" ]] && log_error "$tools_file not found." && return 1;
+  [[ "$pkgmgr" == "unknown" ]] && log_error "package manager found." && return 1
+  [[ ! -f "$tools_file" ]] && log_error "$tools_file not found." && return 1
 
   # Read all tools into a single string, ignoring comments and blank lines
   local tools=$(dos_to_unix "$tools_file" | grep -vE '^\s*#|^\s*$' | xargs)
@@ -197,16 +233,16 @@ install_tools() {
   fi
 
   log_dry "Would install tools with $pkgmgr: $tools"
-  $DRY_RUN && return 0;
+  $DRY_RUN && return 0
 
   log_info "Installing tools with $pkgmgr: $tools"
 
   case "$pkgmgr" in
-    apt) quiet sudo bash -c "apt-get update && apt-get install -y --no-install-recommends $tools" ;;
-    dnf) quiet sudo bash -c "dnf install -y $tools" ;;
-    pacman) quiet sudo bash -c "pacman -S --noconfirm $tools" ;;
-    brew) quiet brew install $tools ;;
-    *) echo "Unsupported package manager: $pkgmgr" && exit 1 ;;
+  apt-get) quiet sudo bash -c "apt-get update && apt-get install -y --no-install-recommends $tools" ;;
+  dnf) quiet sudo bash -c "dnf install -y $tools" ;;
+  pacman) quiet sudo bash -c "pacman -S --noconfirm $tools" ;;
+  brew) quiet brew install $tools ;;
+  *) echo "Unsupported package manager: $pkgmgr" && exit 1 ;;
   esac
 }
 
@@ -244,7 +280,7 @@ symlink_file() {
 
     if [[ "$canonical_dest_target" == "$canonical_src" ]]; then
       log_info "Already linked: $src → $dest"
-      return;
+      return
     fi
 
     local backup="${dest}.backup.${timestamp}"
@@ -253,12 +289,12 @@ symlink_file() {
     else
       log_info "Backing up: $dest → $backup"
       quiet mv "$dest" "$backup"
-      echo "$backup" >> "$BACKUP_LOG"
+      echo "$backup" >>"$BACKUP_LOG"
     fi
   fi
 
   log_dry "Would symlink: $src → $dest"
-  $DRY_RUN && return 0;
+  $DRY_RUN && return 0
 
   mkdir -p "$(dirname "$dest")"
   quiet ln -sf "$src" "$dest"
@@ -275,9 +311,9 @@ symlink_files_for() {
 
   log_debug "Attempting to link home files from: '$home_source'"
   if [[ -d "$home_source" ]]; then
-    local files_in_home_source=("$home_source"/*);
+    local files_in_home_source=("$home_source"/*)
 
-    if (( ${#files_in_home_source[@]} > 0 )); then
+    if ((${#files_in_home_source[@]} > 0)); then
       for file in "${files_in_home_source[@]}"; do
         log_debug "Linking $file -> " "$home_dir/$(basename "$file")"
         should_skip "$file" && continue
@@ -290,9 +326,9 @@ symlink_files_for() {
 
   log_debug "Attempting to link config files from: '$config_source'"
   if [[ -d "$config_source" ]]; then
-    local files_in_config_source=("$config_source"/*);
+    local files_in_config_source=("$config_source"/*)
 
-    if (( ${#files_in_config_source[@]} > 0 )); then
+    if ((${#files_in_config_source[@]} > 0)); then
       for file in "${files_in_config_source[@]}"; do
         should_skip "$file" && continue
         symlink_file "$file" "$home_dir/.config/$(basename "$file")"
@@ -305,8 +341,8 @@ symlink_files_for() {
 
 symlink_files_for_custom() {
   for entry in "${CUSTOM_MAPPINGS[@]}"; do
-    local src="$CUSTOM_LINKS_DIR/$(cut -d' ' -f1 <<< "$entry")"
-    local dest="$(cut -d' ' -f2- <<< "$entry")"
+    local src="$CUSTOM_LINKS_DIR/$(cut -d' ' -f1 <<<"$entry")"
+    local dest="$(cut -d' ' -f2- <<<"$entry")"
 
     symlink_file "$src" "$dest"
   done
@@ -320,7 +356,7 @@ symlink_files() {
   symlink_files_for_custom
 }
 
-run_sanity_checks() {
+sanity_checks() {
   log_info "Running sanity checks..."
 
   if ! command -v paint &>/dev/null; then
@@ -384,16 +420,16 @@ run_pre_hooks() {
 }
 
 run_hooks_for() {
-  local prefix="$1"  # can be "" or "hooks/hostname_or_platform"
+  local prefix="$1" # can be "" or "hooks/hostname_or_platform"
   local post_hook="$HOOKS_FILES_DIR/${prefix:+$prefix}/post.sh"
 
   if [[ -d "$HOOKS_FILES_DIR/${prefix:+$prefix}/" ]]; then
     local files_in_hook_dir=("$HOOKS_FILES_DIR/${prefix:+$prefix}"/*)
 
-    if (( ${#files_in_hook_dir[@]} > 0 )); then
+    if ((${#files_in_hook_dir[@]} > 0)); then
       for file in "${files_in_hook_dir[@]}"; do
         # echo "$file"
-        should_skip "$file" "pre.sh" "post.sh" && continue;
+        should_skip "$file" "pre.sh" "post.sh" && continue
         echo "post skp $file"
         if $DRY_RUN; then
           log_dry "Would run hook: $file"
@@ -415,7 +451,7 @@ run_hooks_for() {
   fi
 }
 
-run_hooks() {
+run_all_hooks() {
   run_hooks_for "shared"
   run_hooks_for "$PLATFORM"
   run_hooks_for "$HOSTNAME"
@@ -442,7 +478,7 @@ clean_backups() {
   while IFS= read -r backup; do
     if [[ -e "$backup" ]]; then
       log_dry "Would remove $backup"
-      $DRY_RUN && ((++skipped_count)) && continue;
+      $DRY_RUN && ((++skipped_count)) && continue
 
       if rm -rf "$backup"; then
         log_success "Deleted: $backup"
@@ -454,13 +490,13 @@ clean_backups() {
       log_info "Skipping non-existent backup: $backup"
       ((++skipped_count))
     fi
-  done < "$temp_backup_list"
+  done <"$temp_backup_list"
 
   rm -f "$temp_backup_list"
 
   if [[ -f "$BACKUP_LOG" ]]; then
     log_dry "Would remove $BACKUP_LOG"
-    $DRY_RUN && return 0;
+    $DRY_RUN && return 0
 
     if rm -f "$BACKUP_LOG"; then
       log_success "Deleted backup log: $BACKUP_LOG"
@@ -492,14 +528,30 @@ EOF
 # ─── Argument Parsing ──────────────────────────────────────────────────────────
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --no-emoji) P_EMOJI=false;;
-    --dry-run|-d) DRY_RUN=true ;;
-    --help|-h) print_usage; exit 0 ;;
-    --user|-u) shift; TARGET_USER="$1" ;;
-    --clean-backups|-c) CLEAN_BACKUPS=true ;;
-    --debug) DEBUG=true; LOG_LEVEL=${LOG_LEVEL_DEBUG};;
-    --quiet|-q) SILENT=true; LOG_LEVEL=${LOG_LEVEL_NONE} ;;
-    *) echo "Unknown option: $1"; print_usage; exit 1 ;;
+  --no-emoji) P_EMOJI=false ;;
+  --dry-run | -d) DRY_RUN=true ;;
+  --help | -h)
+    print_usage
+    exit 0
+    ;;
+  --user | -u)
+    shift
+    TARGET_USER="$1"
+    ;;
+  --clean-backups | -c) CLEAN_BACKUPS=true ;;
+  --debug)
+    DEBUG=true
+    LOG_LEVEL=${LOG_LEVEL_DEBUG}
+    ;;
+  --quiet | -q)
+    SILENT=true
+    LOG_LEVEL=${LOG_LEVEL_NONE}
+    ;;
+  *)
+    echo "Unknown option: $1"
+    print_usage
+    exit 1
+    ;;
   esac
   shift
 done
@@ -516,16 +568,15 @@ HOSTNAME=$(hostname)
 log_debug "Platform: $PLATFORM"
 log_debug "Hostname: $HOSTNAME"
 
-run_sanity_checks
+sanity_checks
 run_pre_hooks
 install_tools
 symlink_files
-run_hooks
+run_all_hooks
+install_pakgs
 
 [[ -f "$BACKUP_LOG" ]] && log_info "Files backed up and not deleted yet -"
 [[ -f "$BACKUP_LOG" ]] && [[ $LOG_LEVEL -ge $LOG_LEVEL_INFO ]] && cat "$BACKUP_LOG"
 [[ -f "$BACKUP_LOG" ]] && log_info "run: ./setup.sh --clean-backups # to delete the backups"
 
 log_info "Setup complete for user: $TARGET_USER"
-
-

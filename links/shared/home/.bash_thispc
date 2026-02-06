@@ -1,0 +1,65 @@
+#!/bin/sh
+
+# Import colorscheme from 'wal' asynchronously
+# &   # Run the process in the background.
+# ( ) # Hide shell job control messages.
+# Not supported in the "fish" shell.
+#(cat ~/.cache/wal/sequences &)
+
+# load envs
+
+#export PATH=$PATH:/path/to/dir1		  #or
+#export PATH=$PATH:/path/to/dir1:/path/to/dir2
+
+export PATH=$PATH:~/.local/bin/
+export PATH=$PATH:~/.local/bin/perc/
+export PATH=$PATH:~/.local/bin/sys/
+export PATH=$PATH:~/.local/bin/scripts/
+export PATH=$PATH:
+
+# set XDG paths if not found
+export XDG_DATA_HOME=${XDG_DATA_HOME:="$HOME/.local/share"}
+export XDG_CACHE_HOME=${XDG_CACHE_HOME:="$HOME/.cache"}
+export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:="$HOME/.config"}
+
+# android studio stuff
+export ANDROID_HOME=/home/alan/Android/Sdk
+export PATH="/home/alan/Android/Sdk:$PATH"
+export PATH="/home/alan/Android/Sdk/platform-tools:$PATH"
+export PATH="/home/alan/Android/Sdk/tools:$PATH"
+export PATH="/home/alan/Android/ndk-build:$PATH"
+export CHROME_EXECUTABLE="/usr/bin/google-chrome-stable"
+
+
+export EDITOR=nvim
+export TERMINAL_EMULATOR=alacritty
+
+#fortune | lolcat
+#date +%A,\ %Y\ %b\ %d | lolcat
+PS1="${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ "
+export LS_COLORS="$LS_COLORS:ow=1;34:tw=1;34:" # remove sticky colors 
+# starship
+export STARSHIP_LOG=error
+eval "$(starship init bash)"
+
+# zoxide
+eval "$(zoxide init bash)"
+
+# fzf
+eval "$(fzf --bash)"
+export FZF_CTRL_T_OPTS="--preview 'bat --color=always --style=header,grid --line-range :500 {}' --preview-window=right:70%:wrap"
+# export FZF_CTRL_T_OPTS="--preview 'bat -n --color=always --line-range :500 {}'"
+export FZF_DEFAULT_OPTS='--color=fg:#f8f8f2,bg:#282a36,hl:#bd93f9 --color=fg+:#f8f8f2,bg+:#44475a,hl+:#bd93f9 --color=info:#ffb86c,prompt:#50fa7b,pointer:#ff79c6 --color=marker:#ff79c6,spinner:#ffb86c,header:#6272a4'
+
+# sources
+source "$HOME/.cargo/env"
+# completions
+# git completions
+source /usr/share/bash-completion/completions/git
+
+# Set PATH, MANPATH, etc., for Homebrew.
+#eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+
+
+# shuf -n 1 $HOME/static/kanye_quotes.txt | lolcat
+# echo "        - Kanye West" | lolcat

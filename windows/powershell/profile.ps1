@@ -37,19 +37,6 @@ Register-ArgumentCompleter -CommandName ssh,scp,sftp -Native -ScriptBlock {
 $ENV:STARSHIP_CONFIG = "C:\Users\gbsal\starship.toml"
 Invoke-Expression (&starship init powershell)
 
-
-#$Aliases = @{ gs = "git status"; grv = "git remote -v"; }
-#function RunAlias {
-#    param (
-#        $Alias
-#    )
-#    
-#    Invoke-Expression $Aliases[$Alias]
-#}
-#foreach ($Key in $Aliases.Keys) {
-#    "The value of '$Key' is: $($Aliases[$Key])"
-#}
-
 Set-Alias nv nvim -Force -Option AllScope
 
 function msc {
@@ -57,7 +44,11 @@ function msc {
 }
 
 function ll {
-    Get-ChildItem -Force
+    lsd -lA --group-dirs=first --color=always --icon=always --icon-theme=fancy --permission=rwx --blocks=permission,user,size,name
+}
+
+function lll {
+    lsd -lA --group-dirs=first --color=always --icon=always --icon-theme=fancy --permission=rwx --blocks=permission,user,size,date,name
 }
 
 function nrd { npm run dev }
@@ -68,6 +59,7 @@ Remove-Item Alias:gc -Force
 Remove-Item Alias:gm -Force
 Remove-Item Alias:gl -Force
 function ga { git add -A }
+function gd { git diff $args }
 function gs { git status $args }
 function gb { git branch $args }
 function gc { git checkout $args }

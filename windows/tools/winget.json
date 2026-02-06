@@ -1,0 +1,107 @@
+{
+  "$schema" : "https://aka.ms/winget-packages.schema.2.0.json",
+  "Sources": [
+    {
+      "Packages": [
+        {
+          "PackageIdentifier" : "7zip.7zip"
+        },
+        {
+          "PackageIdentifier" : "ajeetdsouza.zoxide"
+        },
+        {
+          "PackageIdentifier" : "Alacritty.Alacritty"
+        },
+        {
+          "PackageIdentifier" : "Amazon.AWSCLI"
+        },
+        {
+          "PackageIdentifier" : "Bitwarden.Bitwarden"
+        },
+        {
+          "PackageIdentifier" : "BurntSushi.ripgrep.MSVC"
+        },
+        {
+          "PackageIdentifier" : "Debian.Debian"
+        },
+        {
+          "PackageIdentifier" : "ente-io.auth-desktop"
+        },
+        {
+          "PackageIdentifier": "Git.Git"
+        },
+        {
+          "PackageIdentifier" : "ImageMagick.ImageMagick"
+        },
+        {
+          "PackageIdentifier": "jdx.mise"
+        },
+        {
+          "PackageIdentifier" : "jqlang.jq"
+        },
+        {
+          "PackageIdentifier" : "junegunn.fzf"
+        },
+        {
+          "PackageIdentifier" : "lsd-rs.lsd"
+        },
+        {
+          "PackageIdentifier" : "Microsoft.VisualStudioCode"
+        },
+        {
+          "PackageIdentifier" : "Microsoft.WindowsTerminal"
+        },
+        {
+          "PackageIdentifier" : "Mozilla.Firefox"
+        },
+        {
+          "PackageIdentifier" : "Mozilla.Thunderbird"
+        },
+        {
+          "PackageIdentifier" : "Mozilla.Thunderbird.ESR"
+        },
+        {
+          "PackageIdentifier" : "NCHSoftware.WavePad"
+        },
+        {
+          "PackageIdentifier" : "Neovim.Neovim"
+        },
+        {
+          "PackageIdentifier" : "Notepad++.Notepad++"
+        },
+        {
+          "PackageIdentifier" : "OBSProject.OBSStudio"
+        },
+        {
+          "PackageIdentifier" : "RustDesk.RustDesk"
+        },
+        {
+          "PackageIdentifier" : "sharkdp.fd"
+        },
+        {
+          "PackageIdentifier" : "SoftDeluxe.FreeDownloadManager"
+        },
+        {
+          "PackageIdentifier" : "SourceFoundry.HackFonts"
+        },
+        {
+          "PackageIdentifier" : "Starship.Starship"
+        },
+        {
+          "PackageIdentifier" : "sxyazi.yazi"
+        },
+        {
+          "PackageIdentifier" : "VideoLAN.VLC"
+        }
+      ],
+      "SourceDetails" : {
+        "Argument" : "https://cdn.winget.microsoft.com/cache",
+        "Identifier" : "Microsoft.Winget.Source_8wekyb3d8bbwe",
+        "Name" : "winget",
+        "Type" : "Microsoft.PreIndexed.Package"
+      }
+    }
+  ],
+  "WinGetVersion" : "1.10.390"
+}
+
