@@ -147,3 +147,4 @@ fi
 eval "$(zoxide init zsh)"
 [[ -f ~/.zsh_aliases ]] && source ~/.zsh_aliases
 
+eval "$(/Users/alankjohn/.local/bin/mise activate zsh)"

@@ -189,7 +189,6 @@ alias ws='wiki-search'
 alias umms='less ~/static/umms'
 
 # Workspace shortcuts
-alias ta0='tmux attach -t 0'
 alias wp='cd ~/wp/'
 alias wd='cd /mnt/c/Users/alanj/Desktop/'
 alias my='cd ~/myfiles/'
@@ -197,6 +196,8 @@ alias myg='cd ~/myfiles/pgms/'
 alias msc='cd ~/.sysman'
 alias gdb='cd ~/work/rkd/'
 alias gdr='cd ~/pgms/springboot/rocket-science/'
+alias ta0='tmux attach -t 0'
+alias tmuxResizeP="tmux resizep -t 0 -x 70%"
 
 #--------------------------------------------------
 # FUNCTIONS
