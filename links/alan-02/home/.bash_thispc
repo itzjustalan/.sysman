@@ -9,13 +9,12 @@ export EDITOR=nvim
 
 export PATH=$PATH:~/.local/bin/
 export PATH="$PATH:/opt/nvim-linux64/bin"
+export PATH="$(npm config get prefix)/bin:$PATH"
 
+echo 'eval "$(~/.local/bin/mise activate bash)"' >> ~/.bashrc
 eval "$(zoxide init bash)"
 eval "$(starship init bash)"
 
 shuf -n 1 $HOME/static/kanye_quotes.txt | lolcat
 echo "        - Kanye West" | lolcat
 
-# asdf installation
-. "$HOME/pgms/asdf/asdf.sh"
-. "$HOME/pgms/asdf/completions/asdf.bash"
