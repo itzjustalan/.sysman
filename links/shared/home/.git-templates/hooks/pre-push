@@ -1,0 +1,10 @@
+#!/bin/sh
+
+
+# Detect if the command is being fired programmatically by an agent
+if [ -n "$GITHUB_COPILOT" ] || [ "$COPILOT_AGENT" = "true" ] || [ "$COPILOT_RESTRICT_GIT" = "1" ] || ! tty -s; then
+    echo "[COPILOT BLOCK] Autopilot is permitted to run general commands, but 'git push' is forbidden."
+    exit 1
+fi
+exit 0
+

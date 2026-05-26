@@ -295,6 +295,7 @@ alias gdb="cd ~/work/rkd/"
 # alias gdt="cd ~/myfiles/repos/.dotfiles/"
 # alias gdwsalba="cd ~/work/backend/;tmux new-session \; split-window -h \;"
 
+alias copilot="copilot --deny-tool='shell(git commit)' --deny-tool='shell(git push)' --deny-tool='shell(*phpunit*)'"
 alias dpsa="docker ps -a"
 alias dspa-SURE-KILL-ALL-="echo try dspa-SURE-KILL-ALL-y"
 alias dspa-SURE-KILL-ALL-y="docker system prune -af"
@@ -571,6 +572,18 @@ takeCustomScreenshot() {
 watchCurl() {
    # watch -n 2 "curl -g -w '\n%{http_code}\n' '"$url"' -H 'Authorization: Bearer $pa'"
     watch -n "$1" "curl -g -w '\n%{http_code}\n' '$2' -H '$3'"
+}
+
+# Intercept and block automated phpunit executions
+phpunit() {
+    # Check if the execution context belongs to an AI agent or a non-interactive shell
+    if [ -n "$GITHUB_COPILOT" ] || [ "$COPILOT_AGENT" = "true" ] || [ "$COPILOT_RESTRICT_GIT" = "1" ] || ! tty -s; then
+        echo "[COPILOT BLOCK] Autopilot is permitted to run general commands, but executing 'phpunit' is strictly forbidden."
+        return 1
+    fi
+
+    # If a real human is running it, hand over execution to the actual phpunit binary
+    command phpunit "$@"
 }
 
 # Didable less histry file

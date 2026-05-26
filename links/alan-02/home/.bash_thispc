@@ -7,11 +7,13 @@ alias format-this-php-codebase="./tools/php-cs-fixer/vendor/bin/php-cs-fixer fix
 
 export EDITOR=nvim
 
+echo 'eval "$(~/.local/bin/mise activate bash)"' >> ~/.bashrc
+
+export PATH=$PATH:/usr/games
 export PATH=$PATH:~/.local/bin/
 export PATH="$PATH:/opt/nvim-linux64/bin"
-export PATH="$(npm config get prefix)/bin:$PATH"
 
-echo 'eval "$(~/.local/bin/mise activate bash)"' >> ~/.bashrc
+export PATH="$(npm config get prefix)/bin:$PATH"
 eval "$(zoxide init bash)"
 eval "$(starship init bash)"
 
