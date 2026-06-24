@@ -274,6 +274,9 @@ alias f:="cd /mnt/win/f"
 alias g:="cd /mnt/win/g"
 
 # tmux
+# Ubuntu 26.04's packaged tmux forwards OSC52 clipboard sequences; the older
+# /usr/local/bin/tmux shadows it and drops clipboard writes.
+# alias tmux="/usr/bin/tmux"
 # tmux ls
 # tmux kill-server
 # alias tks="tmux kill-session -t"
